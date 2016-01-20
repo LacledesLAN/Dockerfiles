@@ -1,3 +1,5 @@
+FROM ll/gamesvr
+
 #TODO:
 #run steamcmd to download csgo
 #get github repo -=> gamesvr-srcds.linux
