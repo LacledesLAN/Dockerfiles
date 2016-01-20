@@ -1,1 +1,1 @@
-Docker isn't ready for windows yet :'(
+Windows isn't ready for docker yet :'(
