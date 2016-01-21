@@ -1,12 +1,13 @@
-FROM ubuntu:latest
+FROM phusion/baseimage:latest
 
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
-LABEL description="Base gameserver (e.g. gamesvr) image. Used to build all LL game servers"
+ENV SERVER_MAINTAINER "Laclede's LAN"
+ENV SERVER_NAME "LL Base Game Server"
 
 RUN apt-get update && \
+	apt-get install -y curl git libc6-i386 lib32gcc1 lib32stdc++6 lib32tinfo5 lib32z1 tar wget `#Install required packages#` && \
 	apt-get -y clean `#Clean up the apt-get cache#` && \
-	apt-get install -y curl git lib32gcc1 libc6-i386 nano wget `#Install required packages#` && \
 	apt-get -y autoremove `#Clean up unused dependencies#` && \
 	mkdir -p /gameservers/util/steamcmd `#Create destination directories#` && \
 	wget -qO-  -r --tries=10 --waitretry=20 --output-document=tmp.tar.gz http://media.steampowered.com/installer/steamcmd_linux.tar.gz `#Get steamcmd tarball#` && \
@@ -18,4 +19,7 @@ RUN apt-get update && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` `#cd into repo directory#` && \
 	rm -f *.md && \
-	cp -r * /gameservers/ `#copy downloaded files to their destination#`
+	cp -r * /gameservers/ `#copy downloaded files to their destination#` && \
+	rm -fr /tmp/* `#Clean out temp directory to save space#` 
+	
+WORKDIR /gameservers/

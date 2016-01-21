@@ -1,7 +1,18 @@
 FROM ll/gamesvr
 
+MAINTAINER Laclede's LAN <contact@lacledeslan.com>
+
+ENV SERVER_MAINTAINER "Laclede's LAN"
+ENV SERVER_NAME "LL Base Counter-Strike GO Server"
+
+RUN mkdir -p /gameservers/csgo && \
+	bash /gameservers/util/steamcmd/steamcmd.sh +login anonymous +force_install_dir /gameservers/csgo +app_update 740 +quit -validate && \
+	sleep 10 `#Give steamcmd time to any handles to files in /tmp/#` && \
+	rm -fr /tmp/* `#Clean out temp directory to save space#` 
+
+WORKDIR /gameservers/
+
 #TODO:
-#run steamcmd to download csgo
 #get github repo -=> gamesvr-srcds.linux
 #get github repo -=> gamesvr-srcds-csgo
 #get ftp contents -=> content.lan/fastDownloads/csgo/
