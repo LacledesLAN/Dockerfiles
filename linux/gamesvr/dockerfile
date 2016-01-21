@@ -1,4 +1,4 @@
-FROM phusion/baseimage:latest
+FROM ubuntu:latest
 
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
@@ -21,5 +21,5 @@ RUN apt-get update && \
 	rm -f *.md && \
 	cp -r * /gameservers/ `#copy downloaded files to their destination#` && \
 	rm -fr /tmp/* `#Clean out temp directory to save space#` 
-	
+
 WORKDIR /gameservers/

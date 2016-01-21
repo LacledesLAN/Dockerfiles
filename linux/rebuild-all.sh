@@ -1,7 +1,6 @@
 
-function linebreak {
-	TERMWIDTH=$(stty size | cut -d " " -f 2)
-	#printf '.%.0s' {1..$TERMWIDTH}
+function horizontalRule {
+	printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =
 }
 
 clear
@@ -47,12 +46,20 @@ tput sgr0
 
 echo "Building ll/gamesvr"
 docker build -t ll/gamesvr ./gamesvr/
-linebreak
+horizontalRule
 
 
 echo "Building ll/gamesvr-csgo...";
 docker build -t ll/gamesvr-csgo ./gamesvr-csgo/
-linebreak
+horizontalRule
+
+echo "Building ll/gamesvr-csgo-freeplay...";
+docker build -t ll/gamesvr-csgo-freeplay ./gamesvr-csgo-freeplay/
+horizontalRule
+
+echo "Building ll/gamesvr-csgo-tourney...";
+docker build -t ll/gamesvr-csgo-tourney ./gamesvr-csgo-tourney/
+horizontalRule
 
 tput smul
 echo -e "\nFINISHED\n";
