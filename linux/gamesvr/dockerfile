@@ -5,21 +5,28 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "LL Base Game Server"
 
+# Install required packages and clean up unused dependencies
 RUN apt-get update && \
-	apt-get install -y curl git libc6-i386 lib32gcc1 lib32stdc++6 lib32tinfo5 lib32z1 tar wget `#Install required packages#` && \
-	apt-get -y clean `#Clean up the apt-get cache#` && \
-	apt-get -y autoremove `#Clean up unused dependencies#` && \
-	mkdir -p /gameservers/util/steamcmd `#Create destination directories#` && \
-	wget -qO- -r --tries=10 --waitretry=20 --output-document=tmp.tar.gz http://media.steampowered.com/installer/steamcmd_linux.tar.gz `#Get steamcmd tarball#` && \
-	tar -xvzf tmp.tar.gz -C /gameservers/util/steamcmd/ `#Unzip steamcmd tarbar in appropriate place#` && \
-	rm tmp.tar.gz `#Remove temporary tarball#` && \
-	sh /gameservers/util/steamcmd/steamcmd.sh +quit `#Make sure steamcmd is up to date#` && \
-	cd `mktemp -d` `#Make a temporary directory#` && \
+	apt-get install -y curl git libc6-i386 lib32gcc1 lib32stdc++6 lib32tinfo5 lib32z1 tar wget && \
+	apt-get -y clean && \
+	apt-get -y autoremove
+	
+# Stage SteamCMD to /gameservers/util/steamcmd/
+RUN mkdir -p /gameservers/util/steamcmd  && \
+	wget -qO- -r --tries=10 --waitretry=20 --output-document=tmp.tar.gz http://media.steampowered.com/installer/steamcmd_linux.tar.gz && \
+	tar -xvzf tmp.tar.gz -C /gameservers/util/steamcmd/ && \
+	rm tmp.tar.gz && \
+	sh /gameservers/util/steamcmd/steamcmd.sh +quit
+
+#Get and stage from gamesvr GitHub Repo "gamesvr"
+RUN cd `mktemp -d` && \
 	git clone https://github.com/LacledesLAN/gamesvr && \
 	rm -rf *.git && \
-	cd `ls -A | head -1` `#cd into repo directory#` && \
+	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gameservers/ `#copy downloaded files to their destination#` && \
-	rm -fr /tmp/* `#Clean out temp directory to save space#` 
+	cp -r * /gameservers/
+
+# Clean out tmp directory
+RUN rm -fr /tmp/*
 
 WORKDIR /gameservers/

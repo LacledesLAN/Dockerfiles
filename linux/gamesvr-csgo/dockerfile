@@ -5,10 +5,15 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "LL Counter-Strike GO Server Base Level"
 
+ADD steamcmd_cache /gameservers/csgo
+
+# Install Counter-Strike: Global-Offensive using SteamCMD
 RUN mkdir -p /gameservers/csgo && \
 	bash /gameservers/util/steamcmd/steamcmd.sh +login anonymous +force_install_dir /gameservers/csgo +app_update 740 +quit -validate && \
-	sleep 3 `#Give steamcmd time to any handles to files in /tmp/#` && \
-	rm -fr /tmp/* `#Clean out temp directory to save space#`
+	sleep 3 `#Give steamcmd time to any handles to files in /tmp/#`
+
+# Clean out tmp directory
+RUN rm -fr /tmp/* `#Clean out temp directory to save space#`
 
 WORKDIR /gameservers/
 
