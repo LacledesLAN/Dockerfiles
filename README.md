@@ -7,6 +7,7 @@ Levels
 All LL docker images belong to one of four levels:
 
 0. Operating System Level
+    test
 1. Universal Level
 2. Application Level
 3. Configuration Level
