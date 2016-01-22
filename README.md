@@ -9,11 +9,9 @@ Levels
 ======
 All Laclede's LAN docker images belong to one of three levels.  By design the lower the image level the less-frequently it needs to be rebuild during development and event cycles.  Not all image builds will use all three levels; levels may be skipped if they are not needed.
 
-All images should follow the LL directory structures for a given category to ensure they'll work when stacked together.
-
 1. Category Level
 -----------------
-This level provides a "base level" of features, packages, and utilies for the operating system.  Defined categories include:
+This level provides a "base level" of features, packages, and utilies for the operating system.  Each category has a standardized LL directory structure that must be followed for all child images for things to work properly. Defined categories include:
 
 * "gamesvr" for all game server images to be built on.
 * "websvr" for all webservers to be built on.
