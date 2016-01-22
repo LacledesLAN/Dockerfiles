@@ -7,7 +7,7 @@ Why We Use Docker
 
 Levels
 ======
-All Laclede's LAN docker images belong to one of three levels.  By design the lower the image level the less-frequently it needs to be rebuild during development and event cycles.
+All Laclede's LAN docker images belong to one of three levels.  By design the lower the image level the less-frequently it needs to be rebuild during development and event cycles.  Not all image builds will use all three levels; levels may be skipped if they are not needed.
 
 All images should follow the LL directory structures for a given category to ensure they'll work when stacked together.
 
