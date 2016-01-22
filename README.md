@@ -5,10 +5,10 @@ Library of Dockerfiles for all Dockerized LL Servers
 Levels
 ------
 All LL docker images belong to one of four levels:
-0. Operating System Level
-1. Universal Level
-2. Application Level
-3. Configuration Level
+1. Operating System Level
+2. Universal Level
+3. Application Level
+4. Configuration Level
 
 Synopsis
 --------
