@@ -19,6 +19,11 @@ echo "     /_/ |_|\___/_____/\__,_/_/_/\__,_/\___/_/         "
 echo "                                                       "
 tput sgr0
 
+# Check that docker is installed
+command -v docker > /dev/null 2>&1 || { echo >&2 "I require docker but it's not installed.  Aborting."; exit 1; }
+# Check that git is installed
+command -v git > /dev/null 2>&1 || { echo >&2 "I require git but it's not installed.  Aborting."; exit 1; }
+
 tput smul
 echo -e "\nCLEAN UP";
 tput sgr0
@@ -42,22 +47,22 @@ echo ".done.";
 tput smul
 echo -e "\nREBUILD";
 tput sgr0
+horizontalRule
 
 echo "Building ll/gamesvr"
 docker build -t ll/gamesvr ./gamesvr/
 horizontalRule
 
-
 echo "Building ll/gamesvr-csgo...";
-docker build -t ll/gamesvr-csgo ./gamesvr-csgo/
+#docker build -t ll/gamesvr-csgo ./gamesvr-csgo/
 horizontalRule
 
 echo "Building ll/gamesvr-csgo-freeplay...";
-docker build -t ll/gamesvr-csgo-freeplay ./gamesvr-csgo-freeplay/
+#docker build -t ll/gamesvr-csgo-freeplay ./gamesvr-csgo-freeplay/
 horizontalRule
 
 echo "Building ll/gamesvr-csgo-tourney...";
-docker build -t ll/gamesvr-csgo-tourney ./gamesvr-csgo-tourney/
+#docker build -t ll/gamesvr-csgo-tourney ./gamesvr-csgo-tourney/
 horizontalRule
 
 tput smul
