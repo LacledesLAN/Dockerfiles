@@ -2,6 +2,9 @@ Dockerfiles Collection
 ======================
 Library of Dockerfiles for all Dockerized LL Servers
 
+Why We Use Docker
+-----------------
+
 Levels
 ======
 All Laclede's LAN docker images belong to one of three levels.  By design the lower the image level the less-frequently it needs to be rebuild during development and event cycles.
