@@ -6,8 +6,8 @@ Levels
 ======
 All LL docker images belong to one of three levels:
 
-1. Server-Family Level
-----------------------
+1. Category Level
+-----------------
 
 2. Application Level
 ---------------------
