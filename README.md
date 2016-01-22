@@ -4,7 +4,7 @@ Library of Dockerfiles for all Dockerized LL Servers
 
 Levels
 ======
-All Laclede's LAN docker images belong to one of three levels.  Ideally the lower level images need to be rebuilt less-frequently than higher level images.
+All Laclede's LAN docker images belong to one of three levels.  By design the lower the image level the less-frequently it needs to be rebuild during development and event cycles.
 
 1. Category Level
 -----------------
