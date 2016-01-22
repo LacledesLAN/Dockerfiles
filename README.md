@@ -10,11 +10,11 @@ All LL docker images belong to one of three levels:
 2. Application Level
 3. Configuration Level
 
-## Universatl Level
+## Universal Level (#1)
 
-## Applicaiton Level
+## Application Level (#2)
 
-## Configuration Level
+## Configuration Level (#3)
 
 Synopsis
 --------
