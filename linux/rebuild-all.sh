@@ -43,7 +43,6 @@ tput smul
 echo -e "\nREBUILD";
 tput sgr0
 
-
 echo "Building ll/gamesvr"
 docker build -t ll/gamesvr ./gamesvr/
 horizontalRule
