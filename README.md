@@ -6,6 +6,8 @@ Levels
 ======
 All Laclede's LAN docker images belong to one of three levels.  By design the lower the image level the less-frequently it needs to be rebuild during development and event cycles.
 
+All images should follow the LL directory structures for a given category to ensure they'll work when stacked together.
+
 1. Category Level
 -----------------
 This level provides a "base level" of features, packages, and utilies for the operating system.  Defined categories include:
@@ -26,20 +28,19 @@ Examples:
 | gamesvr  | Counter-Strike: Global Offensive | Community Maps and Texture Packs       |
 | websvr   | nginx                            | Static HTML files, Stylesheets, Images |
 
-Application-Level images are derived from a LL "Category-Level" docker-image.
+Application-Level images are derived from a "Category-Level" docker-image.
 
 3. Configuration Level
 ----------------------
-The Configuration Level should contain all items 
+The Configuration Level should configuration files along with any other files that may change frequently.
 
 
 
-Images at this level are derived from a LL "Application Level" docker image.
+Images at this level are derived from an "Application Level" docker image.
 
 
-
-Contributors
-============
+Maintainers
+===========
 
 | Name         | GitHub Profile | Twitter       |
 |--------------|----------------|---------------|
