@@ -5,11 +5,27 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "LL Half-Life 2 Deathmatch Server Base"
 
-ADD steamcmd_cache /gameservers/hl2dm
+ADD context_steamapp /gameservers/hl2dm
 
-# Install Counter-Strike: Global-Offensive using SteamCMD
+# Install Half-Life 2 Deathmatch using SteamCMD
 RUN mkdir -p /gameservers/hl2dm && \
 	bash /gameservers/_util/steamcmd/steamcmd.sh +login anonymous +force_install_dir /gameservers/hl2dm +app_update 232370 +quit
+	
+#Get and stage from gamesvr GitHub Repo "gamesvr-srcds.linux"
+RUN cd `mktemp -d` && \
+	git clone https://github.com/LacledesLAN/gamesvr-srcds.linux && \
+	rm -rf *.git && \
+	cd `ls -A | head -1` && \
+	rm -f *.md && \
+	cp -r * /gameservers/hl2dm/
+	
+#Get and stage from gamesvr GitHub Repo "gamesvr-srcds-hl2dm"
+RUN cd `mktemp -d` && \
+	git clone https://github.com/LacledesLAN/gamesvr-srcds-hl2dm-freeplay && \
+	rm -rf *.git && \
+	cd `ls -A | head -1` && \
+	rm -f *.md && \
+	cp -r * /gameservers/hl2dm/
 
 # Clean out tmp directory
 RUN rm -fr /tmp/* `#Clean out temp directory to save space#`
