@@ -11,7 +11,7 @@ RUN cd `mktemp -d` && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gameservers/csgo/
+	cp -r * /gameservers/csgo/csgo/
 
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-csgo"
 RUN cd `mktemp -d` && \
