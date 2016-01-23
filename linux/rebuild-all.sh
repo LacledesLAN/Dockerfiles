@@ -128,7 +128,7 @@ echo "    1) Rebuild Category (Level 1)";
 echo "    2) Rebuild Apllication/Content (Level 2)";
 echo "    3) Rebuild Configuration (Level 3)";
 echo "    "
-echo "    U) Just update this script."
+echo "    U) Update this script then exit."
 echo "    "
 
 declare selected_rebuild_level=""
