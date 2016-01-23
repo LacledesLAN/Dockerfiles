@@ -5,18 +5,28 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "LL Counter-Strike GO Freeplay Server"
 
-RUN cd `mktemp -d` `#Make a temporary directory#` && \
+#Get and stage from gamesvr GitHub Repo "gamesvr-srcds.linux"
+RUN cd `mktemp -d` && \
 	git clone https://github.com/LacledesLAN/gamesvr-srcds.linux && \
 	rm -rf *.git && \
-	cd `ls -A | head -1` `#cd into repo directory#` && \
+	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gameservers/csgo/ `#copy downloaded files to their destination#` && \
-	cd `mktemp -d` `#Make a temporary directory#` && \
+	cp -r * /gameservers/csgo/
+
+#Get and stage from gamesvr GitHub Repo "gamesvr-srcds-csgo"
+RUN cd `mktemp -d` && \
 	git clone https://github.com/LacledesLAN/gamesvr-srcds-csgo && \
 	rm -rf *.git && \
-	cd `ls -A | head -1` `#cd into repo directory#` && \
+	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gameservers/csgo/ `#copy downloaded files to their destination#` && \
-	rm -fr /tmp/* `#Clean out temp directory to save space#` 
+	cp -r * /gameservers/csgo/
+	
+#Get and stage from gamesvr GitHub Repo "gamesvr-srcds-free"	
+RUN cd `mktemp -d` && \
+	git clone https://github.com/LacledesLAN/gamesvr-srcds-csgo-freeplay && \
+	rm -rf *.git && \
+	cd `ls -A | head -1` && \
+	rm -f *.md && \
+	cp -r * /gameservers/csgo/
 
 WORKDIR /gameservers/
