@@ -3,7 +3,7 @@ FROM ll/gamesvr-tf2
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
 ENV SERVER_MAINTAINER "Laclede's LAN"
-ENV SERVER_NAME "LL Team Fortress 2 Blind Frag Server "
+ENV SERVER_NAME "LL Team Fortress 2 Free-Play Server"
 
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds.linux"
 RUN cd `mktemp -d` && \
@@ -21,9 +21,9 @@ RUN cd `mktemp -d` && \
 	rm -f *.md && \
 	cp -r * /gameservers/tf2/
 
-#Get and stage from gamesvr GitHub Repo "gamesvr-srcds-tf2-blindfrag"
+#Get and stage from gamesvr GitHub Repo "gamesvr-srcds-tf2-freeplay"
 RUN cd `mktemp -d` && \
-	git clone https://github.com/LacledesLAN/gamesvr-srcds-tf2-blindfrag && \
+	git clone https://github.com/LacledesLAN/gamesvr-srcds-tf2-freeplay && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \

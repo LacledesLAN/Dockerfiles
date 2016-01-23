@@ -15,8 +15,11 @@
 #=============================================================================================================
 #===  SETTINGS  ==============================================================================================
 #=============================================================================================================
-readonly setting_contextualize_steam=true;		# If steam apps will be added via docker build context.
+readonly debug_show_docker=true;
+readonly debug_contextual_show_ftp=true;
+readonly debug_contextual_show_steammcd=true;
 
+readonly setting_contextualize_steam=true;		# If steam apps will be added via docker build context.
 
 #=============================================================================================================
 #===  VALIDATE HOST ENVIRONMENT REQUIREMENTS =================================================================
@@ -167,13 +170,17 @@ echo ".done.";
 
 echo -n "Destroying all LL docker images..";
 {
-	####################################docker rmi -f ll/gamesvr;##########################################################################
+	docker rmi -f $(docker images -q);   #todo: add filter for ll/*
+
+	docker rmi -f ll/gamesvr;
 	docker rmi -f ll/gamesvr-csgo;
 	docker rmi -f ll/gamesvr-csgo-freeplay;
 	docker rmi -f ll/gamesvr-csgo-tourney;
 	docker rmi -f ll/gamesvr-hl2dm;
-
-	#docker rmi -f $(docker images -q);   #todo: add filter for ll/*
+	docker rmi -f ll/gamesvr-tf2;
+	docker rmi -f ll/gamesvr-tf2-blindfrag;
+	docker rmi -f ll/gamesvr-tf2-download;
+	docker rmi -f ll/gamesvr-tf2-freeplay;
 } &> /dev/null;
 echo ".done.";
 
@@ -221,7 +228,7 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 
 	if [ "$setting_contextualize_steam" = true ] ; then
 	
-		echo -n "CONTEXTUALIZE_STEAM: Fetching CS:GO Files.."
+		echo "CONTEXTUALIZE_STEAM: Fetching CS:GO Files.."
 		
 		bash "$script_directory/gamesvr/context_steamcmd/"steamcmd.sh \
 			+login anonymous \
@@ -230,7 +237,6 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 			+quit \
 			-validate
 
-		echo ".done."
 	fi
 
 	docker build -t ll/gamesvr-csgo ./gamesvr-csgo/;
@@ -279,7 +285,7 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 
 	if [ "$setting_contextualize_steam" = true ] ; then
 
-		echo -n "CONTEXTUALIZE_STEAM: Pre-Caching HL2DM Files.."
+		echo "CONTEXTUALIZE_STEAM: Grabbing HL2DM Files.."
 		
 		bash "$script_directory/gamesvr/context_steamcmd/"steamcmd.sh \
 			+login anonymous \
@@ -288,12 +294,10 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 			+quit \
 			-validate
 
-		echo ".done."
 	fi
 
 	docker build -t ll/gamesvr-hl2dm ./gamesvr-hl2dm/
-	
-	
+
 	section_end;
 
 
@@ -305,9 +309,9 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #  /____/                                                                                                /_/            /____/
 #
 	section_head "Building ll/gamesvr-hl2dm-freeplay";
-	
+
 	docker build -t ll/gamesvr-hl2dm-freeplay ./gamesvr-hl2dm-freeplay/
-	
+
 	section_end;
 
 
@@ -317,8 +321,26 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #   / / / __/  / __/
 #  /_/ /_/    /____/ 
 #
-#
-	section_head "";
+	section_head "Building ll/gamesvr-tf2";
+	
+	# Ensure any expected context directories exists
+	mkdir -p "$script_directory/gamesvr-tf2/context_steamapp";
+
+	if [ "$setting_contextualize_steam" = true ] ; then
+
+		echo "CONTEXTUALIZE_STEAM: Grabbing TF2 Files.."
+		
+		bash "$script_directory/gamesvr/context_steamcmd/"steamcmd.sh \
+			+login anonymous \
+			+force_install_dir "$script_directory/gamesvr-tf2/context_steamapp/" \
+			+app_update 232250 \
+			+quit \
+			-validate
+
+	fi
+
+	docker build -t ll/gamesvr-tf2 ./gamesvr-tf2/
+
 	echo "Not yet implemented.";
 	section_end;
 
@@ -327,13 +349,15 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #   /_  __/ ____/__ \    / __ )/ (_)___  ____/ /     / ____/________ _____ _
 #    / / / /_   __/ /   / __  / / / __ \/ __  /_____/ /_  / ___/ __ `/ __ `/
 #   / / / __/  / __/   / /_/ / / / / / / /_/ /_____/ __/ / /  / /_/ / /_/ /
-#  /_/ /_/    /____/  /_____/_/_/_/ /_/\__,_/     /_/   /_/   \__,_/\__, /
+#  /_/ /_/    /____/  /_____/_/_/_/ /_/\__,_/     /_/   /_/   \__,_/\__, /                                                                  
 #                                                                  /____/
 #
 	section_head "";
-	echo "Not yet implemented.";
+	
+	docker build -t ll/gamesvr-tf2-blindfrag ./gamesvr-tf2-blindfrag/
+	
 	section_end;
-
+	
 
 #    _______________      ______                     __
 #   /_  __/ ____/__ \    / ____/_______  ___  ____  / /___ ___  __
@@ -341,9 +365,10 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #   / / / __/  / __/   / __/ / /  /  __/  __/ /_/ / / /_/ / /_/ /
 #  /_/ /_/    /____/  /_/   /_/   \___/\___/ .___/_/\__,_/\__, /
 #                                         /_/            /____/
-#
 	section_head "";
-	echo "Not yet implemented.";
+	
+	docker build -t ll/gamesvr-tf2-freeplay ./gamesvr-tf2-freeplay/
+	
 	section_end;
 
 
