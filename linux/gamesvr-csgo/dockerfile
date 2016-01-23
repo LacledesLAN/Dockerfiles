@@ -9,7 +9,7 @@ ADD context_steamapp /gameservers/csgo
 
 # Install Counter-Strike: Global-Offensive using SteamCMD
 RUN mkdir -p /gameservers/csgo && \
-	bash /gameservers/_util/steamcmd/steamcmd.sh +login anonymous +force_install_dir /gameservers/csgo +app_update 740 +quit -validate && \
+	bash /gameservers/_util/steamcmd/steamcmd.sh +login anonymous +force_install_dir /gameservers/ +app_update 740 +quit -validate && \
 	sleep 3 `#Give steamcmd time to any handles to files in /tmp/#`
 
 # Clean out tmp directory
