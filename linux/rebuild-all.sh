@@ -474,8 +474,9 @@ tput sgr0;
 
 echo "";
 echo "";
-draw_horizontal_rule
-draw_horizontal_rule
+draw_horizontal_rule;
+echo "   LL Docker Image Management Tool.  Stop time: $(date)";
+draw_horizontal_rule;
 echo "";
 
 
