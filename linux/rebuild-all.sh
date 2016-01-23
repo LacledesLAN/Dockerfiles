@@ -306,7 +306,7 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #
 	section_head "Building ll/gamesvr-hl2dm-freeplay";
 	
-	docker build -t ll/gamesvr-hl2dm ./gamesvr-hl2dm-freeplay/
+	docker build -t ll/gamesvr-hl2dm-freeplay ./gamesvr-hl2dm-freeplay/
 	
 	section_end;
 
