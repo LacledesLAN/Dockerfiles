@@ -287,6 +287,8 @@ if [ $selected_rebuild_level -le 2 ] ; then
 			+quit \
 			-validate
 	fi
+	
+	docker build -t ll/gamesvr-csgo ./gamesvr-csgo/;
 
 	section_end;
 fi
@@ -301,11 +303,9 @@ fi
 #
 if [ $selected_rebuild_level -le 3 ] ; then
 
-
 	section_head "Building ll/gamesvr-csgo-freeplay";
 
-	
-		docker build -t ll/gamesvr-csgo-freeplay ./gamesvr-csgo-freeplay/
+	docker build -t ll/gamesvr-csgo-freeplay ./gamesvr-csgo-freeplay/;
 
 	section_end;
 fi
@@ -322,7 +322,7 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
 	section_head "Building ll/gamesvr-csgo-tourney";
 
-	docker build -t ll/gamesvr-csgo-tourney ./gamesvr-csgo-tourney/
+	docker build -t ll/gamesvr-csgo-tourney ./gamesvr-csgo-tourney/;
 	
 	section_end;
 fi
