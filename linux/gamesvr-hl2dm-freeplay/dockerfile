@@ -12,6 +12,14 @@ RUN cd `mktemp -d` && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
 	cp -r * /gameservers/hl2dm/
+	
+#Get and stage from gamesvr GitHub Repo "gamesvr-srcds-hl2dm"
+RUN cd `mktemp -d` && \
+	git clone https://github.com/LacledesLAN/gamesvr-srcds-hl2dm-freeplay && \
+	rm -rf *.git && \
+	cd `ls -A | head -1` && \
+	rm -f *.md && \
+	cp -r * /gameservers/hl2dm/
 
 # Clean out tmp directory
 RUN rm -fr /tmp/*
