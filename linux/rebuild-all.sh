@@ -372,13 +372,39 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 	section_end;
 
 
+
+#
+#     _____          __    ____          __  __                __           __               
+#    / ___/  ___    / /   / __/         / / / /    ____   ____/ /  ____ _  / /_  ___    _____
+#    \__ \  / _ \  / /   / /_          / / / /    / __ \ / __  /  / __ `/ / __/ / _ \  / ___/
+#   ___/ / /  __/ / /   / __/         / /_/ /    / /_/ // /_/ /  / /_/ / / /_  /  __/ / /    
+#  /____/  \___/ /_/   /_/            \____/    / .___/ \__,_/   \__,_/  \__/  \___/ /_/     
+#                                              /_/                                           
+#
 tput smul;
-echo -e "\n\n\nFINISHED\n";
+echo -e "\n\nUPDATING SELF FROM GITHUB";
+tput sgr0;
+
+cd `mktemp -d`;
+git clone https://github.com/LacledesLAN/Dockerfiles;
+rm -rf *.git;
+cd `ls -A | head -1`;
+rm -f *.md;
+cd linux
+cp -r * "$script_directory"
+
+
+
+tput smul;
+echo -e "\n\n\n\n\nFINISHED\n";
 
 tput sgr0;
 
+
 echo "";
 echo "";
 draw_horizontal_rule
 draw_horizontal_rule
 echo "";
+
+
