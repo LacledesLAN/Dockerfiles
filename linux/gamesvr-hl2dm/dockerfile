@@ -9,7 +9,7 @@ ADD context_steamapp /gameservers/hl2dm
 
 # Install Half-Life 2 Deathmatch using SteamCMD
 RUN mkdir -p /gameservers/hl2dm && \
-	bash /gameservers/_util/steamcmd/steamcmd.sh +login anonymous +force_install_dir /gameservers +app_update 232370 +quit
+	bash /gameservers/_util/steamcmd/steamcmd.sh +login anonymous +force_install_dir /gameservers/hl2dm +app_update 232370 +quit
 	
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds.linux"
 RUN cd `mktemp -d` && \

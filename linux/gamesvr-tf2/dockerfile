@@ -9,7 +9,7 @@ ADD context_steamapp /gameservers/tf2
 
 # Install Counter-Strike: Global-Offensive using SteamCMD
 RUN mkdir -p /gameservers/tf2 && \
-	bash /gameservers/_util/steamcmd/steamcmd.sh +login anonymous +force_install_dir /gameservers +app_update 232250 +quit -validate && \
+	bash /gameservers/_util/steamcmd/steamcmd.sh +login anonymous +force_install_dir /gameservers/tf2 +app_update 232250 +quit -validate && \
 	sleep 3 `#Give steamcmd time to any handles to files in /tmp/#`
 
 # Clean out tmp directory
