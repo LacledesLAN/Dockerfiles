@@ -412,7 +412,7 @@ fi
 #
 if [ $selected_rebuild_level -le 3 ] ; then
 
-	section_head "";
+	section_head "Building ll/gamesvr-tf2-blindfrag";
 	
 	docker build -t ll/gamesvr-tf2-blindfrag ./gamesvr-tf2-blindfrag/
 	
@@ -430,7 +430,7 @@ fi
 
 if [ $selected_rebuild_level -le 3 ] ; then
 
-	section_head "";
+	section_head "Building ll/gamesvr-tf2-freeplay";
 	
 	docker build -t ll/gamesvr-tf2-freeplay ./gamesvr-tf2-freeplay/
 
