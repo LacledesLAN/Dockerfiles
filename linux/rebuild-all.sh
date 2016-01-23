@@ -128,6 +128,8 @@ echo "    1) Rebuild Category (Level 1)";
 echo "    2) Rebuild Apllication/Content (Level 2)";
 echo "    3) Rebuild Configuration (Level 3)";
 echo "    "
+echo "    U) Just update this script."
+echo "    "
 
 declare selected_rebuild_level=""
 until [ ! -z $selected_rebuild_level ]; do
@@ -148,6 +150,10 @@ until [ ! -z $selected_rebuild_level ]; do
 	elif [ $x == "X" ] ; then
 		echo -e "\n\nAborting...\n"
 		exit;
+	elif [ $x == "u" ] ; then
+		selected_rebuild_level="99";
+	elif [ $x == "U" ] ; then
+		selected_rebuild_level="99";
 	fi
 done
 
