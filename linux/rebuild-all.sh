@@ -226,14 +226,17 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #  / /_/ / /_/ / /_/ / / / / /_/ /_/ /
 #  \__,_/_.___/\__,_/_/ /_/\__/\__,_/
 #
+if [ $selected_rebuild_level -le 0 ] ; then
+
 	section_head "ubuntu:latest";
 	
 	echo "Pulling ubuntu:latest from Docker hub";
-	if [ $selected_rebuild_level == 0 ] ; then
+	
 		docker pull ubuntu:latest
-	fi
-
+	
 	section_end;
+fi
+
 
 #     ____ _____ _____ ___  ___  ______   _______
 #    / __ `/ __ `/ __ `__ \/ _ \/ ___/ | / / ___/
@@ -241,16 +244,18 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #   \__, /\__,_/_/ /_/ /_/\___/____/ |___/_/
 #  /____/
 #
+if [ $selected_rebuild_level -le 1 ] ; then
+
 	section_head "Building ll/gamesvr";
 
 	# Ensure any expected context directories exists
 	{ mkdir -p "$script_directory/gamesvr/context_steamcmd"; } &> /dev/null; 
 
-	if [ $selected_rebuild_level == 1 ] ; then
 		docker build -t ll/gamesvr ./gamesvr/;
-	fi
 
 	section_end;
+
+fi
 
 
 #     ____ _____ _____ ___  ___  ______   _______      ______________ _____
@@ -259,13 +264,14 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #   \__, /\__,_/_/ /_/ /_/\___/____/ |___/_/         \___/____/\__, /\____/
 #  /____/                                                     /____/
 #
+if [ $selected_rebuild_level -le 2 ] ; then
+
 	section_head "Building ll/gamesvr-csgo";
 	
 	# Ensure any expected context directories exists
 	mkdir -p "$script_directory/gamesvr-csgo/context_steamapp";
 
 	if [ "$setting_contextualize_steam" = true ] ; then
-	
 		echo "CONTEXTUALIZE_STEAM: Fetching CS:GO Files.."
 		
 		bash "$script_directory/gamesvr/context_steamcmd/"steamcmd.sh \
@@ -274,14 +280,11 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 			+app_update 740 \
 			+quit \
 			-validate
-
-	fi
-	
-	if [ $selected_rebuild_level == 2 ] ; then
-		docker build -t ll/gamesvr-csgo ./gamesvr-csgo/;
 	fi
 
 	section_end;
+fi
+
 
 #                                                                                   ____                     __
 #     ____ _____ _____ ___  ___  ______   _______      ______________ _____        / __/_______  ___  ____  / /___ ___  __
@@ -290,14 +293,16 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #   \__, /\__,_/_/ /_/ /_/\___/____/ |___/_/         \___/____/\__, /\____/     /_/ /_/   \___/\___/ .___/_/\__,_/\__, /
 #  /____/                                                     /____/                              /_/            /____/
 #
+if [ $selected_rebuild_level -le 3 ] ; then
+
+
 	section_head "Building ll/gamesvr-csgo-freeplay";
 
-	if [ $selected_rebuild_level == 3 ] ; then
+	
 		docker build -t ll/gamesvr-csgo-freeplay ./gamesvr-csgo-freeplay/
-	fi
-
 
 	section_end;
+fi
 
 
 #                                                                                   __
@@ -307,13 +312,14 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #   \__, /\__,_/_/ /_/ /_/\___/____/ |___/_/         \___/____/\__, /\____/      \__/\____/\__,_/_/  /_/ /_/\___/\__, /
 #  /____/                                                     /____/                                            /____/
 #
+if [ $selected_rebuild_level -le 3 ] ; then
+
 	section_head "Building ll/gamesvr-csgo-tourney";
-	
-	if [ $selected_rebuild_level == 3 ] ; then
-		docker build -t ll/gamesvr-csgo-tourney ./gamesvr-csgo-tourney/
-	fi
+
+	docker build -t ll/gamesvr-csgo-tourney ./gamesvr-csgo-tourney/
 	
 	section_end;
+fi
 
 
 #                                                       __    _____      __
@@ -323,6 +329,9 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #   \__, /\__,_/_/ /_/ /_/\___/____/ |___/_/        /_/ /_/_//____|__,_/_/ /_/ /_/
 #  /____/
 #
+
+if [ $selected_rebuild_level -le 2 ] ; then
+
 	section_head "Building ll/gamesvr-hl2dm";
 	
 	# Ensure any expected context directories exists
@@ -338,14 +347,12 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 			+app_update 232370 \
 			+quit \
 			-validate
-
 	fi
 
-	if [ $selected_rebuild_level == 2 ] ; then
-		docker build -t ll/gamesvr-hl2dm ./gamesvr-hl2dm/
-	fi
-
+	docker build -t ll/gamesvr-hl2dm ./gamesvr-hl2dm/
+	
 	section_end;
+fi
 
 
 #                                                       __    _____      __                ____                     __
@@ -355,13 +362,14 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #   \__, /\__,_/_/ /_/ /_/\___/____/ |___/_/        /_/ /_/_//____|__,_/_/ /_/ /_/     /_/ /_/   \___/\___/ .___/_/\__,_/\__, /
 #  /____/                                                                                                /_/            /____/
 #
+if [ $selected_rebuild_level -le 3 ] ; then
+	
 	section_head "Building ll/gamesvr-hl2dm-freeplay";
-
-	if [ $selected_rebuild_level == 3 ] ; then
-		docker build -t ll/gamesvr-hl2dm-freeplay ./gamesvr-hl2dm-freeplay/
-	fi
+	
+	docker build -t ll/gamesvr-hl2dm-freeplay ./gamesvr-hl2dm-freeplay/
 
 	section_end;
+fi
 
 
 #    _______________
@@ -370,6 +378,8 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #   / / / __/  / __/
 #  /_/ /_/    /____/ 
 #
+
+if [ $selected_rebuild_level -le 2 ] ; then
 	section_head "Building ll/gamesvr-tf2";
 	
 	# Ensure any expected context directories exists
@@ -387,13 +397,10 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 			-validate
 
 	fi
-
-	if [ $selected_rebuild_level == 2 ] ; then
 		docker build -t ll/gamesvr-tf2 ./gamesvr-tf2/
-	fi
-
-	echo "Not yet implemented.";
+	
 	section_end;
+fi
 
 
 #    _______________      ____  ___           __      ______
@@ -403,13 +410,15 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #  /_/ /_/    /____/  /_____/_/_/_/ /_/\__,_/     /_/   /_/   \__,_/\__, /                                                                  
 #                                                                  /____/
 #
+if [ $selected_rebuild_level -le 3 ] ; then
+
 	section_head "";
 	
-	if [ $selected_rebuild_level == 3 ] ; then
-		docker build -t ll/gamesvr-tf2-blindfrag ./gamesvr-tf2-blindfrag/
-	fi
+	docker build -t ll/gamesvr-tf2-blindfrag ./gamesvr-tf2-blindfrag/
 	
 	section_end;
+	
+fi
 	
 
 #    _______________      ______                     __
@@ -418,15 +427,16 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #   / / / __/  / __/   / __/ / /  /  __/  __/ /_/ / / /_/ / /_/ /
 #  /_/ /_/    /____/  /_/   /_/   \___/\___/ .___/_/\__,_/\__, /
 #                                         /_/            /____/
+
+if [ $selected_rebuild_level -le 3 ] ; then
+
 	section_head "";
 	
-	if [ $selected_rebuild_level == 3 ] ; then
-		docker build -t ll/gamesvr-tf2-freeplay ./gamesvr-tf2-freeplay/
-	fi
-	
+	docker build -t ll/gamesvr-tf2-freeplay ./gamesvr-tf2-freeplay/
+
 	section_end;
 
-
+fi
 
 #                                                                                              #
 #     _____          __    ____          __  __                __           __                 #
