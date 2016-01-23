@@ -114,8 +114,43 @@ echo "   ██║██║╚██╔╝██║██╔══██║█�
 echo "   ██║██║ ╚═╝ ██║██║  ██║╚██████╔╝███████╗    ██║ ╚═╝ ██║╚██████╔╝██║ ╚═╝ ██║   ██║      ";
 echo "   ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝    ╚═╝     ╚═╝ ╚═════╝ ╚═╝     ╚═╝   ╚═╝      ";
 tput sgr0; tput dim; tput setaf 6;
-echo "                                             build: $script_version";
+echo "                                             Build: $script_version";
 tput sgr0;
+
+#==============
+#= MENU
+#==============
+
+echo "    What do you want to rebuild?"
+echo "    "
+echo "    0) Rebuild Everything";
+echo "    1) Rebuild Category (Level 1)";
+echo "    2) Rebuild Apllication/Content (Level 2)";
+echo "    3) Rebuild Configuration (Level 3)";
+echo "    "
+
+declare selected_rebuild_level=""
+until [ ! -z $selected_rebuild_level ]; do
+	read -n 1 x; while read -n 1 -t .1 y; do x="$x$y"; done
+	
+	if [ $x == 0 ] ; then
+		selected_rebuild_level="0";
+		bash "$script_directory"/gfx-allthethings.sh
+	elif [ $x == 1 ] ; then
+		selected_rebuild_level="1";
+	elif [ $x == 2 ] ; then
+		selected_rebuild_level="2";
+	elif [ $x == 3 ] ; then
+		selected_rebuild_level="3";
+	elif [ $x == "x" ] ; then
+		echo -e "\n\nAborting...\n"
+		exit;
+	elif [ $x == "X" ] ; then
+		echo -e "\n\nAborting...\n"
+		exit;
+	fi
+done
+
 
 tput smul;
 echo -e "\n\nENVIRONMENT SETUP";
@@ -135,8 +170,7 @@ if [ "$setting_contextualize_steam" = true ] ; then
 	
 	{ bash "$script_directory/gamesvr/context_steamcmd/"steamcmd.sh +quit; }  &> /dev/null;
 
-	if [ $? -ne 0 ]
-	then
+	if [ $? -ne 0 ] ; then
 		echo -n ".downloading.."
 		
 		#failed to run SteamCMD.  Download
@@ -170,17 +204,17 @@ echo ".done.";
 
 echo -n "Destroying all LL docker images..";
 {
-	docker rmi -f $(docker images -q);   #todo: add filter for ll/*
-
-	docker rmi -f ll/gamesvr;
-	docker rmi -f ll/gamesvr-csgo;
-	docker rmi -f ll/gamesvr-csgo-freeplay;
-	docker rmi -f ll/gamesvr-csgo-tourney;
-	docker rmi -f ll/gamesvr-hl2dm;
-	docker rmi -f ll/gamesvr-tf2;
-	docker rmi -f ll/gamesvr-tf2-blindfrag;
-	docker rmi -f ll/gamesvr-tf2-download;
-	docker rmi -f ll/gamesvr-tf2-freeplay;
+	#docker rmi -f $(docker images -q);   #todo: add filter for ll/*
+	#docker rmi -f ll/gamesvr;
+	#docker rmi -f ll/gamesvr-csgo;
+	#docker rmi -f ll/gamesvr-csgo-freeplay;
+	#docker rmi -f ll/gamesvr-csgo-tourney;
+	#docker rmi -f ll/gamesvr-hl2dm;
+	#docker rmi -f ll/gamesvr-tf2;
+	#docker rmi -f ll/gamesvr-tf2-blindfrag;
+	#docker rmi -f ll/gamesvr-tf2-download;
+	#docker rmi -f ll/gamesvr-tf2-freeplay;
+	echo ""
 } &> /dev/null;
 echo ".done.";
 
@@ -195,7 +229,9 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 	section_head "ubuntu:latest";
 	
 	echo "Pulling ubuntu:latest from Docker hub";
-	docker pull ubuntu:latest
+	if [ $selected_rebuild_level == 0 ] ; then
+		docker pull ubuntu:latest
+	fi
 
 	section_end;
 
@@ -210,8 +246,10 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 	# Ensure any expected context directories exists
 	{ mkdir -p "$script_directory/gamesvr/context_steamcmd"; } &> /dev/null; 
 
-	docker build -t ll/gamesvr ./gamesvr/;
-	
+	if [ $selected_rebuild_level == 1 ] ; then
+		docker build -t ll/gamesvr ./gamesvr/;
+	fi
+
 	section_end;
 
 
@@ -238,8 +276,10 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 			-validate
 
 	fi
-
-	docker build -t ll/gamesvr-csgo ./gamesvr-csgo/;
+	
+	if [ $selected_rebuild_level == 2 ] ; then
+		docker build -t ll/gamesvr-csgo ./gamesvr-csgo/;
+	fi
 
 	section_end;
 
@@ -251,8 +291,11 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #  /____/                                                     /____/                              /_/            /____/
 #
 	section_head "Building ll/gamesvr-csgo-freeplay";
-	
-	docker build -t ll/gamesvr-csgo-freeplay ./gamesvr-csgo-freeplay/
+
+	if [ $selected_rebuild_level == 3 ] ; then
+		docker build -t ll/gamesvr-csgo-freeplay ./gamesvr-csgo-freeplay/
+	fi
+
 
 	section_end;
 
@@ -266,7 +309,9 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #
 	section_head "Building ll/gamesvr-csgo-tourney";
 	
-	docker build -t ll/gamesvr-csgo-tourney ./gamesvr-csgo-tourney/
+	if [ $selected_rebuild_level == 3 ] ; then
+		docker build -t ll/gamesvr-csgo-tourney ./gamesvr-csgo-tourney/
+	fi
 	
 	section_end;
 
@@ -296,7 +341,9 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 
 	fi
 
-	docker build -t ll/gamesvr-hl2dm ./gamesvr-hl2dm/
+	if [ $selected_rebuild_level == 2 ] ; then
+		docker build -t ll/gamesvr-hl2dm ./gamesvr-hl2dm/
+	fi
 
 	section_end;
 
@@ -310,7 +357,9 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #
 	section_head "Building ll/gamesvr-hl2dm-freeplay";
 
-	docker build -t ll/gamesvr-hl2dm-freeplay ./gamesvr-hl2dm-freeplay/
+	if [ $selected_rebuild_level == 3 ] ; then
+		docker build -t ll/gamesvr-hl2dm-freeplay ./gamesvr-hl2dm-freeplay/
+	fi
 
 	section_end;
 
@@ -339,7 +388,9 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 
 	fi
 
-	docker build -t ll/gamesvr-tf2 ./gamesvr-tf2/
+	if [ $selected_rebuild_level == 2 ] ; then
+		docker build -t ll/gamesvr-tf2 ./gamesvr-tf2/
+	fi
 
 	echo "Not yet implemented.";
 	section_end;
@@ -354,7 +405,9 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #
 	section_head "";
 	
-	docker build -t ll/gamesvr-tf2-blindfrag ./gamesvr-tf2-blindfrag/
+	if [ $selected_rebuild_level == 3 ] ; then
+		docker build -t ll/gamesvr-tf2-blindfrag ./gamesvr-tf2-blindfrag/
+	fi
 	
 	section_end;
 	
@@ -367,20 +420,22 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #                                         /_/            /____/
 	section_head "";
 	
-	docker build -t ll/gamesvr-tf2-freeplay ./gamesvr-tf2-freeplay/
+	if [ $selected_rebuild_level == 3 ] ; then
+		docker build -t ll/gamesvr-tf2-freeplay ./gamesvr-tf2-freeplay/
+	fi
 	
 	section_end;
 
 
 
-#
-#     _____          __    ____          __  __                __           __               
-#    / ___/  ___    / /   / __/         / / / /    ____   ____/ /  ____ _  / /_  ___    _____
-#    \__ \  / _ \  / /   / /_          / / / /    / __ \ / __  /  / __ `/ / __/ / _ \  / ___/
-#   ___/ / /  __/ / /   / __/         / /_/ /    / /_/ // /_/ /  / /_/ / / /_  /  __/ / /    
-#  /____/  \___/ /_/   /_/            \____/    / .___/ \__,_/   \__,_/  \__/  \___/ /_/     
-#                                              /_/                                           
-#
+#                                                                                              #
+#     _____          __    ____          __  __                __           __                 #
+#    / ___/  ___    / /   / __/         / / / /    ____   ____/ /  ____ _  / /_  ___    _____  #
+#    \__ \  / _ \  / /   / /_          / / / /    / __ \ / __  /  / __ `/ / __/ / _ \  / ___/  #
+#   ___/ / /  __/ / /   / __/         / /_/ /    / /_/ // /_/ /  / /_/ / / /_  /  __/ / /      # 
+#  /____/  \___/ /_/   /_/            \____/    / .___/ \__,_/   \__,_/  \__/  \___/ /_/       #
+#                                              /_/                                             #
+#                                                                                              #
 tput smul;
 echo -e "\n\nUPDATING SELF FROM GITHUB";
 tput sgr0;
