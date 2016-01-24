@@ -15,7 +15,7 @@ RUN cd `mktemp -d` && \
 	
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-sourcemod.linux"
 RUN cd `mktemp -d` && \
-	git clone https://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux&& \
+	git clone https://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
