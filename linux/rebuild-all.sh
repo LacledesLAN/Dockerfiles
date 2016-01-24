@@ -304,6 +304,12 @@ fi
 if [ $selected_rebuild_level -le 3 ] ; then
 
 	section_head "Building ll/gamesvr-csgo-freeplay";
+	
+	# Ensure any expected context directories exists
+	mkdir -p "$script_directory/gamesvr-csgo/context_github_gamesvr-srcds-metamod.linux";
+	mkdir -p "$script_directory/gamesvr-csgo/context_github_gamesvr-srcds-sourcemod.linux";
+	mkdir -p "$script_directory/gamesvr-csgo/context_github_gamesvr-srcds-csgo";
+	mkdir -p "$script_directory/gamesvr-csgo/context_github_gamesvr-srcds-csgo-freeplay";
 
 	docker build -t ll/gamesvr-csgo-freeplay ./gamesvr-csgo-freeplay/;
 
@@ -322,6 +328,12 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
 	section_head "Building ll/gamesvr-csgo-tourney";
 
+	# Ensure any expected context directories exists
+	mkdir -p "$script_directory/gamesvr-csgo/context_github_gamesvr-srcds-metamod.linux";
+	mkdir -p "$script_directory/gamesvr-csgo/context_github_gamesvr-srcds-sourcemod.linux";
+	mkdir -p "$script_directory/gamesvr-csgo/context_github_gamesvr-srcds-csgo";
+	mkdir -p "$script_directory/gamesvr-csgo/context_github_gamesvr-srcds-csgo-tourney";
+	
 	docker build -t ll/gamesvr-csgo-tourney ./gamesvr-csgo-tourney/;
 	
 	section_end;
