@@ -5,17 +5,25 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "LL Team Fortress 2 Blind Frag Server "
 
-#Get and stage from gamesvr GitHub Repo "gamesvr-srcds.linux"
+#Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
 RUN cd `mktemp -d` && \
-	git clone https://github.com/LacledesLAN/gamesvr-srcds.linux && \
+	git clone git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gameservers/tf2/
+	cp -r * /gameservers/tf2/tf/
+
+#Get and stage from gamesvr GitHub Repo "gamesvr-srcds-sourcemod.linux"
+RUN cd `mktemp -d` && \
+	git clone git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux && \
+	rm -rf *.git && \
+	cd `ls -A | head -1` && \
+	rm -f *.md && \
+	cp -r * /gameservers/tf2/tf/
 
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-tf2"
 RUN cd `mktemp -d` && \
-	git clone https://github.com/LacledesLAN/gamesvr-srcds-tf2 && \
+	git clone git://github.com/LacledesLAN/gamesvr-srcds-tf2 && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
@@ -23,7 +31,7 @@ RUN cd `mktemp -d` && \
 
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-tf2-blindfrag"
 RUN cd `mktemp -d` && \
-	git clone https://github.com/LacledesLAN/gamesvr-srcds-tf2-blindfrag && \
+	git clone git://github.com/LacledesLAN/gamesvr-srcds-tf2-blindfrag && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
