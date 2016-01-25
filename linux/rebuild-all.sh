@@ -152,17 +152,7 @@ done
 ####======================================================================================================####
 ##############################################################################################################
 
-if [ $script_skip_update != true ] ; then
-	echo "here";
-	echo "$script_fullpath";
-	sleep 2;
 
-	find $script_directory -name \*dockerfile* -type f -delete	#can be removed once BEan's machines are clean of all instances of improperly-cased "dockerfile"
-	update_script;
-	
-	#. "$script_fullpath" -z;		#Recursively re-run script; disable auto updating to prevent endless loop
-	#exit 0;
-fi
 
 draw_horizontal_rule;
 echo "   LL Docker Image Management Tool.  Start time: $(date)";
@@ -198,6 +188,7 @@ echo "    1) Rebuild Starting with the Category Level (Level 1+)";
 echo "    2) Rebuild Starting with the Apllication/Content Level (Level 2+)";
 echo "    3) Rebuild Starting with the Configuration Level (Level 3)";
 echo "    "
+echo "    u) Update script and exit "
 echo "    x) Exit without doing anything"
 
 declare selected_rebuild_level=""
@@ -213,6 +204,10 @@ until [ ! -z $selected_rebuild_level ]; do
 		selected_rebuild_level="2";
 	elif [ $x == 3 ] ; then
 		selected_rebuild_level="3";
+	elif [ $x == "u" ] ; then
+		selected_rebuild_level="99";
+	elif [ $x == "U" ] ; then
+		selected_rebuild_level="99";
 	elif [ $x == "x" ] ; then
 		echo -e "\n\nAborting...\n"
 		exit;
@@ -528,11 +523,24 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
 fi
 
+if [ $script_skip_update != true ] ; then
+	echo "Updaing self...";
+	find $script_directory -name \*dockerfile* -type f -delete	#can be removed once BEan's machines are clean of all instances of improperly-cased "dockerfile"
+	update_script;
+	
+	#. "$script_fullpath" -z;		#Recursively re-run script; disable auto updating to prevent endless loop
+	#exit 0;
+fi
+
+
 
 tput smul;
 echo -e "\n\n\n\n\nFINISHED\n";
 
 tput sgr0;
+
+
+
 
 
 echo "";
