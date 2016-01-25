@@ -20,7 +20,6 @@ readonly debug_contextual_show_ftp=true;
 readonly debug_contextual_show_github=true;
 readonly debug_contextual_show_steammcd=true;
 
-readonly setting_auto_update=true;					# Set to false during development to prevent overwrite.
 readonly setting_contextualize_steam=true;			# If steam apps will be added via docker build context.
 
 
@@ -97,7 +96,7 @@ function spinner() {
 
 function update_script() {
 	echo "";
-	echo "Updating self from GitHUB...";
+	echo -n "Updating self from GitHUB..";
 	
 	cd `mktemp -d`;
 	git clone https://github.com/LacledesLAN/Dockerfiles;
@@ -106,6 +105,8 @@ function update_script() {
 	rm -f *.md;
 	cd linux
 	cp -r * "$script_directory"
+	
+	echo ".done."
 }
 
 function warning_message() {
@@ -148,21 +149,17 @@ done
 ##############################################################################################################
 
 clear;
+
+if [ $script_skip_update != true ] ; then
+	find $script_directory -name \*dockerfile* -type f -delete	#can be removed once BEan's machines are clean of all instances of improperly-cased "dockerfile"
+	update_script;
+	bash "$script_fullpath" -z;		#Recursively re-run script; disable auto updating to prevent endless loop
+	exit 0;
+fi
+
 draw_horizontal_rule;
 echo "   LL Docker Image Management Tool.  Start time: $(date)";
 draw_horizontal_rule;
-
-if [ $script_skip_update != true ] ; then
-	if [ $setting_auto_update != true ] ; then
-		warning_message "Auto Update is disabled" "Script updates from github must be preformed manually";
-		draw_horizontal_rule;
-	else
-		find $script_directory -name \*dockerfile* -type f -delete	#can be removed once BEan's machines are clean of all instances of improperly-cased "dockerfile"
-		update_script;
-		bash "$script_fullpath" -z;		#run script again
-		exit 0;
-	fi
-fi
 
 tput setaf 3; tput bold;
 echo "                                                                                         ";
@@ -542,5 +539,4 @@ draw_horizontal_rule;
 echo "   LL Docker Image Management Tool.  Stop time: $(date)";
 draw_horizontal_rule;
 echo "";
-
 
