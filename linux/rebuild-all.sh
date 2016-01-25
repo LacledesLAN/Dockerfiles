@@ -156,7 +156,7 @@ clear;
 
 if [ $script_skip_update != true ] ; then
 	echo "here";
-	echo "$script_directory";
+	echo "$script_fullpath";
 	sleep 2;
 
 	find $script_directory -name \*dockerfile* -type f -delete	#can be removed once BEan's machines are clean of all instances of improperly-cased "dockerfile"
