@@ -7,7 +7,7 @@ ENV SERVER_NAME "LL Half-Life 2 Deathmatch Freeplay"
 
 #Get and stage from gamesvr GitHub Repo " gamesvr-srcds-metamod.linux"
 RUN cd `mktemp -d` && \
-	git clone git://github.com/LacledesLAN/ gamesvr-srcds-metamod.linux && \
+	git clone git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
