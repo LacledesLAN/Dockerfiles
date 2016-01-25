@@ -155,10 +155,15 @@ done
 clear;
 
 if [ $script_skip_update != true ] ; then
+	echo "here";
+	echo $
+	sleep 2;
+
 	find $script_directory -name \*dockerfile* -type f -delete	#can be removed once BEan's machines are clean of all instances of improperly-cased "dockerfile"
 	update_script;
-	. "$script_fullpath" -z;		#Recursively re-run script; disable auto updating to prevent endless loop
-	#exit 0;
+	
+	sh "$script_fullpath" -z;		#Recursively re-run script; disable auto updating to prevent endless loop
+	exit 0;
 fi
 
 draw_horizontal_rule;
