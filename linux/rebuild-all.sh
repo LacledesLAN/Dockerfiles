@@ -184,8 +184,6 @@ tput sgr0; tput dim; tput setaf 6;
 echo "                                             Build: $script_version";
 tput sgr0;
 
-echo "TEST";
-
 #==============
 #= MENU
 #==============
@@ -317,6 +315,8 @@ fi
 if [ $selected_rebuild_level -le 1 ] ; then
 
 	section_head "Building ll/gamesvr";
+	
+	
 
 	# Ensure any expected context directories exists
 	{ mkdir -p "$script_directory/gamesvr/context_steamcmd"; } &> /dev/null; 
