@@ -17,9 +17,12 @@
 #=============================================================================================================
 readonly debug_show_docker=true;
 readonly debug_contextual_show_ftp=true;
+readonly debug_contextual_show_github=true;
 readonly debug_contextual_show_steammcd=true;
 
-readonly setting_contextualize_steam=true;		# If steam apps will be added via docker build context.
+readonly setting_auto_update=true;					# Set to false during development to prevent overwrite.
+readonly setting_contextualize_steam=true;			# If steam apps will be added via docker build context.
+
 
 #=============================================================================================================
 #===  VALIDATE HOST ENVIRONMENT REQUIREMENTS =================================================================
@@ -42,6 +45,8 @@ tput sgr0;
 #===  RUNTIME VARIABLES  =====================================================================================
 #=============================================================================================================
 declare rebuild_level=0;
+declare script_skip_update=false;
+
 readonly script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 readonly script_filename="$(basename "$(test -L "$0" && readlink "$0" || echo "$0")")";
 readonly script_fullpath="$script_directory/$script_filename";
@@ -72,19 +77,68 @@ function section_end() {
 	tput sgr0;
 }
 
-spinner() {
+function read_key() {
+	read -n 1 x; while read -n 1 -t .1 y; do x="$x$y"; done
+}
+
+function spinner() {
     local pid=$1
     local delay=0.75
     local spinstr='|/-\'
     while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
         local temp=${spinstr#?}
-        printf " [%c]  " "$spinstr"
+        printf " [%c]  " "$spinstr";
         local spinstr=$temp${spinstr%"$temp"}
-        sleep $delay
-        printf "\b\b\b\b\b\b"
+        sleep $delay;
+        printf "\b\b\b\b\b\b";
     done
-    printf "    \b\b\b\b"
+    printf "    \b\b\b\b";
 }
+
+function update_script() {
+	echo "";
+	echo "Updating self from GitHUB...";
+	
+	cd `mktemp -d`;
+	git clone https://github.com/LacledesLAN/Dockerfiles;
+	rm -rf *.git;
+	cd `ls -A | head -1`;
+	rm -f *.md;
+	cd linux
+	cp -r * "$script_directory"
+}
+
+function warning_message() {
+	tput setaf 1; tput bold;
+	echo ""
+	echo "      .-------,      !!! WARNING !!!"
+	echo "    .'         '.  "
+	echo "  .'  _ ___ _ __ '.      $1"
+	echo "  |  (_' | / \|_) |"
+	echo "  |  ,_) | \_/|   |      $2"
+	echo "  '.             .'"
+	echo "    '.         .'  "
+	echo "      '-------'    "
+	tput sgr0;
+	echo "  Press any key to continue..."
+	
+	read_key;
+}
+
+
+#=============================================================================================================
+#===  PROCESS LINE ARGUMENTS  ================================================================================
+#=============================================================================================================
+while getopts ":z" opt; do
+  case $opt in
+    z)
+      script_skip_update=true;
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      ;;
+  esac
+done
 
 
 ##############################################################################################################
@@ -97,6 +151,18 @@ clear;
 draw_horizontal_rule;
 echo "   LL Docker Image Management Tool.  Start time: $(date)";
 draw_horizontal_rule;
+
+if [ $script_skip_update != true ] ; then
+	if [ $setting_auto_update != true ] ; then
+		warning_message "Auto Update is disabled" "Script updates from github must be preformed manually";
+		draw_horizontal_rule;
+	else
+		find $script_directory -name \*dockerfile* -type f -delete	#can be removed once BEan's machines are clean of all instances of improperly-cased "dockerfile"
+		update_script;
+		bash "$script_fullpath" -z;		#run script again
+		exit 0;
+	fi
+fi
 
 tput setaf 3; tput bold;
 echo "                                                                                         ";
@@ -124,12 +190,11 @@ tput sgr0;
 echo "    What do you want to rebuild?"
 echo "    "
 echo "    0) Rebuild Everything";
-echo "    1) Rebuild Category and up (Level 1+)";
-echo "    2) Rebuild Apllication/Content and up (Level 2+)";
-echo "    3) Rebuild Configurations (Level 3)";
+echo "    1) Rebuild Starting with the Category Level (Level 1+)";
+echo "    2) Rebuild Starting with the Apllication/Content Level (Level 2+)";
+echo "    3) Rebuild Starting with the Configuration Level (Level 3)";
 echo "    "
-echo "    U) Update this script then exit."
-echo "    "
+echo "    x) Exit without doing anything"
 
 declare selected_rebuild_level=""
 until [ ! -z $selected_rebuild_level ]; do
@@ -150,10 +215,6 @@ until [ ! -z $selected_rebuild_level ]; do
 	elif [ $x == "X" ] ; then
 		echo -e "\n\nAborting...\n"
 		exit;
-	elif [ $x == "u" ] ; then
-		selected_rebuild_level="99";
-	elif [ $x == "U" ] ; then
-		selected_rebuild_level="99";
 	fi
 done
 
@@ -467,15 +528,6 @@ fi
 tput smul;
 echo -e "\n\nUPDATING SELF FROM GITHUB";
 tput sgr0;
-
-cd `mktemp -d`;
-git clone https://github.com/LacledesLAN/Dockerfiles;
-rm -rf *.git;
-cd `ls -A | head -1`;
-rm -f *.md;
-cd linux
-cp -r * "$script_directory"
-
 
 
 tput smul;
