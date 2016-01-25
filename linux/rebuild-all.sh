@@ -3,6 +3,9 @@
 #
 #	FILE:	rebuild-all.sh
 #
+#	LINE ARUGMENTS:
+#					-z		Skip auto-update of self
+#
 #	DESCRIPTION:	Maintain the LL Docker Image repository by building (and rebuilding) Docker images from
 #					origin repositories and sources.
 #
@@ -95,8 +98,9 @@ function spinner() {
 }
 
 function update_script() {
-	echo "";
-	echo -n "Updating self from GitHUB..";
+	tput smul;
+	echo -e -n "\n\nUPDATING SELF FROM GITHUB...";
+	tput sgr0;
 	
 	cd `mktemp -d`;
 	git clone https://github.com/LacledesLAN/Dockerfiles;
@@ -179,6 +183,8 @@ echo "   ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════
 tput sgr0; tput dim; tput setaf 6;
 echo "                                             Build: $script_version";
 tput sgr0;
+
+echo "TEST";
 
 #==============
 #= MENU
@@ -513,18 +519,6 @@ if [ $selected_rebuild_level -le 3 ] ; then
 	section_end;
 
 fi
-
-#                                                                                              #
-#     _____          __    ____          __  __                __           __                 #
-#    / ___/  ___    / /   / __/         / / / /    ____   ____/ /  ____ _  / /_  ___    _____  #
-#    \__ \  / _ \  / /   / /_          / / / /    / __ \ / __  /  / __ `/ / __/ / _ \  / ___/  #
-#   ___/ / /  __/ / /   / __/         / /_/ /    / /_/ // /_/ /  / /_/ / / /_  /  __/ / /      # 
-#  /____/  \___/ /_/   /_/            \____/    / .___/ \__,_/   \__,_/  \__/  \___/ /_/       #
-#                                              /_/                                             #
-#                                                                                              #
-tput smul;
-echo -e "\n\nUPDATING SELF FROM GITHUB";
-tput sgr0;
 
 
 tput smul;
