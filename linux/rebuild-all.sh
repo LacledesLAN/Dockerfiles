@@ -124,9 +124,9 @@ tput sgr0;
 echo "    What do you want to rebuild?"
 echo "    "
 echo "    0) Rebuild Everything";
-echo "    1) Rebuild Category (Level 1)";
-echo "    2) Rebuild Apllication/Content (Level 2)";
-echo "    3) Rebuild Configuration (Level 3)";
+echo "    1) Rebuild Category and up (Level 1+)";
+echo "    2) Rebuild Apllication/Content and up (Level 2+)";
+echo "    3) Rebuild Configurations (Level 3)";
 echo "    "
 echo "    U) Update this script then exit."
 echo "    "
