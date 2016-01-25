@@ -27,7 +27,7 @@ RUN cd `mktemp -d` && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gameservers/tf2/tf/
+	cp -r * /gameservers/tf2/
 
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-tf2-freeplay"
 RUN cd `mktemp -d` && \
@@ -35,7 +35,7 @@ RUN cd `mktemp -d` && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gameservers/tf2/tf/
+	cp -r * /gameservers/tf2/
 
 # Clean out tmp directory
 RUN rm -fr /tmp/* `#Clean out temp directory to save space#`
