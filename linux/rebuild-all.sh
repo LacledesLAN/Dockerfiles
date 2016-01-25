@@ -154,6 +154,10 @@ done
 
 clear;
 
+echo "There"
+echo "$script_fullpath";
+
+
 if [ $script_skip_update != true ] ; then
 	echo "here";
 	echo "$script_fullpath";
