@@ -58,6 +58,33 @@ readonly script_version=$(stat -c %y "$script_fullpath");
 #=============================================================================================================
 #===  RUNTIME FUNCTIONS  =====================================================================================
 #=============================================================================================================
+
+function docker_remove_image() {
+	command -v docker > /dev/null 2>&1 || { echo >&2 "Package docker required.  Aborting."; return 999; }
+
+	image_count=$(docker images $1 | grep -o "$1" | wc -l);
+
+	if [ $image_count -ge 1 ] ; then
+	
+		if [ $image_count -gt 1 ] ; then
+			echo -n "Deleting #$1 existing images and any related containers..";
+		else
+			echo -n "Deleting existing image and any related containers..";
+		fi;
+
+		# Remove Derived containers
+		docker ps -a | grep $1 | awk '{print $1}' | xargs docker rm
+		
+		# Remove image(s)
+		docker rmi -f $1
+
+	else
+		echo -n "No existing images to remove.";
+	fi
+	
+	echo ".done.";
+}
+
 function draw_horizontal_rule() {
 	printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =;
 	return 0;
@@ -232,7 +259,7 @@ if [ "$setting_contextualize_steam" = true ] ; then
 	mkdir -p "$script_directory/gamesvr/context_steamcmd";
 	echo ".good.";
 	
-	echo -e -n "\tChecking SteamCMD.."
+	echo -e -n "\tChecking SteamCMD..";
 	
 	{ bash "$script_directory/gamesvr/context_steamcmd/"steamcmd.sh +quit; }  &> /dev/null;
 
@@ -268,12 +295,14 @@ echo -n "Destroying all LL docker containers..";
 } &> /dev/null;
 echo ".done.";
 
-echo -n "Destroying all LL docker images..";
+echo -n "Destroying all docker dangiling images..";
 {
-	#docker rmi -f $(docker images -q);   #todo: add filter for ll/*
-	echo ""
+	docker rmi $(docker images -qf "dangling=true")
 } &> /dev/null;
 echo ".done.";
+
+#DELETE ALL DOCKER IMAGES
+#docker rmi $(docker images -q)
 
 tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 
@@ -305,12 +334,12 @@ if [ $selected_rebuild_level -le 1 ] ; then
 
 	section_head "Building ll/gamesvr";
 	
-	docker rmi -f ll/gamesvr;
+	docker_remove_image "ll/gamesvr";
 
 	# Ensure any expected context directories exists
 	{ mkdir -p "$script_directory/gamesvr/context_steamcmd"; } &> /dev/null; 
 
-		docker build -t ll/gamesvr ./gamesvr/;
+	docker build -t ll/gamesvr ./gamesvr/;
 
 	section_end;
 
@@ -327,7 +356,7 @@ if [ $selected_rebuild_level -le 2 ] ; then
 
 	section_head "Building ll/gamesvr-csgo";
 	
-	docker rmi -f ll/gamesvr-csgo;
+	docker_remove_image "ll/gamesvr-csgo";
 	
 	# Ensure any expected context directories exists
 	mkdir -p "$script_directory/gamesvr-csgo/context_steamapp";
@@ -360,7 +389,7 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
 	section_head "Building ll/gamesvr-csgo-freeplay";
 	
-	docker rmi -f ll/gamesvr-csgo-freeplay;
+	docker_remove_image "ll/gamesvr-csgo-freeplay";
 	
 	# Ensure any expected context directories exists
 	mkdir -p "$script_directory/gamesvr-csgo/context_github_gamesvr-srcds-metamod.linux";
@@ -385,7 +414,7 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
 	section_head "Building ll/gamesvr-csgo-tourney";
 	
-	docker rmi -f ll/gamesvr-csgo-tourney;
+	docker_remove_image "ll/gamesvr-csgo-tourney";
 
 	# Ensure any expected context directories exists
 	mkdir -p "$script_directory/gamesvr-csgo/context_github_gamesvr-srcds-metamod.linux";
@@ -411,7 +440,7 @@ if [ $selected_rebuild_level -le 2 ] ; then
 
 	section_head "Building ll/gamesvr-hl2dm";
 	
-	docker rmi -f ll/gamesvr-hl2dm;
+	docker_remove_image "ll/gamesvr-hl2dm";
 	
 	# Ensure any expected context directories exists
 	mkdir -p "$script_directory/gamesvr-hl2dm/context_steamapp";
@@ -445,6 +474,8 @@ if [ $selected_rebuild_level -le 3 ] ; then
 	
 	section_head "Building ll/gamesvr-hl2dm-freeplay";
 	
+	docker_remove_image "ll/gamesvr-hl2dm-freeplay";
+	
 	docker build -t ll/gamesvr-hl2dm-freeplay ./gamesvr-hl2dm-freeplay/
 
 	section_end;
@@ -459,9 +490,10 @@ fi
 #
 
 if [ $selected_rebuild_level -le 2 ] ; then
+
 	section_head "Building ll/gamesvr-tf2";
 	
-	docker rmi -f ll/gamesvr-tf2;
+	docker_remove_image "ll/gamesvr-tf2";
 	
 	# Ensure any expected context directories exists
 	mkdir -p "$script_directory/gamesvr-tf2/context_steamapp";
@@ -495,7 +527,7 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
 	section_head "Building ll/gamesvr-tf2-blindfrag";
 	
-	docker rmi -f ll/gamesvr-tf2-blindfrag;
+	docker_remove_image "ll/gamesvr-tf2-blindfrag";
 	
 	docker build -t ll/gamesvr-tf2-blindfrag ./gamesvr-tf2-blindfrag/
 	
@@ -515,7 +547,7 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
 	section_head "Building ll/gamesvr-tf2-freeplay";
 	
-	docker rmi -f ll/gamesvr-tf2-freeplay;
+	docker_remove_image "ll/gamesvr-tf2-freeplay";
 	
 	docker build -t ll/gamesvr-tf2-freeplay ./gamesvr-tf2-freeplay/
 
