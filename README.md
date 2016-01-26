@@ -40,31 +40,21 @@ The Configuration Level should configuration files along with any other files th
 Images at this level are derived from an "Application Level" docker image.
 
 
-Maintainers
-===========
-
-| Name         | GitHub Profile | Twitter       |
-|--------------|----------------|---------------|
-| James Dudley | jamesd-udley   | @jamesd_udley |
-|              |                |               |
-
-
-
+Official Directory Structure Reference 
+======================================
 ```
-project
-│   README.md
-│   file001.txt    
-│
-└───folder1
-    │   file011.txt
-    │   file012.txt
-    │
-    ├───subfolder1
-    │   │   file111.txt
-    │   │   file112.txt
-    │   │   ...
-    │
-    └───folder2
-    │   file021.txt
-    │   file022.txt
+(parent)
+└───gameservers
+|   ├───_util
+|   |   └───steamcmd
+|   ├───csgo
+|   ├───hl2dm
+|   ├───tf2
+|   │   │   file111.txt
+|   │   │   ...
+|   │
+|   └───folder2
+|   │   file021.txt
+|   │   file022.txt
+└───webservers
 ```
