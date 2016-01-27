@@ -14,7 +14,7 @@ Official Directory Structure Reference
 Official Server Build Structure
 ===============================
 ```
-basesvr
+(ubuntu:latest)
 └───gamesvr
 |   └───gamesvr-csgo
 |   |   └───gamesvr-csgo-freeplay
