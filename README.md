@@ -1,3 +1,39 @@
+Official Directory Structure Reference 
+======================================
+```
+(parent)
+└───gameservers
+|   ├───_util
+|   |   └───steamcmd
+|   ├───csgo
+|   ├───hl2dm
+|   ├───tf2
+└───webservers
+```
+
+Official Server Build Structure
+===============================
+```
+basesvr
+└───gamesvr
+|   └───gamesvr-csgo
+|   |   └───gamesvr-csgo-freeplay
+|   |   └───gamesvr-csgo-tourney
+|   └───gamesvr-hl2dm
+|   |   └───gamesvr-hl2dm-freeplay
+|   └───gamesvr-tf2
+|       └───gamesvr-tf2-blindfrag
+|       └───gamesvr-tf2-freeplay
+└───websvr
+    └───websvr-contet.lan
+    └───websvr-kiosk.lan
+    └───websvr-lacledes.lan
+```
+
+
+
+
+
 Dockerfiles Collection
 ======================
 Library of Dockerfiles for all Dockerized LL Servers
@@ -40,21 +76,4 @@ The Configuration Level should configuration files along with any other files th
 Images at this level are derived from an "Application Level" docker image.
 
 
-Official Directory Structure Reference 
-======================================
-```
-(parent)
-└───gameservers
-|   ├───_util
-|   |   └───steamcmd
-|   ├───csgo
-|   ├───hl2dm
-|   ├───tf2
-|   │   │   file111.txt
-|   │   │   ...
-|   │
-|   └───folder2
-|   │   file021.txt
-|   │   file022.txt
-└───webservers
-```
+
