@@ -256,25 +256,25 @@ if [ "$setting_contextualize_steam" = true ] ; then
 	echo -e "\tSteam apps will be added through docker build context: reducing bandwidth at the cost of disk space. ";
 
 	echo -e -n "\tVerifying directory structure...";
-	mkdir -p "$script_directory/gamesvr/context_steamcmd";
+	mkdir -p "$script_directory/gamesvr/_util/steamcmd";
 	echo ".good.";
 	
 	echo -e -n "\tChecking SteamCMD..";
 	
-	{ bash "$script_directory/gamesvr/context_steamcmd/"steamcmd.sh +quit; }  &> /dev/null;
+	{ bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh +quit; }  &> /dev/null;
 
 	if [ $? -ne 0 ] ; then
 		echo -n ".downloading.."
 		
 		#failed to run SteamCMD.  Download
 		{
-			rm -rf "$script_directory/gamesvr/context_steamcmd/*";
+			rm -rf "$script_directory/gamesvr/_util/steamcmd/*";
 			
 			wget -qO- -r --tries=10 --waitretry=20 --output-document=tmp.tar.gz http://media.steampowered.com/installer/steamcmd_linux.tar.gz;
-			tar -xvzf tmp.tar.gz -C "$script_directory/gamesvr/context_steamcmd";
+			tar -xvzf tmp.tar.gz -C "$script_directory/gamesvr/_util/steamcmd";
 			rm tmp.tar.gz
 			
-			bash "$script_directory/gamesvr/context_steamcmd/"steamcmd.sh +quit;
+			bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh +quit;
 		} &> /dev/null;
 	fi
 	
@@ -318,7 +318,7 @@ if [ $selected_rebuild_level -le 0 ] ; then
 	
 	echo "Pulling ubuntu:latest from Docker hub";
 	
-		docker pull ubuntu:latest
+	docker pull ubuntu:latest
 	
 	section_end;
 fi
@@ -337,13 +337,15 @@ if [ $selected_rebuild_level -le 1 ] ; then
 	docker_remove_image "ll/gamesvr";
 
 	# Ensure any expected context directories exists
-	{ mkdir -p "$script_directory/gamesvr/context_steamcmd"; } &> /dev/null; 
+	{ mkdir -p "$script_directory/gamesvr/_util/steamcmd"; } &> /dev/null; 
 
 	docker build -t ll/gamesvr ./gamesvr/;
 
 	section_end;
 
 fi
+
+exit
 
 
 #     ____ _____ _____ ___  ___  ______   _______      ______________ _____
@@ -570,8 +572,6 @@ tput smul;
 echo -e "\n\n\n\n\nFINISHED\n";
 
 tput sgr0;
-
-
 
 
 
