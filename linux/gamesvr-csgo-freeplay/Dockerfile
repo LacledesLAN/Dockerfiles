@@ -12,7 +12,7 @@ RUN cd `mktemp -d` && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
 	cp -r * /gameservers/csgo/csgo/
-	
+
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-sourcemod.linux"
 RUN cd `mktemp -d` && \
 	git clone git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux && \
@@ -28,8 +28,8 @@ RUN cd `mktemp -d` && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
 	cp -r * /gameservers/csgo/
-	
-#Get and stage from gamesvr GitHub Repo "gamesvr-srcds-free"	
+
+#Get and stage from gamesvr GitHub Repo "gamesvr-srcds-freeplay"	
 RUN cd `mktemp -d` && \
 	git clone git://github.com/LacledesLAN/gamesvr-srcds-csgo-freeplay && \
 	rm -rf *.git && \

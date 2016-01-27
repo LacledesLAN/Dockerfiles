@@ -60,7 +60,7 @@ readonly script_version=$(stat -c %y "$script_fullpath");
 #=============================================================================================================
 
 function docker_remove_image() {
-	command -v docker > /dev/null 2>&1 || { echo >&2 "Package docker required.  Aborting."; return 999; }
+	command -v docker > /dev/null 2>&1 || { echo >&2 "Docker is required.  Aborting."; return 999; }
 
 	image_count=$(docker images $1 | grep -o "$1" | wc -l);
 
@@ -178,9 +178,6 @@ done
 ####  SHELL SCRIPT RUNTIME  ==============================================================================####
 ####======================================================================================================####
 ##############################################################################################################
-
-
-
 draw_horizontal_rule;
 echo "   LL Docker Image Management Tool.  Start time: $(date)";
 draw_horizontal_rule;
@@ -342,10 +339,7 @@ if [ $selected_rebuild_level -le 1 ] ; then
 	docker build -t ll/gamesvr ./gamesvr/;
 
 	section_end;
-
 fi
-
-exit
 
 
 #     ____ _____ _____ ___  ___  ______   _______      ______________ _____
@@ -359,16 +353,13 @@ if [ $selected_rebuild_level -le 2 ] ; then
 	section_head "Building ll/gamesvr-csgo";
 	
 	docker_remove_image "ll/gamesvr-csgo";
-	
-	# Ensure any expected context directories exists
-	mkdir -p "$script_directory/gamesvr-csgo/context_steamapp";
 
 	if [ "$setting_contextualize_steam" = true ] ; then
 		echo "CONTEXTUALIZE_STEAM: Fetching CS:GO Files.."
 		
-		bash "$script_directory/gamesvr/context_steamcmd/"steamcmd.sh \
+		bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
 			+login anonymous \
-			+force_install_dir "$script_directory/gamesvr-csgo/context_steamapp/" \
+			+force_install_dir "$script_directory/gamesvr-csgo/" \
 			+app_update 740 \
 			+quit \
 			-validate
@@ -392,12 +383,6 @@ if [ $selected_rebuild_level -le 3 ] ; then
 	section_head "Building ll/gamesvr-csgo-freeplay";
 	
 	docker_remove_image "ll/gamesvr-csgo-freeplay";
-	
-	# Ensure any expected context directories exists
-	mkdir -p "$script_directory/gamesvr-csgo/context_github_gamesvr-srcds-metamod.linux";
-	mkdir -p "$script_directory/gamesvr-csgo/context_github_gamesvr-srcds-sourcemod.linux";
-	mkdir -p "$script_directory/gamesvr-csgo/context_github_gamesvr-srcds-csgo";
-	mkdir -p "$script_directory/gamesvr-csgo/context_github_gamesvr-srcds-csgo-freeplay";
 
 	docker build -t ll/gamesvr-csgo-freeplay ./gamesvr-csgo-freeplay/;
 
@@ -417,12 +402,6 @@ if [ $selected_rebuild_level -le 3 ] ; then
 	section_head "Building ll/gamesvr-csgo-tourney";
 	
 	docker_remove_image "ll/gamesvr-csgo-tourney";
-
-	# Ensure any expected context directories exists
-	mkdir -p "$script_directory/gamesvr-csgo/context_github_gamesvr-srcds-metamod.linux";
-	mkdir -p "$script_directory/gamesvr-csgo/context_github_gamesvr-srcds-sourcemod.linux";
-	mkdir -p "$script_directory/gamesvr-csgo/context_github_gamesvr-srcds-csgo";
-	mkdir -p "$script_directory/gamesvr-csgo/context_github_gamesvr-srcds-csgo-tourney";
 	
 	docker build -t ll/gamesvr-csgo-tourney ./gamesvr-csgo-tourney/;
 	
@@ -443,26 +422,25 @@ if [ $selected_rebuild_level -le 2 ] ; then
 	section_head "Building ll/gamesvr-hl2dm";
 	
 	docker_remove_image "ll/gamesvr-hl2dm";
-	
-	# Ensure any expected context directories exists
-	mkdir -p "$script_directory/gamesvr-hl2dm/context_steamapp";
 
 	if [ "$setting_contextualize_steam" = true ] ; then
 
 		echo "CONTEXTUALIZE_STEAM: Grabbing HL2DM Files.."
 		
-		bash "$script_directory/gamesvr/context_steamcmd/"steamcmd.sh \
+		bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
 			+login anonymous \
-			+force_install_dir "$script_directory/gamesvr-hl2dm/context_steamapp/" \
+			+force_install_dir "$script_directory/gamesvr-hl2dm/" \
 			+app_update 232370 \
 			+quit \
 			-validate
 	fi
 
 	docker build -t ll/gamesvr-hl2dm ./gamesvr-hl2dm/
-	
+
 	section_end;
 fi
+
+exit
 
 
 #                                                       __    _____      __                ____                     __

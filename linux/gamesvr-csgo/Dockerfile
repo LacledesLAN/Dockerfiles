@@ -5,7 +5,7 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "LL Counter-Strike GO Server Base Level"
 
-ADD context_steamapp /gameservers/csgo
+ADD / /gameservers/csgo/
 
 # Install Counter-Strike: Global-Offensive using SteamCMD
 RUN mkdir -p /gameservers/csgo && \
