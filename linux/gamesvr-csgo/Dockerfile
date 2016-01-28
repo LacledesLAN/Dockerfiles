@@ -3,7 +3,7 @@ FROM ll/gamesvr
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
 ENV SERVER_MAINTAINER "Laclede's LAN"
-ENV SERVER_NAME "LL Counter-Strike GO Server Base Level"
+ENV SERVER_NAME "ll/gamesvr-csgo"
 
 ADD / /gameservers/csgo/
 

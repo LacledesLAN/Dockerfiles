@@ -3,7 +3,7 @@ FROM ll/gamesvr-hl2dm
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
 ENV SERVER_MAINTAINER "Laclede's LAN"
-ENV SERVER_NAME "LL Half-Life 2 Deathmatch Freeplay"
+ENV SERVER_NAME "ll/gamesvr-hl2dm"
 
 #Get and stage from gamesvr GitHub Repo " gamesvr-srcds-metamod.linux"
 RUN cd `mktemp -d` && \

@@ -3,7 +3,7 @@ FROM ll/gamesvr-csgo
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
 ENV SERVER_MAINTAINER "Laclede's LAN"
-ENV SERVER_NAME "LL Counter-Strike GO Freeplay Server"
+ENV SERVER_NAME "ll/gamesvr-csgo-freeplay"
 
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
 RUN cd `mktemp -d` && \

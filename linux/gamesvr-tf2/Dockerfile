@@ -3,9 +3,9 @@ FROM ll/gamesvr
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
 ENV SERVER_MAINTAINER "Laclede's LAN"
-ENV SERVER_NAME "LL Team Fortress 2 Server Base Level"
+ENV SERVER_NAME "ll/gamesvr-tf2"
 
-ADD context_steamapp /gameservers/tf2
+ADD / /gameservers/tf2
 
 # Install Counter-Strike: Global-Offensive using SteamCMD
 RUN mkdir -p /gameservers/tf2 && \

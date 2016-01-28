@@ -3,7 +3,7 @@ FROM ll/gamesvr
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
 ENV SERVER_MAINTAINER "Laclede's LAN"
-ENV SERVER_NAME "LL Half-Life 2 Deathmatch Server Base"
+ENV SERVER_NAME "ll/gamesvr-hl2dm"
 
 ADD / /gameservers/hl2dm
 

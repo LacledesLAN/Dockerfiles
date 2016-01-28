@@ -65,7 +65,7 @@ function docker_remove_image() {
 	image_count=$(docker images $1 | grep -o "$1" | wc -l);
 
 	if [ $image_count -ge 1 ] ; then
-	
+
 		if [ $image_count -gt 1 ] ; then
 			echo -n "Deleting #$1 existing images and any related containers..";
 		else
@@ -74,14 +74,14 @@ function docker_remove_image() {
 
 		# Remove Derived containers
 		docker ps -a | grep $1 | awk '{print $1}' | xargs docker rm
-		
+
 		# Remove image(s)
 		docker rmi -f $1
 
 	else
 		echo -n "No existing images to remove.";
 	fi
-	
+
 	echo ".done.";
 }
 
@@ -440,8 +440,6 @@ if [ $selected_rebuild_level -le 2 ] ; then
 	section_end;
 fi
 
-exit
-
 
 #                                                       __    _____      __                ____                     __
 #     ____ _____ _____ ___  ___  ______   _______      / /_  / /__ \____/ /___ ___        / __/_______  ___  ____  / /___ ___  __
@@ -475,16 +473,14 @@ if [ $selected_rebuild_level -le 2 ] ; then
 	
 	docker_remove_image "ll/gamesvr-tf2";
 	
-	# Ensure any expected context directories exists
-	mkdir -p "$script_directory/gamesvr-tf2/context_steamapp";
 
 	if [ "$setting_contextualize_steam" = true ] ; then
 
 		echo "CONTEXTUALIZE_STEAM: Grabbing TF2 Files.."
 		
-		bash "$script_directory/gamesvr/context_steamcmd/"steamcmd.sh \
+		bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
 			+login anonymous \
-			+force_install_dir "$script_directory/gamesvr-tf2/context_steamapp/" \
+			+force_install_dir "$script_directory/gamesvr-tf2/" \
 			+app_update 232250 \
 			+quit \
 			-validate
@@ -494,6 +490,8 @@ if [ $selected_rebuild_level -le 2 ] ; then
 	
 	section_end;
 fi
+
+exit
 
 
 #    _______________      ____  ___           __      ______
