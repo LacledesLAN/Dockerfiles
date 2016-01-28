@@ -5,7 +5,7 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "ll/gamesvr"
 
-ADD / /gameservers/
+COPY / /gameservers/
 
 # Install required packages and clean up unused dependencies
 RUN apt-get update && \

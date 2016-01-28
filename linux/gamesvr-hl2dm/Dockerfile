@@ -5,7 +5,7 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "ll/gamesvr-hl2dm"
 
-ADD / /gameservers/hl2dm
+COPY / /gameservers/hl2dm
 
 # Install Half-Life 2 Deathmatch using SteamCMD
 RUN mkdir -p /gameservers/hl2dm && \
