@@ -5,7 +5,7 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "ll/gamesvr-csgo"
 
-COPY / /gameservers/csgo/
+COPY . /gameservers/csgo/
 
 # Install Counter-Strike: Global-Offensive using SteamCMD
 RUN mkdir -p /gameservers/csgo && \
@@ -15,7 +15,7 @@ RUN mkdir -p /gameservers/csgo && \
 # Clean out tmp directory
 RUN rm -fr /tmp/* `#Clean out temp directory to save space#`
 
-WORKDIR /gameservers/
+WORKDIR /gameservers/csgo/
 
 #TODO:
 #get ftp contents -=> content.lan/fastDownloads/csgo/

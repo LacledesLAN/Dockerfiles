@@ -5,6 +5,8 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "ll/gamesvr-hl2dm"
 
+COPY . /gameservers/hl2dm/
+
 #Get and stage from gamesvr GitHub Repo " gamesvr-srcds-metamod.linux"
 RUN cd `mktemp -d` && \
 	git clone git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux && \
@@ -32,4 +34,4 @@ RUN cd `mktemp -d` && \
 # Clean out tmp directory
 RUN rm -fr /tmp/*
 
-WORKDIR /gameservers/
+WORKDIR /gameservers/hl2dm/

@@ -5,6 +5,8 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "ll/gamesvr-csgo-freeplay"
 
+COPY . /gameservers/csgo/
+
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
 RUN cd `mktemp -d` && \
 	git clone git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux && \
@@ -37,4 +39,4 @@ RUN cd `mktemp -d` && \
 	rm -f *.md && \
 	cp -r * /gameservers/csgo/
 
-WORKDIR /gameservers/
+WORKDIR /gameservers/csgo/

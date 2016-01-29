@@ -5,7 +5,7 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "ll/gamesvr-tf2"
 
-COPY / /gameservers/tf2
+COPY . /gameservers/tf2/
 
 # Install Counter-Strike: Global-Offensive using SteamCMD
 RUN mkdir -p /gameservers/tf2 && \
@@ -15,7 +15,7 @@ RUN mkdir -p /gameservers/tf2 && \
 # Clean out tmp directory
 RUN rm -fr /tmp/* `#Clean out temp directory to save space#`
 
-WORKDIR /gameservers/
+WORKDIR /gameservers/tf2/
 
 #TODO:
 #get ftp contents -=> content.lan/fastDownloads/tf2/

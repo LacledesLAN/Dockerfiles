@@ -5,7 +5,7 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "ll/gamesvr-css"
 
-COPY / /gameservers/css/
+COPY . /gameservers/css/
 
 # Install Counter-Strike Source using SteamCMD
 RUN mkdir -p /gameservers/css && \
@@ -15,4 +15,4 @@ RUN mkdir -p /gameservers/css && \
 # Clean out tmp directory
 RUN rm -fr /tmp/* `#Clean out temp directory to save space#`
 
-WORKDIR /gameservers/
+WORKDIR /gameservers/css/

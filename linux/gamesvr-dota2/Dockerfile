@@ -5,7 +5,7 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "ll/gamesvr-dota2"
 
-COPY / /gameservers/dota2/
+COPY . /gameservers/dota2/
 
 # Install Day of Defeat Source using SteamCMD
 RUN mkdir -p /gameservers/dota2 && \
@@ -15,4 +15,4 @@ RUN mkdir -p /gameservers/dota2 && \
 # Clean out tmp directory
 RUN rm -fr /tmp/* `#Clean out temp directory to save space#`
 
-WORKDIR /gameservers/
+WORKDIR /gameservers/dota2/

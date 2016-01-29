@@ -5,6 +5,7 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "ll/gamesvr-tf2-download"
 
+COPY . /gameservers/tf2/
 
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-tf2-download"
 RUN cd `mktemp -d` && \
@@ -17,4 +18,4 @@ RUN cd `mktemp -d` && \
 # Clean out tmp directory
 RUN rm -fr /tmp/* `#Clean out temp directory to save space#`
 
-WORKDIR /gameservers/
+WORKDIR /gameservers/tf2/

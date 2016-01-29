@@ -5,7 +5,7 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "ll/gamesvr-l4d2"
 
-COPY / /gameservers/l4d2/
+COPY . /gameservers/l4d2/
 
 # Install Left 4 Dead 2 Dedicated Server using SteamCMD
 RUN mkdir -p /gameservers/l4d2 && \
@@ -15,4 +15,4 @@ RUN mkdir -p /gameservers/l4d2 && \
 # Clean out tmp directory
 RUN rm -fr /tmp/* `#Clean out temp directory to save space#`
 
-WORKDIR /gameservers/
+WORKDIR /gameservers/l4d2/

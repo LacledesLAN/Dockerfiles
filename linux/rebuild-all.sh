@@ -533,6 +533,47 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
 fi
 
+
+#                       _                
+#     ____    ____ _   (_)   ____    _  __
+#    / __ \  / __ `/  / /   / __ \  | |/_/
+#   / / / / / /_/ /  / /   / / / / _>  <  
+#  /_/ /_/  \__, /  /_/   /_/ /_/ /_/|_|  
+#          /____/                         
+#
+if [ $selected_rebuild_level -le 0 ] ; then
+
+	section_head "nginx:latest";
+	
+	echo "Pulling nginx:latest from Docker hub";
+	
+	docker pull nginx:latest
+	
+	section_end;
+fi
+
+
+#                      __                                                         __                  __        __                
+#   _      __  ___    / /_    _____ _   __   _____         _____  ____    ____   / /_  ___    ____   / /_      / /  ____ _   ____ 
+#  | | /| / / / _ \  / __ \  / ___/| | / /  / ___/ ______ / ___/ / __ \  / __ \ / __/ / _ \  / __ \ / __/     / /  / __ `/  / __ \
+#  | |/ |/ / /  __/ / /_/ / (__  ) | |/ /  / /    /_____// /__  / /_/ / / / / // /_  /  __/ / / / // /_   _  / /  / /_/ /  / / / /
+#  |__/|__/  \___/ /_.___/ /____/  |___/  /_/            \___/  \____/ /_/ /_/ \__/  \___/ /_/ /_/ \__/  (_)/_/   \__,_/  /_/ /_/ 
+#
+
+if [ $selected_rebuild_level -le 3 ] ; then
+
+	section_head "Building ll/websvr-content.lan";
+	
+	docker_remove_image "ll/websvr-content.lan";
+	
+	docker build -t ll/websvr-content.lan ./websvr-content.lan/
+
+	section_end;
+
+fi
+
+
+
 if [ $script_skip_update != true ] ; then
 	echo "Updaing self...";
 	find $script_directory -name \*dockerfile* -type f -delete	#can be removed once BEan's machines are clean of all instances of improperly-cased "dockerfile"
@@ -541,7 +582,6 @@ if [ $script_skip_update != true ] ; then
 	#. "$script_fullpath" -z;		#Recursively re-run script; disable auto updating to prevent endless loop
 	#exit 0;
 fi
-
 
 
 tput smul;

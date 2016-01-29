@@ -5,7 +5,7 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "ll/gamesvr-dods"
 
-COPY / /gameservers/dods/
+COPY . /gameservers/dods/
 
 # Install Day of Defeat Source using SteamCMD
 RUN mkdir -p /gameservers/dods && \
@@ -15,4 +15,4 @@ RUN mkdir -p /gameservers/dods && \
 # Clean out tmp directory
 RUN rm -fr /tmp/* `#Clean out temp directory to save space#`
 
-WORKDIR /gameservers/
+WORKDIR /gameservers/dods/

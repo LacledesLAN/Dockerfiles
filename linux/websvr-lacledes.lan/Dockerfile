@@ -5,7 +5,7 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "ll/websvr-lacledes.lan"
 
-COPY . /app
+COPY . /app/
 
 #Get and stage from gamesvr GitHub Repo "websvr-lacledes.lan"
 #RUN cd `mktemp -d` && \
