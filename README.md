@@ -16,18 +16,22 @@ Official Server Build Structure
 ```
 ubuntu:latest
 └───gamesvr
-|   └───gamesvr-csgo
-|   |   └───gamesvr-csgo-freeplay
-|   |   └───gamesvr-csgo-tourney
-|   └───gamesvr-hl2dm
-|   |   └───gamesvr-hl2dm-freeplay
-|   └───gamesvr-tf2
-|       └───gamesvr-tf2-blindfrag
-|       └───gamesvr-tf2-freeplay
-└───websvr
-    └───websvr-contet.lan
-    └───websvr-kiosk.lan
-    └───websvr-lacledes.lan
+    └───gamesvr-csgo
+    |   └───gamesvr-csgo-freeplay
+    |   └───gamesvr-csgo-tourney
+    └───gamesvr-dods    
+    └───gamesvr-hl2dm
+    |   └───gamesvr-hl2dm-freeplay
+    └───gamesvr-tf2
+        └───gamesvr-tf2-blindfrag
+        └───gamesvr-tf2-freeplay
+
+nginx:latest
+└───websvr-contet.lan
+└───websvr-kiosk.lan
+
+microsoft/aspnet:latest
+└───websvr-lacledes.lan
 ```
 
 
