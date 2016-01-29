@@ -2,13 +2,13 @@ Official Directory Structure Reference
 ======================================
 ```
 (parent)
-└───gameservers
+└───gamesvr
 |   ├───_util
 |   |   └───steamcmd
 |   ├───csgo
 |   ├───hl2dm
 |   ├───tf2
-└───webservers
+└───websvr
 ```
 
 Official Server Build Structure
