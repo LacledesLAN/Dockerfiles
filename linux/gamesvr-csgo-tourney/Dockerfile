@@ -5,7 +5,7 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "ll/gamesvr-csgo-tourney"
 
-COPY . /gameservers/csgo/
+COPY . /gamesvr/csgo/
 
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
 RUN cd `mktemp -d` && \
@@ -13,7 +13,7 @@ RUN cd `mktemp -d` && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gameservers/csgo/csgo/
+	cp -r * /gamesvr/csgo/csgo/
 	
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-sourcemod.linux"
 RUN cd `mktemp -d` && \
@@ -21,7 +21,7 @@ RUN cd `mktemp -d` && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gameservers/csgo/csgo/
+	cp -r * /gamesvr/csgo/csgo/
 
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-csgo"
 RUN cd `mktemp -d` && \
@@ -29,7 +29,7 @@ RUN cd `mktemp -d` && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gameservers/csgo/
+	cp -r * /gamesvr/csgo/
 	
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-csgo-tourney"	
 RUN cd `mktemp -d` && \
@@ -37,9 +37,9 @@ RUN cd `mktemp -d` && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gameservers/csgo/
+	cp -r * /gamesvr/csgo/
 
 # Clean out tmp directory
 RUN rm -fr /tmp/*
 
-WORKDIR /gameservers/csgo/
+WORKDIR /gamesvr/csgo/

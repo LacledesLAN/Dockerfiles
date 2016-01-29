@@ -5,7 +5,7 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "ll/gamesvr-tf2-blindfrag"
 
-COPY . /gameservers/tf2/
+COPY . /gamesvr/tf2/
 
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
 RUN cd `mktemp -d` && \
@@ -13,7 +13,7 @@ RUN cd `mktemp -d` && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gameservers/tf2/tf/
+	cp -r * /gamesvr/tf2/tf/
 
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-sourcemod.linux"
 RUN cd `mktemp -d` && \
@@ -21,7 +21,7 @@ RUN cd `mktemp -d` && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gameservers/tf2/tf/
+	cp -r * /gamesvr/tf2/tf/
 
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-tf2-blindfrag"
 RUN cd `mktemp -d` && \
@@ -29,9 +29,9 @@ RUN cd `mktemp -d` && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gameservers/tf2/
+	cp -r * /gamesvr/tf2/
 
 # Clean out tmp directory
 RUN rm -fr /tmp/* `#Clean out temp directory to save space#`
 
-WORKDIR /gameservers/tf2/
+WORKDIR /gamesvr/tf2/

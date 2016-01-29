@@ -5,16 +5,16 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 ENV SERVER_MAINTAINER "Laclede's LAN"
 ENV SERVER_NAME "ll/gamesvr-hl2dm"
 
-COPY . /gameservers/hl2dm/
+COPY . /gamesvr/hl2dm/
 
 # Install Half-Life 2 Deathmatch using SteamCMD
-RUN mkdir -p /gameservers/hl2dm && \
-	bash /gameservers/_util/steamcmd/steamcmd.sh +login anonymous +force_install_dir /gameservers/hl2dm +app_update 232370 +quit
+RUN mkdir -p /gamesvr/hl2dm && \
+	bash /gamesvr/_util/steamcmd/steamcmd.sh +login anonymous +force_install_dir /gamesvr/hl2dm +app_update 232370 +quit
 
 # Clean out tmp directory
 RUN rm -fr /tmp/* `#Clean out temp directory to save space#`
 
-WORKDIR /gameservers/hl2dm/
+WORKDIR /gamesvr/hl2dm/
 
 #TODO:
 #get ftp contents -=> content.lan/fastDownloads/hl2dm/

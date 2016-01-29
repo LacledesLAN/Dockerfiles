@@ -303,6 +303,26 @@ echo ".done.";
 
 tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 
+
+#         __                  __             _      
+#    ____/ /  ____   _____   / /__ _   __   (_) ____
+#   / __  /  / __ \ / ___/  / //_/| | / /  / / /_  /
+#  / /_/ /  / /_/ // /__   / ,<   | |/ /  / /   / /_
+#  \__,_/   \____/ \___/  /_/|_|  |___/  /_/   /___/
+#                                                   
+if [ $selected_rebuild_level -le 0 ] ; then
+
+	section_head "nate/dockviz";
+	
+	echo "Pulling nate/dockviz:latest from Docker hub";
+	echo "This image provides useful tools to analyze docker images";
+	
+	docker pull nate/dockviz:latest;
+	
+	section_end;
+fi
+
+
 #           __                __
 #    __  __/ /_  __  ______  / /___  __
 #   / / / / __ \/ / / / __ \/ __/ / / /
@@ -593,5 +613,11 @@ echo "";
 draw_horizontal_rule;
 echo "   LL Docker Image Management Tool.  Stop time: $(date)";
 draw_horizontal_rule;
+echo "";
+
+echo "Here's what you've got:";
+echo "";
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock nate/dockviz images -tl
+echo "";
 echo "";
 

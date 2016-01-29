@@ -3,9 +3,9 @@ FROM ll/gamesvr-hl2dm
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
 ENV SERVER_MAINTAINER "Laclede's LAN"
-ENV SERVER_NAME "ll/gamesvr-hl2dm"
+ENV SERVER_NAME "ll/gamesvr-hl2dm-freeplay"
 
-COPY . /gameservers/hl2dm/
+COPY . /gamesvr/hl2dm/
 
 #Get and stage from gamesvr GitHub Repo " gamesvr-srcds-metamod.linux"
 RUN cd `mktemp -d` && \
@@ -13,7 +13,7 @@ RUN cd `mktemp -d` && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gameservers/hl2dm/hl2mp
+	cp -r * /gamesvr/hl2dm/hl2mp
 	
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-sourcemod.linux"
 RUN cd `mktemp -d` && \
@@ -21,7 +21,7 @@ RUN cd `mktemp -d` && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gameservers/hl2dm/hl2mp
+	cp -r * /gamesvr/hl2dm/hl2mp
 	
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-hl2dm-freeplay "
 RUN cd `mktemp -d` && \
@@ -29,9 +29,8 @@ RUN cd `mktemp -d` && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gameservers/hl2dm/
+	cp -r * /gamesvr/hl2dm/
 
-# Clean out tmp directory
 RUN rm -fr /tmp/*
 
-WORKDIR /gameservers/hl2dm/
+WORKDIR /gamesvr/hl2dm/
