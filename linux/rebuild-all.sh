@@ -315,7 +315,7 @@ if [ $selected_rebuild_level -le 0 ] ; then
 	
 	echo "Pulling ubuntu:latest from Docker hub";
 	
-	docker pull ubuntu:latest
+	docker pull ubuntu:latest;
 	
 	section_end;
 fi
@@ -362,7 +362,7 @@ if [ $selected_rebuild_level -le 2 ] ; then
 			+force_install_dir "$script_directory/gamesvr-csgo/" \
 			+app_update 740 \
 			+quit \
-			-validate
+			-validate;
 	fi
 	
 	docker build -t ll/gamesvr-csgo ./gamesvr-csgo/;
@@ -432,10 +432,10 @@ if [ $selected_rebuild_level -le 2 ] ; then
 			+force_install_dir "$script_directory/gamesvr-hl2dm/" \
 			+app_update 232370 \
 			+quit \
-			-validate
+			-validate;
 	fi
 
-	docker build -t ll/gamesvr-hl2dm ./gamesvr-hl2dm/
+	docker build -t ll/gamesvr-hl2dm ./gamesvr-hl2dm/;
 
 	section_end;
 fi
@@ -454,7 +454,7 @@ if [ $selected_rebuild_level -le 3 ] ; then
 	
 	docker_remove_image "ll/gamesvr-hl2dm-freeplay";
 	
-	docker build -t ll/gamesvr-hl2dm-freeplay ./gamesvr-hl2dm-freeplay/
+	docker build -t ll/gamesvr-hl2dm-freeplay ./gamesvr-hl2dm-freeplay/;
 
 	section_end;
 fi
@@ -483,10 +483,10 @@ if [ $selected_rebuild_level -le 2 ] ; then
 			+force_install_dir "$script_directory/gamesvr-tf2/" \
 			+app_update 232250 \
 			+quit \
-			-validate
+			-validate;
 
 	fi
-		docker build -t ll/gamesvr-tf2 ./gamesvr-tf2/
+		docker build -t ll/gamesvr-tf2 ./gamesvr-tf2/;
 	
 	section_end;
 fi
@@ -505,10 +505,10 @@ if [ $selected_rebuild_level -le 3 ] ; then
 	
 	docker_remove_image "ll/gamesvr-tf2-blindfrag";
 	
-	docker build -t ll/gamesvr-tf2-blindfrag ./gamesvr-tf2-blindfrag/
+	docker build -t ll/gamesvr-tf2-blindfrag ./gamesvr-tf2-blindfrag/;
 	
 	section_end;
-	
+
 fi
 	
 
@@ -525,7 +525,7 @@ if [ $selected_rebuild_level -le 3 ] ; then
 	
 	docker_remove_image "ll/gamesvr-tf2-freeplay";
 	
-	docker build -t ll/gamesvr-tf2-freeplay ./gamesvr-tf2-freeplay/
+	docker build -t ll/gamesvr-tf2-freeplay ./gamesvr-tf2-freeplay/;
 
 	section_end;
 
@@ -545,7 +545,7 @@ if [ $selected_rebuild_level -le 0 ] ; then
 	
 	echo "Pulling nginx:latest from Docker hub";
 	
-	docker pull nginx:latest
+	docker pull nginx:latest;
 	
 	section_end;
 fi
@@ -564,12 +564,11 @@ if [ $selected_rebuild_level -le 3 ] ; then
 	
 	docker_remove_image "ll/websvr-content.lan";
 	
-	docker build -t ll/websvr-content.lan ./websvr-content.lan/
+	docker build -t ll/websvr-content.lan ./websvr-content.lan/;
 
 	section_end;
 
 fi
-
 
 
 if [ $script_skip_update != true ] ; then
