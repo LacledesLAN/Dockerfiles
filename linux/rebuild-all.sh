@@ -594,7 +594,7 @@ fi
 if [ $script_skip_update != true ] ; then
 	echo "Updaing self...";
 	find $script_directory -name \*dockerfile* -type f -delete	#can be removed once BEan's machines are clean of all instances of improperly-cased "dockerfile"
-	update_script;
+	#update_script;
 	
 	#. "$script_fullpath" -z;		#Recursively re-run script; disable auto updating to prevent endless loop
 	#exit 0;
