@@ -2,8 +2,7 @@ FROM ll/gamesvr-csgo
 
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
-ENV SERVER_MAINTAINER "Laclede's LAN"
-ENV SERVER_NAME "ll/gamesvr-csgo-tourney"
+ENV SVR_MAINTAINER="Laclede's LAN" SERVER_NAME="ll/gamesvr-csgo-tourney"
 
 COPY . /gamesvr/csgo/
 

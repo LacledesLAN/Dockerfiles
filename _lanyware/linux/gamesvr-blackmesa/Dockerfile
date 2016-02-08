@@ -2,8 +2,7 @@ FROM ll/gamesvr
 
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
-ENV SERVER_MAINTAINER "Laclede's LAN"
-ENV SERVER_NAME "ll/gamesvr-blackmesa"
+ENV SVR_MAINTAINER="Laclede's LAN" SERVER_NAME="ll/gamesvr-blackmesa"
 
 COPY . /gamesvr/blackmesa/
 

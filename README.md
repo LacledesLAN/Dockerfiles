@@ -1,40 +1,70 @@
-Official Directory Structure Reference 
-======================================
+LANYWARE Structure Reference
+============================
 ```
-(parent)
-└───gamesvr
-|   ├───_util
-|   |   └───steamcmd
-|   ├───csgo
-|   ├───hl2dm
-|   ├───tf2
-└───websvr
+[WORKING DIRECTORY] ("/" inside docker images)
+	└───/_lanyware                                    LANWARE directories
+	|   └───/linux                                        LANYWARE directories for all linux
+	|   |   └───/gamesvr
+	|   |   |   └───/_util
+	|   |   |       └───/steamcmd
+	|   |   └───/gamesvr-blackmesa-freeplay
+	|   |   └───/gamesvr-csgo
+	|   |   └───/gamesvr-csgo-freeplay
+	|   |   └───/gamesvr-csgo-tourney
+	|   |   └───/gamesvr-dods
+	|   |   └───/gamesvr-hl2dm
+	|   |   └───/gamesvr-hl2dm-freeplay
+	|   |   └───/gamesvr-tf2
+	|   |   └───/gamesvr-tf2-blindfrag
+	|   |   └───/gamesvr-tf2-freeplay
+	|   |   └───/websvr-content.lan
+	|   |   └───/websvr-kiosk.lan
+	|   |   └───/websvr-lacledes.lan
+	|   |   └───gfx-allthethings.sh
+	|   |   └───install.sh
+	|   |   └───reset-docker.sh
+	|   └───/windows                                      LANYWARE directories for all windows
+	└───/gamesvr......................................Output directories for local servers
+	|   └───/.svr-bin.....................................Used *only* in docker images. Server folder is just a symlink to this one.
+    |   └───/_util........................................Utilities for use with gameservers
+	|   |   └───/steamcmd.....................................steamcmd utility for use with source servers
+	|   └───/blackmesa-freeplay
+	|   └───/csgo-freeplay
+	|   └───/csgo-tourney
+	|   └───/dods-freeplay
+	|   └───/hl2dm-freeplay
+    |   └───/tf2-blindfrag
+    |   └───/tf2-freeplay
+	└───lanyware.ps1                                  windows (POWERSHELL) entry point for LANYWARE suite
+	└───lanyware.sh                                   linux (BASH) entry point for LANYWARE suite
 ```
 
-Official Server Build Structure
-===============================
+Docker Image Build Structure
+============================
 ```
 ubuntu:latest
-└───gamesvr
-    └───gamesvr-csgo
-    |   └───gamesvr-csgo-freeplay
-    |   └───gamesvr-csgo-tourney
-    └───gamesvr-dods    
-    └───gamesvr-hl2dm
-    |   └───gamesvr-hl2dm-freeplay
-    └───gamesvr-tf2
-        └───gamesvr-tf2-blindfrag
-        └───gamesvr-tf2-freeplay
+└───ll/gamesvr
+    └───ll/gamesvr-blackmesa
+    └───ll/gamesvr-csgo
+    |   └───ll/gamesvr-csgo-freeplay
+    |   └───ll/gamesvr-csgo-tourney
+    └───ll/gamesvr-dods
+    └───ll/gamesvr-hl2dm
+    |   └───ll/gamesvr-hl2dm-freeplay
+    └───ll/gamesvr-l4d2
+    └───ll/gamesvr-tf2
+    |   └───ll/gamesvr-tf2-blindfrag
+    |   └───ll/gamesvr-tf2-freeplay
+    └───ll/gamesvr-tfc
 
 nginx:latest
-└───websvr-contet.lan
-└───websvr-kiosk.lan
+└───ll/websvr
+    └───ll/websvr-contet.lan
+    └───ll/websvr-kiosk.lan
 
 microsoft/aspnet:latest
-└───websvr-lacledes.lan
+└───ll/websvr-lacledes.lan
 ```
-
-
 
 
 
@@ -81,3 +111,7 @@ Images at this level are derived from an "Application Level" docker image.
 
 
 
+
+-------------NOTES FOR FUNCTIONS-------------
+Status: Downloaded new image for $
+Status: Image is up to date for $
