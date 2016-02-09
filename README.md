@@ -123,8 +123,6 @@ The Configuration Level should configuration files along with any other files th
 Images at this level are derived from an "Application Level" docker image.
 
 
-
-
 -------------NOTES FOR FUNCTIONS-------------
 Status: Downloaded new image for $
 Status: Image is up to date for $
