@@ -391,10 +391,6 @@ fi
 #   \__, /\__,_/_/ /_/ /_/\___/____/ |___/_/         \___/____/\__, /\____/
 #  /____/                                                     /____/
 #
-
-
-
-
 if [ $mode_docker -eq true ] ; then
 	if [ $selected_rebuild_level -le 0 ] ; then
 		#remove containers made from this image

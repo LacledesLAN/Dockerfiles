@@ -4,7 +4,7 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
 ENV SVR_MAINTAINER="Laclede's LAN" SERVER_NAME="ll/gamesvr-csgo-freeplay"
 
-COPY . /gamesvr/zee-svr/
+COPY . /gamesvr/.svr-bin/
 
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
 RUN cd `mktemp -d` && \
@@ -12,7 +12,7 @@ RUN cd `mktemp -d` && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gamesvr/zee-svr/
+	cp -r * /gamesvr/.svr-bin/
 
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-sourcemod.linux"
 RUN cd `mktemp -d` && \
@@ -20,7 +20,7 @@ RUN cd `mktemp -d` && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gamesvr/zee-svr/
+	cp -r * /gamesvr/.svr-bin/
 
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-csgo"
 RUN cd `mktemp -d` && \
@@ -28,7 +28,7 @@ RUN cd `mktemp -d` && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gamesvr/zee-svr/
+	cp -r * /gamesvr/.svr-bin/
 
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-freeplay"	
 RUN cd `mktemp -d` && \
@@ -36,6 +36,6 @@ RUN cd `mktemp -d` && \
 	rm -rf *.git && \
 	cd `ls -A | head -1` && \
 	rm -f *.md && \
-	cp -r * /gamesvr/zee-svr/
+	cp -r * /gamesvr/.svr-bin/
 
-WORKDIR /gamesvr/zee-svr/
+WORKDIR /gamesvr/.svr-bin/
