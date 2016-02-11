@@ -101,6 +101,10 @@ function import_github_repo() { # REPO; destination directory
 		cp -r * $2
 }
 
+function fliptable() {
+	echo "（╯°□°）╯ ┻━┻";
+}
+
 function import_steamapp() {	# APP ID; destination directory
 
 	bash /gamesvr/_util/steamcmd/steamcmd.sh \
