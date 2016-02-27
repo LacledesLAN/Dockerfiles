@@ -52,8 +52,8 @@ ubuntu:latest                                       hub.docker.com
     |   |                                                       github: gamesvr-srcds-sourcemod.linux,
     |   |                                                       github: gamesvr-srcds-csgo-freeplay
     |   └───ll/gamesvr-csgo-tourney·····························github: gamesvr-srcds-metamod.linux,
-    |   |                                                       github: gamesvr-srcds-sourcemod.linux,
-    |   |                                                       github: gamesvr-srcds-csgo-freeplay
+    |                                                           github: gamesvr-srcds-sourcemod.linux,
+    |                                                           github: gamesvr-srcds-csgo-freeplay
     └───ll/gamesvr-dods·····································n/a
     └───ll/gamesvr-hl2dm····································steamapp: hl2dm
     |   |                                                   ftp: content.lan/fastDownloads/hl2dm
