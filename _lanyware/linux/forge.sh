@@ -1,16 +1,16 @@
 #!/bin/bash
 #=============================================================================================================
 #
-#	FILE:	rebuild-all.sh
+#   FILE:   rebuild-all.sh
 #
-#	LINE ARUGMENTS:
-#					-z		Skip auto-update of self
+#   LINE ARUGMENTS:
+#                   -z      Skip auto-update of self
 #
-#	DESCRIPTION:	Maintain the LL Docker Image repository by building (and rebuilding) Docker images from
-#					origin repositories and sources.
+#   DESCRIPTION:    Maintain the LL Docker Image repository by building (and rebuilding) Docker images from
+#                   origin repositories and sources.
 #
-#	REQUIREMENTS:	Distribution: Debian-based Linux
-#					Packges: curl docker git libc6-i386 lib32gcc1 lib32stdc++6 lib32tinfo5 lib32z1 tar wget
+#   REQUIREMENTS:   Distribution: Debian-based Linux
+#                   Packges: curl docker git libc6-i386 lib32gcc1 lib32stdc++6 lib32tinfo5 lib32z1 tar wget
 #
 #=============================================================================================================
 
@@ -62,77 +62,77 @@ readonly script_version=$(stat -c %y "$script_fullpath");
 #=============================================================================================================
 
 function docker_remove_image() {
-	command -v docker > /dev/null 2>&1 || { echo >&2 "Docker is required.  Aborting."; return 999; }
-	
-	image_count=$(docker images $1 | grep -o "$1" | wc -l);
+    command -v docker > /dev/null 2>&1 || { echo >&2 "Docker is required.  Aborting."; return 999; }
 
-	if [ $image_count -ge 1 ] ; then
+    image_count=$(docker images $1 | grep -o "$1" | wc -l);
 
-		if [ $image_count -gt 1 ] ; then
-			echo -n "Deleting #$1 existing images and any related containers..";
-		else
-			echo -n "Deleting existing image and any related containers..";
-		fi;
+    if [ $image_count -ge 1 ] ; then
 
-		# Remove Derived containers
-		docker ps -a | grep $1 | awk '{print $1}' | xargs docker rm
+        if [ $image_count -gt 1 ] ; then
+            echo -n "Deleting #$1 existing images and any related containers..";
+        else
+            echo -n "Deleting existing image and any related containers..";
+        fi;
 
-		# Remove image(s)
-		docker rmi -f $1
+        # Remove Derived containers
+        docker ps -a | grep $1 | awk '{print $1}' | xargs docker rm
 
-	else
-		echo -n "No existing images to remove.";
-	fi
+        # Remove image(s)
+        docker rmi -f $1
 
-	echo ".done.";
+    else
+        echo -n "No existing images to remove.";
+    fi
+
+    echo ".done.";
 }
 
 function draw_horizontal_rule() {
-	printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =;
-	return 0;
+    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =;
+    return 0;
 }
 
 function import_github_repo() { # REPO; destination directory
-	cd `mktemp -d` && \
-		git clone $1 && \
-		rm -rf *.git && \
-		cd `ls -A | head -1` && \
-		rm -f *.md && \
-		cp -r * $2
+    cd `mktemp -d` && \
+        git clone $1 && \
+        rm -rf *.git && \
+        cd `ls -A | head -1` && \
+        rm -f *.md && \
+        cp -r * $2
 }
 
 function fliptable() {
-	echo "（╯°□°）╯ ┻━┻";
+    echo "（╯°□°）╯ ┻━┻";
 }
 
 function import_steamapp() {	# APP ID; destination directory
 
-	bash /gamesvr/_util/steamcmd/steamcmd.sh \
-		+login anonymous \
-		+force_install_dir $2 \
-		+app_update $1 \
-		+quit \
-		-validate;
+    bash /gamesvr/_util/steamcmd/steamcmd.sh \
+        +login anonymous \
+        +force_install_dir $2 \
+        +app_update $1 \
+        +quit \
+        -validate;
 }
 
 function section_head() {
-	echo "";
-	echo "";
-	tput bold
-	draw_horizontal_rule;
-	echo "   $1";
-	draw_horizontal_rule;
-	tput sgr0;
-	tput dim;
-	tput setaf 6;
+    echo "";
+    echo "";
+    tput bold
+    draw_horizontal_rule;
+    echo "   $1";
+    draw_horizontal_rule;
+    tput sgr0;
+    tput dim;
+    tput setaf 6;
 }
 
 function section_end() {
-	tput sgr0;
+    tput sgr0;
 }
 
 function read_key() {
-	read -n 1 x; while read -n 1 -t .1 y; do x="$x$y"; done
+    read -n 1 x; while read -n 1 -t .1 y; do x="$x$y"; done
 }
 
 function spinner() {
@@ -150,36 +150,36 @@ function spinner() {
 }
 
 function update_script() {
-	tput smul;
-	echo -e -n "\n\nUPDATING SELF FROM GITHUB...";
-	tput sgr0;
-	
-	cd `mktemp -d`;
-	git clone https://github.com/LacledesLAN/Dockerfiles;
-	rm -rf *.git;
-	cd `ls -A | head -1`;
-	rm -f *.md;
-	cd linux
-	cp -r * "$script_directory"
-	
-	echo ".done."
+    tput smul;
+    echo -e -n "\n\nUPDATING SELF FROM GITHUB...";
+    tput sgr0;
+
+    cd `mktemp -d`;
+    git clone https://github.com/LacledesLAN/Dockerfiles;
+    rm -rf *.git;
+    cd `ls -A | head -1`;
+    rm -f *.md;
+    cd linux
+    cp -r * "$script_directory"
+
+    echo ".done."
 }
 
 function warning_message() {
-	tput setaf 1; tput bold;
-	echo ""
-	echo "      .-------,      !!! WARNING !!!"
-	echo "    .'         '.  "
-	echo "  .'  _ ___ _ __ '.      $1"
-	echo "  |  (_' | / \|_) |"
-	echo "  |  ,_) | \_/|   |      $2"
-	echo "  '.             .'"
-	echo "    '.         .'  "
-	echo "      '-------'    "
-	tput sgr0;
-	echo "  Press any key to continue..."
-	
-	read_key;
+    tput setaf 1; tput bold;
+    echo ""
+    echo "      .-------,      !!! WARNING !!!"
+    echo "    .'         '.  "
+    echo "  .'  _ ___ _ __ '.      $1"
+    echo "  |  (_' | / \|_) |"
+    echo "  |  ,_) | \_/|   |      $2"
+    echo "  '.             .'"
+    echo "    '.         .'  "
+    echo "      '-------'    "
+    tput sgr0;
+    echo "  Press any key to continue..."
+
+    read_key;
 }
 
 
@@ -243,28 +243,28 @@ echo "    x) Exit without doing anything"
 
 declare selected_rebuild_level=""
 until [ ! -z $selected_rebuild_level ]; do
-	read -n 1 x; while read -n 1 -t .1 y; do x="$x$y"; done
-	
-	if [ $x == 0 ] ; then
-		selected_rebuild_level="0";
-		bash "$script_directory"/gfx-allthethings.sh
-	elif [ $x == 1 ] ; then
-		selected_rebuild_level="1";
-	elif [ $x == 2 ] ; then
-		selected_rebuild_level="2";
-	elif [ $x == 3 ] ; then
-		selected_rebuild_level="3";
-	elif [ $x == "u" ] ; then
-		selected_rebuild_level="99";
-	elif [ $x == "U" ] ; then
-		selected_rebuild_level="99";
-	elif [ $x == "x" ] ; then
-		echo -e "\n\nAborting...\n"
-		exit;
-	elif [ $x == "X" ] ; then
-		echo -e "\n\nAborting...\n"
-		exit;
-	fi
+    read -n 1 x; while read -n 1 -t .1 y; do x="$x$y"; done
+
+    if [ $x == 0 ] ; then
+        selected_rebuild_level="0";
+        bash "$script_directory"/gfx-allthethings.sh
+    elif [ $x == 1 ] ; then
+        selected_rebuild_level="1";
+    elif [ $x == 2 ] ; then
+        selected_rebuild_level="2";
+    elif [ $x == 3 ] ; then
+        selected_rebuild_level="3";
+    elif [ $x == "u" ] ; then
+        selected_rebuild_level="99";
+    elif [ $x == "U" ] ; then
+        selected_rebuild_level="99";
+    elif [ $x == "x" ] ; then
+        echo -e "\n\nAborting...\n"
+        exit;
+    elif [ $x == "X" ] ; then
+        echo -e "\n\nAborting...\n"
+        exit;
+    fi
 done
 
 echo "Start time: $(date)";
@@ -275,35 +275,35 @@ tput sgr0;
 #=========[ Prep Steam contextualization requirements ]-------------------------------------------------------
 if [ "$setting_contextualize_steam" = true ] ; then
 
-	echo "setting_contextualize_steam is Enabled.";
-	echo -e "\tSteam apps will be added through docker build context: reducing bandwidth at the cost of disk space. ";
+    echo "setting_contextualize_steam is Enabled.";
+    echo -e "\tSteam apps will be added through docker build context: reducing bandwidth at the cost of disk space. ";
 
-	echo -e -n "\tVerifying directory structure...";
-	mkdir -p "$script_directory/gamesvr/_util/steamcmd";
-	echo ".good.";
-	
-	echo -e -n "\tChecking SteamCMD..";
-	
-	{ bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh +quit; }  &> /dev/null;
+    echo -e -n "\tVerifying directory structure...";
+    mkdir -p "$script_directory/gamesvr/_util/steamcmd";
+    echo ".good.";
 
-	if [ $? -ne 0 ] ; then
-		echo -n ".downloading.."
-		
-		#failed to run SteamCMD.  Download
-		{
-			rm -rf "$script_directory/gamesvr/_util/steamcmd/*";
-			
-			wget -qO- -r --tries=10 --waitretry=20 --output-document=tmp.tar.gz http://media.steampowered.com/installer/steamcmd_linux.tar.gz;
-			tar -xvzf tmp.tar.gz -C "$script_directory/gamesvr/_util/steamcmd";
-			rm tmp.tar.gz
-			
-			bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh +quit;
-		} &> /dev/null;
-	fi
-	
-	echo ".updated...done."
+    echo -e -n "\tChecking SteamCMD..";
+
+    { bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh +quit; }  &> /dev/null;
+
+    if [ $? -ne 0 ] ; then
+        echo -n ".downloading.."
+        
+        #failed to run SteamCMD.  Download
+        {
+            rm -rf "$script_directory/gamesvr/_util/steamcmd/*";
+
+            wget -qO- -r --tries=10 --waitretry=20 --output-document=tmp.tar.gz http://media.steampowered.com/installer/steamcmd_linux.tar.gz;
+            tar -xvzf tmp.tar.gz -C "$script_directory/gamesvr/_util/steamcmd";
+            rm tmp.tar.gz
+            
+            bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh +quit;
+        } &> /dev/null;
+    fi
+
+    echo ".updated...done."
 else
-	echo "setting_contextualize_steam is Disabled.";
+    echo "setting_contextualize_steam is Disabled.";
 fi
 
 echo "";
@@ -314,13 +314,13 @@ tput sgr0
 
 echo -n "Destroying all LL docker containers..";
 {
-	docker rm -f $(docker ps -a -q);   #todo: add filter for ll/*
+    docker rm -f $(docker ps -a -q);   #todo: add filter for ll/*
 } &> /dev/null;
 echo ".done.";
 
 echo -n "Destroying all docker dangiling images..";
 {
-	docker rmi $(docker images -qf "dangling=true")
+    docker rmi $(docker images -qf "dangling=true")
 } &> /dev/null;
 echo ".done.";
 
@@ -338,14 +338,14 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #                                                   
 if [ $selected_rebuild_level -le 0 ] ; then
 
-	section_head "nate/dockviz";
-	
-	echo "Pulling nate/dockviz:latest from Docker hub";
-	echo "This image provides useful tools to analyze docker images";
-	
-	docker pull nate/dockviz:latest;
-	
-	section_end;
+    section_head "nate/dockviz";
+
+    echo "Pulling nate/dockviz:latest from Docker hub";
+    echo "This image provides useful tools to analyze docker images";
+
+    docker pull nate/dockviz:latest;
+
+    section_end;
 fi
 
 
@@ -355,15 +355,16 @@ fi
 #  / /_/ /  / /_/ // /_/ /  / / / // /_  / /_/ / 
 #  \__,_/  /_.___/ \__,_/  /_/ /_/ \__/  \__,_/  
 #                                                
+
 if [ $selected_rebuild_level -le 0 ] ; then
 
-	section_head "ubuntu";
-	
-	echo "Pulling ubuntu:latest from Docker hub";
-	
-	docker pull ubuntu:latest;
-	
-	section_end;
+    section_head "ubuntu";
+
+    echo "Pulling ubuntu:latest from Docker hub";
+
+    docker pull ubuntu:latest;
+
+    section_end;
 fi
 
 
@@ -376,17 +377,41 @@ fi
 
 if [ $selected_rebuild_level -le 1 ] ; then
 
-	section_head "Building ll/gamesvr";
-	
-	docker_remove_image "ll/gamesvr";
+    section_head "Building ll/gamesvr";
 
-	# Ensure any expected context directories exists
-	{ mkdir -p "$script_directory/gamesvr/_util/steamcmd"; } &> /dev/null; 
+    docker_remove_image "ll/gamesvr";
+    
+    $destination_directory = "$script_directory/gamesvr"
 
-	docker build -t ll/gamesvr "$script_directory/gamesvr/";
+    # Download and stage SteamCMD for build context
+        echo -e -n "\Staging SteamCMD..";
+        { mkdir -p "$destination_directory/_util/steamcmd"; } &> /dev/null;
+        
+        { bash "$destination_directory/_util/steamcmd/"steamcmd.sh +quit; }  &> /dev/null;
 
-	section_end;
+        if [ $? -ne 0 ] ; then
+            echo -n ".downloading.."
+            
+            #failed to run SteamCMD.  Download
+            {
+                rm -rf "$destination_directory/_util/steamcmd/*";
+
+                wget -qO- -r --tries=10 --waitretry=20 --output-document=tmp.tar.gz http://media.steampowered.com/installer/steamcmd_linux.tar.gz;
+                tar -xvzf tmp.tar.gz -C "$destination_directory/_util/steamcmd";
+                rm tmp.tar.gz
+                
+                bash "$destination_directory/_util/steamcmd/"steamcmd.sh +quit;
+            } &> /dev/null;
+        fi
+
+        echo ".updated...done."
+
+    docker build -t ll/gamesvr "$script_directory/gamesvr/";
+
+    section_end;
 fi
+
+
 
 
 #     ____ _____ _____ ___  ___  ______   _______      ______________ _____
@@ -395,45 +420,33 @@ fi
 #   \__, /\__,_/_/ /_/ /_/\___/____/ |___/_/         \___/____/\__, /\____/
 #  /____/                                                     /____/
 #
-if [ $mode_docker -eq true ] ; then
-	if [ $selected_rebuild_level -le 0 ] ; then
-		#remove containers made from this image
-		docker ps -a | grep nate/dockviz | awk '{print $1}' | xargs docker rm
-		#remove image
-		docker rmi -f nate/dockviz
-	fi
-
-	if [[ "$(docker images -q nate/dockviz 2> /dev/null)" == "" ]]; then
-		linked_directory="";
-	fi
-	
-	linked_directory="$script_directory/gamesvr-csgo/";
-else
-	linked_directory="";
-fi
-
 
 if [ $selected_rebuild_level -le 2 ] ; then
 
-	section_head "Building ll/gamesvr-csgo";
-	
-	docker_remove_image "ll/gamesvr-csgo";
+    section_head "Building ll/gamesvr-csgo";
 
-	if [ "$setting_contextualize_steam" = true ] ; then
-		echo "CONTEXTUALIZE_STEAM: Fetching CS:GO Files.."
-		
-		bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
-			+login anonymous \
-			+force_install_dir "$script_directory/gamesvr-csgo/" \
-			+app_update 740 \
-			+quit \
-			-validate;
-	fi
-	
-	docker build -t ll/gamesvr-csgo "$script_directory/gamesvr-csgo/";
+    docker_remove_image "ll/gamesvr-csgo";
+    
+    $destination_directory = "$script_directory/gamesvr-csgo"
 
-	section_end;
+    if [ "$setting_contextualize_steam" = true ] ; then
+        echo "CONTEXTUALIZE_STEAM: Fetching CS:GO Files.."
+
+        bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
+            +login anonymous \
+            +force_install_dir "$script_directory/gamesvr-csgo/" \
+            +app_update 740 \
+            +quit \
+            -validate;
+    fi
+
+    docker build -t ll/gamesvr-csgo "$script_directory/gamesvr-csgo/";
+
+    section_end;
 fi
+
+
+exit;
 
 
 #                                                                                   ____                     __
@@ -445,17 +458,14 @@ fi
 #
 if [ $selected_rebuild_level -le 3 ] ; then
 
-	section_head "Building ll/gamesvr-csgo-freeplay";
-	
-	docker_remove_image "ll/gamesvr-csgo-freeplay";
+    section_head "Building ll/gamesvr-csgo-freeplay";
 
-	docker build -t ll/gamesvr-csgo-freeplay "$script_directory/gamesvr-csgo-freeplay/";
+    docker_remove_image "ll/gamesvr-csgo-freeplay";
 
-	section_end;
+    docker build -t ll/gamesvr-csgo-freeplay "$script_directory/gamesvr-csgo-freeplay/";
+
+    section_end;
 fi
-
-
-exit;
 
 
 #                                                                                   __
@@ -467,13 +477,13 @@ exit;
 #
 if [ $selected_rebuild_level -le 3 ] ; then
 
-	section_head "Building ll/gamesvr-csgo-tourney";
-	
-	docker_remove_image "ll/gamesvr-csgo-tourney";
-	
-	docker build -t ll/gamesvr-csgo-tourney ./gamesvr-csgo-tourney/;
-	
-	section_end;
+    section_head "Building ll/gamesvr-csgo-tourney";
+
+    docker_remove_image "ll/gamesvr-csgo-tourney";
+
+    docker build -t ll/gamesvr-csgo-tourney ./gamesvr-csgo-tourney/;
+
+    section_end;
 fi
 
 
@@ -487,25 +497,25 @@ fi
 
 if [ $selected_rebuild_level -le 2 ] ; then
 
-	section_head "Building ll/gamesvr-hl2dm";
-	
-	docker_remove_image "ll/gamesvr-hl2dm";
+    section_head "Building ll/gamesvr-hl2dm";
 
-	if [ "$setting_contextualize_steam" = true ] ; then
+    docker_remove_image "ll/gamesvr-hl2dm";
 
-		echo "CONTEXTUALIZE_STEAM: Grabbing HL2DM Files.."
-		
-		bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
-			+login anonymous \
-			+force_install_dir "$script_directory/gamesvr-hl2dm/" \
-			+app_update 232370 \
-			+quit \
-			-validate;
-	fi
+    if [ "$setting_contextualize_steam" = true ] ; then
 
-	docker build -t ll/gamesvr-hl2dm ./gamesvr-hl2dm/;
+        echo "CONTEXTUALIZE_STEAM: Grabbing HL2DM Files.."
 
-	section_end;
+        bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
+            +login anonymous \
+            +force_install_dir "$script_directory/gamesvr-hl2dm/" \
+            +app_update 232370 \
+            +quit \
+            -validate;
+    fi
+
+    docker build -t ll/gamesvr-hl2dm ./gamesvr-hl2dm/;
+
+    section_end;
 fi
 
 
@@ -517,14 +527,14 @@ fi
 #  /____/                                                                                                /_/            /____/
 #
 if [ $selected_rebuild_level -le 3 ] ; then
-	
-	section_head "Building ll/gamesvr-hl2dm-freeplay";
-	
-	docker_remove_image "ll/gamesvr-hl2dm-freeplay";
-	
-	docker build -t ll/gamesvr-hl2dm-freeplay ./gamesvr-hl2dm-freeplay/;
 
-	section_end;
+    section_head "Building ll/gamesvr-hl2dm-freeplay";
+
+    docker_remove_image "ll/gamesvr-hl2dm-freeplay";
+
+    docker build -t ll/gamesvr-hl2dm-freeplay ./gamesvr-hl2dm-freeplay/;
+
+    section_end;
 fi
 
 
@@ -537,26 +547,27 @@ fi
 
 if [ $selected_rebuild_level -le 2 ] ; then
 
-	section_head "Building ll/gamesvr-tf2";
-	
-	docker_remove_image "ll/gamesvr-tf2";
-	
+    section_head "Building ll/gamesvr-tf2";
 
-	if [ "$setting_contextualize_steam" = true ] ; then
+    docker_remove_image "ll/gamesvr-tf2";
 
-		echo "CONTEXTUALIZE_STEAM: Grabbing TF2 Files.."
-		
-		bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
-			+login anonymous \
-			+force_install_dir "$script_directory/gamesvr-tf2/" \
-			+app_update 232250 \
-			+quit \
-			-validate;
 
-	fi
-		docker build -t ll/gamesvr-tf2 ./gamesvr-tf2/;
-	
-	section_end;
+    if [ "$setting_contextualize_steam" = true ] ; then
+
+        echo "CONTEXTUALIZE_STEAM: Grabbing TF2 Files.."
+
+        bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
+            +login anonymous \
+            +force_install_dir "$script_directory/gamesvr-tf2/" \
+            +app_update 232250 \
+            +quit \
+            -validate;
+
+    fi
+    
+    docker build -t ll/gamesvr-tf2 ./gamesvr-tf2/;
+
+    section_end;
 fi
 
 
@@ -569,16 +580,16 @@ fi
 #
 if [ $selected_rebuild_level -le 3 ] ; then
 
-	section_head "Building ll/gamesvr-tf2-blindfrag";
-	
-	docker_remove_image "ll/gamesvr-tf2-blindfrag";
-	
-	docker build -t ll/gamesvr-tf2-blindfrag ./gamesvr-tf2-blindfrag/;
-	
-	section_end;
+    section_head "Building ll/gamesvr-tf2-blindfrag";
+
+    docker_remove_image "ll/gamesvr-tf2-blindfrag";
+
+    docker build -t ll/gamesvr-tf2-blindfrag ./gamesvr-tf2-blindfrag/;
+
+    section_end;
 
 fi
-	
+
 
 #    _______________      ______                     __
 #   /_  __/ ____/__ \    / ____/_______  ___  ____  / /___ ___  __
@@ -589,13 +600,13 @@ fi
 
 if [ $selected_rebuild_level -le 3 ] ; then
 
-	section_head "Building ll/gamesvr-tf2-freeplay";
-	
-	docker_remove_image "ll/gamesvr-tf2-freeplay";
-	
-	docker build -t ll/gamesvr-tf2-freeplay ./gamesvr-tf2-freeplay/;
+    section_head "Building ll/gamesvr-tf2-freeplay";
 
-	section_end;
+    docker_remove_image "ll/gamesvr-tf2-freeplay";
+
+    docker build -t ll/gamesvr-tf2-freeplay ./gamesvr-tf2-freeplay/;
+
+    section_end;
 
 fi
 
@@ -609,13 +620,13 @@ fi
 #
 if [ $selected_rebuild_level -le 0 ] ; then
 
-	section_head "nginx:latest";
-	
-	echo "Pulling nginx:latest from Docker hub";
-	
-	docker pull nginx:latest;
-	
-	section_end;
+    section_head "nginx:latest";
+
+    echo "Pulling nginx:latest from Docker hub";
+
+    docker pull nginx:latest;
+
+    section_end;
 fi
 
 
@@ -628,24 +639,24 @@ fi
 
 if [ $selected_rebuild_level -le 3 ] ; then
 
-	section_head "Building ll/websvr-content.lan";
-	
-	docker_remove_image "ll/websvr-content.lan";
-	
-	docker build -t ll/websvr-content.lan ./websvr-content.lan/;
+    section_head "Building ll/websvr-content.lan";
 
-	section_end;
+    docker_remove_image "ll/websvr-content.lan";
+
+    docker build -t ll/websvr-content.lan ./websvr-content.lan/;
+
+    section_end;
 
 fi
 
 
 if [ $script_skip_update != true ] ; then
-	echo "Updaing self...";
-	find $script_directory -name \*dockerfile* -type f -delete	#can be removed once BEan's machines are clean of all instances of improperly-cased "dockerfile"
-	#update_script;
-	
-	#. "$script_fullpath" -z;		#Recursively re-run script; disable auto updating to prevent endless loop
-	#exit 0;
+    echo "Updaing self...";
+    find $script_directory -name \*dockerfile* -type f -delete	#can be removed once BEan's machines are clean of all instances of improperly-cased "dockerfile"
+    #update_script;
+
+    #. "$script_fullpath" -z;		#Recursively re-run script; disable auto updating to prevent endless loop
+    #exit 0;
 fi
 
 
