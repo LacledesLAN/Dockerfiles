@@ -6,6 +6,8 @@ ENV DEBIAN_FRONTEND="noninteractive" HOME="/gamesvr/csgo/" SERVER_NAME="ll/games
 
 COPY . /gamesvr/csgo/
 
+USER root
+
 RUN rm -f /gamesvr/csgo-freeplay/Dockerfile && \
     rm -f /gamesvr/csgo-freeplay/.dockerignore
 

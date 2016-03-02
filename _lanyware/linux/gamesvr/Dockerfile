@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND="noninteractive" HOME="/gamesvr/" SERVER_NAME="ll/gamesvr"
 
 # Install required packages and clean up unused dependencies
 RUN `##Set up container enviorment##` && \
-    useradd  -m --home /gamesvr/ container && \
+    useradd  -m --home /gamesvr/ container -c "Docker image user" && \
     `##Install dependencies##` && \
     apt-get update && \
     apt-get upgrade -y && \
