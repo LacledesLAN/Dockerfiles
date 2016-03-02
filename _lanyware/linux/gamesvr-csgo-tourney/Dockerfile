@@ -4,7 +4,10 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
 ENV DEBIAN_FRONTEND="noninteractive" SERVER_NAME="ll/gamesvr-csgo-tourney" 
 
-COPY . /gamesvr/csgo/
+COPY . /gamesvr/.csgo/
+
+RUN rm /gamesvr/.csgo/Dockerfile -f && \
+    rm /gamesvr/.csgo/.dockerignore -f
 
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
 RUN cd `mktemp -d` && \
@@ -40,5 +43,9 @@ RUN cd `mktemp -d` && \
 
 # Clean out tmp directory
 RUN rm -fr /tmp/*
+
+USER container
+
+ENV HOME /gamesvr/.csgo/
 
 WORKDIR /gamesvr/csgo/

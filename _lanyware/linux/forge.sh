@@ -18,12 +18,7 @@
 #=============================================================================================================
 #===  SETTINGS  ==============================================================================================
 #=============================================================================================================
-readonly debug_show_docker=true;
-readonly debug_contextual_show_ftp=true;
-readonly debug_contextual_show_github=true;
-readonly debug_contextual_show_steammcd=true;
-
-readonly setting_contextualize_steam=true;			# If steam apps will be added via docker build context.
+readonly setting_contextualize_steam=true;          # If steam apps will be added via docker build context.
 
 
 #=============================================================================================================
@@ -381,7 +376,7 @@ if [ $selected_rebuild_level -le 1 ] ; then
 
     docker_remove_image "ll/gamesvr";
     
-    $destination_directory = "$script_directory/gamesvr"
+    destination_directory="$script_directory/gamesvr";
 
     # Download and stage SteamCMD for build context
         echo -e -n "\Staging SteamCMD..";
@@ -390,7 +385,7 @@ if [ $selected_rebuild_level -le 1 ] ; then
         { bash "$destination_directory/_util/steamcmd/"steamcmd.sh +quit; }  &> /dev/null;
 
         if [ $? -ne 0 ] ; then
-            echo -n ".downloading.."
+            echo -n ".downloading..";
             
             #failed to run SteamCMD.  Download
             {
@@ -404,14 +399,12 @@ if [ $selected_rebuild_level -le 1 ] ; then
             } &> /dev/null;
         fi
 
-        echo ".updated...done."
+        echo ".updated...done.";
 
     docker build -t ll/gamesvr "$script_directory/gamesvr/";
 
     section_end;
 fi
-
-
 
 
 #     ____ _____ _____ ___  ___  ______   _______      ______________ _____
@@ -427,26 +420,19 @@ if [ $selected_rebuild_level -le 2 ] ; then
 
     docker_remove_image "ll/gamesvr-csgo";
     
-    $destination_directory = "$script_directory/gamesvr-csgo"
+    destination_directory="$script_directory/gamesvr-csgo";
+    
+    bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
+        +login anonymous \
+        +force_install_dir "$destination_directory/" \
+        +app_update 740 \
+        +quit \
+        -validate;
 
-    if [ "$setting_contextualize_steam" = true ] ; then
-        echo "CONTEXTUALIZE_STEAM: Fetching CS:GO Files.."
-
-        bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
-            +login anonymous \
-            +force_install_dir "$script_directory/gamesvr-csgo/" \
-            +app_update 740 \
-            +quit \
-            -validate;
-    fi
-
-    docker build -t ll/gamesvr-csgo "$script_directory/gamesvr-csgo/";
+    docker build -t ll/gamesvr-csgo "$destination_directory/";
 
     section_end;
 fi
-
-
-exit;
 
 
 #                                                                                   ____                     __
@@ -461,11 +447,69 @@ if [ $selected_rebuild_level -le 3 ] ; then
     section_head "Building ll/gamesvr-csgo-freeplay";
 
     docker_remove_image "ll/gamesvr-csgo-freeplay";
+    
+    destination_directory="$script_directory/gamesvr-csgo-freeplay";
+    
+    tput setaf 1;
+    echo "--=> gamesvr-srcds-metamod.linux";
+    tput sgr0; tput dim; tput setaf 6;
 
-    docker build -t ll/gamesvr-csgo-freeplay "$script_directory/gamesvr-csgo-freeplay/";
+    #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
+    cd `mktemp -d` && \
+        git clone git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux && \
+        rm -rf *.git && \
+        cd `ls -A | head -1` && \
+        rm -f *.md && \
+        cp -r * "$destination_directory/";
+
+
+    tput setaf 1;
+    echo "--=> gamesvr-srcds-sourcemod.linux";
+    tput sgr0; tput dim; tput setaf 6;
+
+    #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-sourcemod.linux"
+    cd `mktemp -d` && \
+        git clone git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux && \
+        rm -rf *.git && \
+        cd `ls -A | head -1` && \
+        rm -f *.md && \
+        cp -r * "$destination_directory/";
+
+
+    tput setaf 1;
+    echo "--=> gamesvr-srcds-csgo";
+    tput sgr0; tput dim; tput setaf 6;
+
+    #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-csgo"
+    cd `mktemp -d` && \
+        git clone git://github.com/LacledesLAN/gamesvr-srcds-csgo && \
+        rm -rf *.git && \
+        cd `ls -A | head -1` && \
+        rm -f *.md && \
+        cp -r * "$destination_directory/";
+
+
+    tput setaf 1;
+    echo "--=> gamesvr-srcds-freeplay";
+    tput sgr0; tput dim; tput setaf 6;
+
+    #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-freeplay"
+    cd `mktemp -d` && \
+        git clone git://github.com/LacledesLAN/gamesvr-srcds-csgo-freeplay && \
+        rm -rf *.git && \
+        cd `ls -A | head -1` && \
+        rm -f *.md && \
+        cp -r * "$destination_directory/";
+    
+
+
+    docker build -t ll/gamesvr-csgo-freeplay "$destination_directory/";
 
     section_end;
 fi
+
+
+exit;
 
 
 #                                                                                   __
