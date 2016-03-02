@@ -2,17 +2,16 @@ FROM ll/gamesvr
 
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
-ENV DEBIAN_FRONTEND="noninteractive" SERVER_NAME="ll/gamesvr-hl2dm" 
+ENV DEBIAN_FRONTEND="noninteractive" HOME="/gamesvr/hl2dm/" SERVER_NAME="ll/gamesvr-hl2dm" 
 
+USER root
 
 COPY . /gamesvr/hl2dm/
 
-# Install Half-Life 2 Deathmatch using SteamCMD
-RUN mkdir -p /gamesvr/hl2dm && \
-    bash /gamesvr/_util/steamcmd/steamcmd.sh +login anonymous +force_install_dir /gamesvr/hl2dm +app_update 232370 +quit
+RUN rm -f /gamesvr/hl2dm/Dockerfile && \
+    rm -f /gamesvr/hl2dm/.dockerignore
 
-# Clean out tmp directory
-RUN rm -fr /tmp/* `#Clean out temp directory to save space#`
+USER container
 
 WORKDIR /gamesvr/hl2dm/
 

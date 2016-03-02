@@ -426,8 +426,8 @@ if [ $selected_rebuild_level -le 2 ] ; then
         +login anonymous \
         +force_install_dir "$destination_directory/" \
         +app_update 740 \
-        +quit \
-        -validate;
+        -validate \
+        +quit;
 
     docker build -t ll/gamesvr-csgo "$destination_directory/";
 
@@ -509,9 +509,6 @@ if [ $selected_rebuild_level -le 3 ] ; then
 fi
 
 
-exit;
-
-
 #                                                                                   __
 #     ____ _____ _____ ___  ___  ______   _______      ______________ _____        / /_____  __  ___________  ___  __  __
 #    / __ `/ __ `/ __ `__ \/ _ \/ ___/ | / / ___/_____/ ___/ ___/ __ `/ __ \______/ __/ __ \/ / / / ___/ __ \/ _ \/ / / /
@@ -524,6 +521,65 @@ if [ $selected_rebuild_level -le 3 ] ; then
     section_head "Building ll/gamesvr-csgo-tourney";
 
     docker_remove_image "ll/gamesvr-csgo-tourney";
+    
+    destination_directory="$script_directory/gamesvr-csgo-tourney";
+    
+    #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
+    
+    tput setaf 1;
+    echo "--=> gamesvr-srcds-metamod.linux";
+    tput sgr0; tput dim; tput setaf 6;
+   
+    cd `mktemp -d` && \
+        git clone git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux && \
+        rm -rf *.git && \
+        cd `ls -A | head -1` && \
+        rm -f *.md && \
+        cp -r * "$destination_directory/";
+
+        
+        
+    #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-sourcemod.linux"
+    
+    tput setaf 1;
+    echo "--=> gamesvr-srcds-sourcemod.linux ";
+    tput sgr0; tput dim; tput setaf 6;
+    
+    RUN cd `mktemp -d` && \
+        git clone git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux && \
+        rm -rf *.git && \
+        cd `ls -A | head -1` && \
+        rm -f *.md && \
+        cp -r * "$destination_directory/";
+        
+        
+    #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-csgo"
+    
+    tput setaf 1;
+    echo "--=> gamesvr-srcds-csgo";
+    tput sgr0; tput dim; tput setaf 6;
+    
+    cd `mktemp -d` && \
+        git clone git://github.com/LacledesLAN/gamesvr-srcds-csgo && \
+        rm -rf *.git && \
+        cd `ls -A | head -1` && \
+        rm -f *.md && \
+        cp -r * "$destination_directory/";
+        
+        
+    #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-csgo-tourney"
+    
+    tput setaf 1;
+    echo "--=> gamesvr-srcds-csgo-tourney";
+    tput sgr0; tput dim; tput setaf 6;
+    
+    cd `mktemp -d` && \
+        git clone git://github.com/LacledesLAN/gamesvr-srcds-csgo-tourney && \
+        rm -rf *.git && \
+        cd `ls -A | head -1` && \
+        rm -f *.md && \
+        cp -r * "$destination_directory/";
+
 
     docker build -t ll/gamesvr-csgo-tourney ./gamesvr-csgo-tourney/;
 
@@ -544,23 +600,23 @@ if [ $selected_rebuild_level -le 2 ] ; then
     section_head "Building ll/gamesvr-hl2dm";
 
     docker_remove_image "ll/gamesvr-hl2dm";
-
-    if [ "$setting_contextualize_steam" = true ] ; then
-
-        echo "CONTEXTUALIZE_STEAM: Grabbing HL2DM Files.."
-
-        bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
-            +login anonymous \
-            +force_install_dir "$script_directory/gamesvr-hl2dm/" \
-            +app_update 232370 \
-            +quit \
-            -validate;
-    fi
+    
+    destination_directory="$script_directory/gamesvr-hl2dm";
+    
+    bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
+        +login anonymous \
+        +force_install_dir "$destination_directory/" \
+        +app_update 232370 \
+        -validate \
+        +quit;
 
     docker build -t ll/gamesvr-hl2dm ./gamesvr-hl2dm/;
 
     section_end;
 fi
+
+
+exit;
 
 
 #                                                       __    _____      __                ____                     __
