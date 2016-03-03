@@ -68,7 +68,7 @@ function draw_horizontal_rule() {
     return 0;
 }
 
-function import_github_repo() { # REPO; destination directory
+function import_github_repo() { # REPO url; destination directory
     cd `mktemp -d` && \
         git clone $1 && \
         rm -rf *.git && \
@@ -77,14 +77,17 @@ function import_github_repo() { # REPO; destination directory
         cp -r * $2
 }
 
-function import_steamapp() {    # APP ID; destination directory
-
-    bash /gamesvr/_util/steamcmd/steamcmd.sh \
+function import_steam_app() {    # APP ID; destination directory
+    bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
         +login anonymous \
         +force_install_dir $2 \
         +app_update $1 \
-        +quit \
-        -validate;
+        -validate \
+        +quit;
+}
+
+function import_steamcmd() {
+    echo "";
 }
 
 function section_head() {
@@ -121,8 +124,6 @@ function spinner() {
     done
     printf "    \b\b\b\b";
 }
-
-
 
 function warning_message() {
     tput setaf 1; tput bold;
@@ -383,12 +384,7 @@ if [ $selected_rebuild_level -le 2 ] ; then
     
     destination_directory="$script_directory/gamesvr-csgo";
     
-    bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
-        +login anonymous \
-        +force_install_dir "$destination_directory/" \
-        +app_update 740 \
-        -validate \
-        +quit;
+    import_steam_app 740 "$destination_directory/"
 
     docker build -t ll/gamesvr-csgo "$destination_directory/";
 
@@ -411,58 +407,25 @@ if [ $selected_rebuild_level -le 3 ] ; then
     
     destination_directory="$script_directory/gamesvr-csgo-freeplay";
     
+    
     tput setaf 1;
-    echo "--=> gamesvr-srcds-metamod.linux";
-    tput sgr0; tput dim; tput setaf 6;
-
-    #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
-    cd `mktemp -d` && \
-        git clone git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux && \
-        rm -rf *.git && \
-        cd `ls -A | head -1` && \
-        rm -f *.md && \
-        cp -r * "$destination_directory/";
-
-
-    tput setaf 1;
-    echo "--=> gamesvr-srcds-sourcemod.linux";
-    tput sgr0; tput dim; tput setaf 6;
-
-    #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-sourcemod.linux"
-    cd `mktemp -d` && \
-        git clone git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux && \
-        rm -rf *.git && \
-        cd `ls -A | head -1` && \
-        rm -f *.md && \
-        cp -r * "$destination_directory/";
-
-
-    tput setaf 1;
-    echo "--=> gamesvr-srcds-csgo";
-    tput sgr0; tput dim; tput setaf 6;
-
-    #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-csgo"
-    cd `mktemp -d` && \
-        git clone git://github.com/LacledesLAN/gamesvr-srcds-csgo && \
-        rm -rf *.git && \
-        cd `ls -A | head -1` && \
-        rm -f *.md && \
-        cp -r * "$destination_directory/";
-
-
-    tput setaf 1;
-    echo "--=> gamesvr-srcds-freeplay";
-    tput sgr0; tput dim; tput setaf 6;
-
-    #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-freeplay"
-    cd `mktemp -d` && \
-        git clone git://github.com/LacledesLAN/gamesvr-srcds-csgo-freeplay && \
-        rm -rf *.git && \
-        cd `ls -A | head -1` && \
-        rm -f *.md && \
-        cp -r * "$destination_directory/";
+    echo "--=> gamesvr-srcds-metamod.linux"; tput sgr0; tput dim; tput setaf 6;
+    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/csgo/";
     
 
+    tput setaf 1;
+    echo "--=> gamesvr-srcds-sourcemod.linux"; tput sgr0; tput dim; tput setaf 6;
+    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/csgo/";
+
+
+    tput setaf 1;
+    echo "--=> gamesvr-srcds-csgo"; tput sgr0; tput dim; tput setaf 6;
+    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-csgo" "$destination_directory/";
+
+
+    tput setaf 1;
+    echo "--=> gamesvr-srcds-freeplay"; tput sgr0; tput dim; tput setaf 6;
+    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-csgo-freeplay" "$destination_directory/";
 
     docker build -t ll/gamesvr-csgo-freeplay "$destination_directory/";
 
@@ -487,56 +450,32 @@ if [ $selected_rebuild_level -le 3 ] ; then
     
     #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
     tput setaf 1;
-    echo "--=> gamesvr-srcds-metamod.linux";
-    tput sgr0; tput dim; tput setaf 6;
-    cd `mktemp -d` && \
-        git clone git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux && \
-        rm -rf *.git && \
-        cd `ls -A | head -1` && \
-        rm -f *.md && \
-        cp -r * "$destination_directory/";
-
+    echo "--=> gamesvr-srcds-metamod.linux"; tput sgr0; tput dim; tput setaf 6;
+    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/csgo/";
 
 
     #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-sourcemod.linux"
     tput setaf 1;
-    echo "--=> gamesvr-srcds-sourcemod.linux ";
-    tput sgr0; tput dim; tput setaf 6;
-    cd `mktemp -d` && \
-        git clone git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux && \
-        rm -rf *.git && \
-        cd `ls -A | head -1` && \
-        rm -f *.md && \
-        cp -r * "$destination_directory/";
+    echo "--=> gamesvr-srcds-sourcemod.linux "; tput sgr0; tput dim; tput setaf 6;
+    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/csgo/";
 
 
 
     #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-csgo"
     tput setaf 1;
-    echo "--=> gamesvr-srcds-csgo";
-    tput sgr0; tput dim; tput setaf 6;
-    cd `mktemp -d` && \
-        git clone git://github.com/LacledesLAN/gamesvr-srcds-csgo && \
-        rm -rf *.git && \
-        cd `ls -A | head -1` && \
-        rm -f *.md && \
-        cp -r * "$destination_directory/";
+    echo "--=> gamesvr-srcds-csgo"; tput sgr0; tput dim; tput setaf 6;
+    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-csgo" "$destination_directory/";
 
 
 
     #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-csgo-tourney"
     tput setaf 1;
-    echo "--=> gamesvr-srcds-csgo-tourney";
-    tput sgr0; tput dim; tput setaf 6;
-    cd `mktemp -d` && \
-        git clone git://github.com/LacledesLAN/gamesvr-srcds-csgo-tourney && \
-        rm -rf *.git && \
-        cd `ls -A | head -1` && \
-        rm -f *.md && \
-        cp -r * "$destination_directory/";
+    echo "--=> gamesvr-srcds-csgo-tourney"; tput sgr0; tput dim; tput setaf 6;
+    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-csgo-tourney" "$destination_directory/";
 
 
-    docker build -t ll/gamesvr-csgo-tourney ./gamesvr-csgo-tourney/;
+
+    docker build -t ll/gamesvr-csgo-tourney "$destination_directory/";
 
     section_end;
 
@@ -560,12 +499,7 @@ if [ $selected_rebuild_level -le 2 ] ; then
 
     destination_directory="$script_directory/gamesvr-hl2dm";
 
-    bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
-        +login anonymous \
-        +force_install_dir "$destination_directory/" \
-        +app_update 232370 \
-        -validate \
-        +quit;
+    import_steam_app 232370 "$destination_directory/"
 
     docker build -t ll/gamesvr-hl2dm "$destination_directory/";
 
@@ -587,43 +521,25 @@ if [ $selected_rebuild_level -le 3 ] ; then
     docker_remove_image "ll/gamesvr-hl2dm-freeplay";
     
     destination_directory="$script_directory/gamesvr-hl2dm-freeplay";
-    
+
+
     #Get and stage from gamesvr GitHub Repo " gamesvr-srcds-metamod.linux"
     tput setaf 1;
-    echo "--=> gamesvr-srcds-metamod.linux";
-    tput sgr0; tput dim; tput setaf 6;
-    cd `mktemp -d` && \
-        git clone git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux && \
-        rm -rf *.git && \
-        cd `ls -A | head -1` && \
-        rm -f *.md && \
-        cp -r * "$destination_directory/";
-
+    echo "--=> gamesvr-srcds-metamod.linux"; tput sgr0; tput dim; tput setaf 6;
+    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/hl2mp/";
 
 
     #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-sourcemod.linux"
     tput setaf 1;
-    echo "--=> gamesvr-srcds-sourcemod.linux";
-    tput sgr0; tput dim; tput setaf 6;
-    cd `mktemp -d` && \
-        git clone git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux && \
-        rm -rf *.git && \
-        cd `ls -A | head -1` && \
-        rm -f *.md && \
-        cp -r * "$destination_directory/";
-
+    echo "--=> gamesvr-srcds-sourcemod.linux"; tput sgr0; tput dim; tput setaf 6;
+    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/hl2mp/";
 
 
     #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-hl2dm-freeplay"
     tput setaf 1;
-    echo "--=> gamesvr-srcds-hl2dm-freeplay";
-    tput sgr0; tput dim; tput setaf 6;
-    cd `mktemp -d` && \
-        git clone git://github.com/LacledesLAN/gamesvr-srcds-hl2dm-freeplay && \
-        rm -rf *.git && \
-        cd `ls -A | head -1` && \
-        rm -f *.md && \
-        cp -r * "$destination_directory/";
+    echo "--=> gamesvr-srcds-hl2dm-freeplay"; tput sgr0; tput dim; tput setaf 6;
+    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-hl2dm-freeplay" "$destination_directory/";
+
 
     docker build -t ll/gamesvr-hl2dm-freeplay "$destination_directory/";
 
@@ -646,13 +562,8 @@ if [ $selected_rebuild_level -le 2 ] ; then
     docker_remove_image "ll/gamesvr-tf2";
     
     destination_directory="$script_directory/gamesvr-tf2";
-
-    bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
-        +login anonymous \
-        +force_install_dir "$script_directory/gamesvr-tf2/" \
-        +app_update 232250 \
-        -validate \
-        +quit;
+    
+    import_steam_app 232250 "$destination_directory/"
 
     docker build -t ll/gamesvr-tf2 "$destination_directory/";
 
@@ -677,41 +588,20 @@ if [ $selected_rebuild_level -le 3 ] ; then
     
     #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
     tput setaf 1;
-    echo "--=> gamesvr-srcds-metamod.linux";
-    tput sgr0; tput dim; tput setaf 6;
-    cd `mktemp -d` && \
-        git clone git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux && \
-        rm -rf *.git && \
-        cd `ls -A | head -1` && \
-        rm -f *.md && \
-        cp -r * "$destination_directory/tf/";
-    
+    echo "--=> gamesvr-srcds-metamod.linux"; tput sgr0; tput dim; tput setaf 6;
+    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/tf/";
     
     
     #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-sourcemod.linux"
     tput setaf 1;
-    echo "--=> gamesvr-srcds-sourcemod.linux";
-    tput sgr0; tput dim; tput setaf 6;
-    cd `mktemp -d` && \
-        git clone git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux && \
-        rm -rf *.git && \
-        cd `ls -A | head -1` && \
-        rm -f *.md && \
-        cp -r * "$destination_directory/tf/";
-
+    echo "--=> gamesvr-srcds-sourcemod.linux"; tput sgr0; tput dim; tput setaf 6;
+    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/tf/";
     
-
+    
     #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-tf2-blindfrag"
     tput setaf 1;
-    echo "--=> gamesvr-srcds-tf2-blindfrag";
-    tput sgr0; tput dim; tput setaf 6;
-    cd `mktemp -d` && \
-        git clone git://github.com/LacledesLAN/gamesvr-srcds-tf2-blindfrag && \
-        rm -rf *.git && \
-        cd `ls -A | head -1` && \
-        rm -f *.md && \
-        cp -r * "$destination_directory/";
-
+    echo "--=> gamesvr-srcds-tf2-blindfrag"; tput sgr0; tput dim; tput setaf 6;
+    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-tf2-blindfrag" "$destination_directory/";
 
 
     docker build -t ll/gamesvr-tf2-blindfrag "$destination_directory/";
@@ -738,41 +628,20 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
     #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
     tput setaf 1;
-    echo "--=> gamesvr-srcds-metamod.linux";
-    tput sgr0; tput dim; tput setaf 6;
-    cd `mktemp -d` && \
-        git clone git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux && \
-        rm -rf *.git && \
-        cd `ls -A | head -1` && \
-        rm -f *.md && \
-        cp -r * "$destination_directory/tf/";
-
+    echo "--=> gamesvr-srcds-metamod.linux"; tput sgr0; tput dim; tput setaf 6;
+    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/tf/";
 
 
     #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-sourcemod.linux"
     tput setaf 1;
-    echo "--=> gamesvr-srcds-sourcemod.linux";
-    tput sgr0; tput dim; tput setaf 6;
-    cd `mktemp -d` && \
-        git clone git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux && \
-        rm -rf *.git && \
-        cd `ls -A | head -1` && \
-        rm -f *.md && \
-        cp -r * "$destination_directory/tf/";
-
+    echo "--=> gamesvr-srcds-sourcemod.linux"; tput sgr0; tput dim; tput setaf 6;
+    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/tf/";
 
 
     #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-tf2-freeplay"
     tput setaf 1;
-    echo "--=> gamesvr-srcds-tf2-freeplay";
-    tput sgr0; tput dim; tput setaf 6;
-    cd `mktemp -d` && \
-        git clone git://github.com/LacledesLAN/gamesvr-srcds-tf2-freeplay && \
-        rm -rf *.git && \
-        cd `ls -A | head -1` && \
-        rm -f *.md && \
-        cp -r * "$destination_directory/";
-
+    echo "--=> gamesvr-srcds-tf2-freeplay"; tput sgr0; tput dim; tput setaf 6;
+    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-tf2-freeplay" "$destination_directory/";
 
 
     docker build -t ll/gamesvr-tf2-freeplay "$destination_directory/";
