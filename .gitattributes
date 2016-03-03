@@ -3,6 +3,8 @@
 
 # Linux Files
 *.sh eol=lf
+/_lanyware/linux/*/Dockerfile eol=lf
+/_lanyware/linux/*/.dockerignore eol=fl
 
 # Windows Specific Files
 *.bat eol=crlf

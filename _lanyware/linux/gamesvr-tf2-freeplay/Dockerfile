@@ -2,35 +2,15 @@ FROM ll/gamesvr-tf2
 
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
-ENV DEBIAN_FRONTEND="noninteractive" SERVER_NAME="ll/gamesvr-tf2-freeplay" 
+ENV DEBIAN_FRONTEND="noninteractive" HOME="/gamesvr/tf2/" SERVER_NAME="ll/gamesvr-tf2-freeplay" 
+
+USER root
 
 COPY . /gamesvr/tf2/
 
-#Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
-RUN cd `mktemp -d` && \
-    git clone git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux && \
-    rm -rf *.git && \
-    cd `ls -A | head -1` && \
-    rm -f *.md && \
-    cp -r * /gamesvr/tf2/tf/
+RUN rm -f /gamesvr/tf2/Dockerfile && \
+    rm -f /gamesvr/tf2/.dockerignore
 
-#Get and stage from gamesvr GitHub Repo "gamesvr-srcds-sourcemod.linux"
-RUN cd `mktemp -d` && \
-    git clone git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux && \
-    rm -rf *.git && \
-    cd `ls -A | head -1` && \
-    rm -f *.md && \
-    cp -r * /gamesvr/tf2/tf/
-
-#Get and stage from gamesvr GitHub Repo "gamesvr-srcds-tf2-freeplay"
-RUN cd `mktemp -d` && \
-    git clone git://github.com/LacledesLAN/gamesvr-srcds-tf2-freeplay && \
-    rm -rf *.git && \
-    cd `ls -A | head -1` && \
-    rm -f *.md && \
-    cp -r * /gamesvr/tf2/
-
-# Clean out tmp directory
-RUN rm -fr /tmp/* `#Clean out temp directory to save space#`
+USER container
 
 WORKDIR /gamesvr/tf2/

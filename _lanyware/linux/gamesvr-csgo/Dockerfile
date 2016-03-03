@@ -4,6 +4,8 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
 ENV DEBIAN_FRONTEND="noninteractive" HOME="/gamesvr/csgo/" SERVER_NAME="ll/gamesvr-csgo" 
 
+USER root
+
 COPY . /gamesvr/csgo/
 
 USER container

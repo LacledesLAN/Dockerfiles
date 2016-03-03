@@ -1,16 +1,13 @@
 #!/bin/bash
 #=============================================================================================================
 #
-#   FILE:   rebuild-all.sh
+#   FILE:   forge.sh
 #
 #   LINE ARUGMENTS:
-#                   -z      Skip auto-update of self
+#                   -s      Skip steamcmd validation of installed applications
 #
 #   DESCRIPTION:    Maintain the LL Docker Image repository by building (and rebuilding) Docker images from
 #                   origin repositories and sources.
-#
-#   REQUIREMENTS:   Distribution: Debian-based Linux
-#                   Packges: curl docker git libc6-i386 lib32gcc1 lib32stdc++6 lib32tinfo5 lib32z1 tar wget
 #
 #=============================================================================================================
 
@@ -22,29 +19,13 @@ readonly setting_contextualize_steam=true;          # If steam apps will be adde
 
 
 #=============================================================================================================
-#===  VALIDATE HOST ENVIRONMENT REQUIREMENTS =================================================================
-#=============================================================================================================
-tput setaf 1; tput bold;
-cat /etc/debian_version  > /dev/null 2>&1 || { echo >&2 "Debian-based distribution required."; exit 1; }
-command -v curl > /dev/null 2>&1 || { echo >&2 "Package curl required.  Aborting."; exit 1; }
-command -v docker > /dev/null 2>&1 || { echo >&2 "Package docker required.  Aborting."; exit 1; }
-command -v git > /dev/null 2>&1 || { echo >&2 "Package git required.  Aborting."; exit 1; }
-dpkg -s lib32gcc1 > /dev/null 2>&1 || { echo >&2 "Library lib32gcc1 required.  Aborting."; exit 1; }
-dpkg -s lib32stdc++6  > /dev/null 2>&1 || { echo >&2 "Library lib32stdc++6 required.  Aborting."; exit 1; }
-dpkg -s lib32tinfo5  > /dev/null 2>&1 || { echo >&2 "Library lib32tinfo5 required.  Aborting."; exit 1; }
-dpkg -s lib32z1  > /dev/null 2>&1 || { echo >&2 "Library lib32z1 required.  Aborting."; exit 1; }
-command -v tar > /dev/null 2>&1 || { echo >&2 "Package tar required.  Aborting."; exit 1; }
-command -v wget > /dev/null 2>&1 || { echo >&2 "Package wget required.  Aborting."; exit 1; }
-tput sgr0;
-
-
-#=============================================================================================================
 #===  RUNTIME VARIABLES  =====================================================================================
 #=============================================================================================================
 declare mode_docker=true;
 declare mode_local=false;
 declare rebuild_level=0;
 declare script_skip_update=false;
+declare script_skip_steam_validate=false;
 
 readonly script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 readonly script_filename="$(basename "$(test -L "$0" && readlink "$0" || echo "$0")")";
@@ -96,11 +77,7 @@ function import_github_repo() { # REPO; destination directory
         cp -r * $2
 }
 
-function fliptable() {
-    echo "（╯°□°）╯ ┻━┻";
-}
-
-function import_steamapp() {	# APP ID; destination directory
+function import_steamapp() {    # APP ID; destination directory
 
     bash /gamesvr/_util/steamcmd/steamcmd.sh \
         +login anonymous \
@@ -113,7 +90,8 @@ function import_steamapp() {	# APP ID; destination directory
 function section_head() {
     echo "";
     echo "";
-    tput bold
+    tput sgr0;
+    tput bold;
     draw_horizontal_rule;
     echo "   $1";
     draw_horizontal_rule;
@@ -144,21 +122,7 @@ function spinner() {
     printf "    \b\b\b\b";
 }
 
-function update_script() {
-    tput smul;
-    echo -e -n "\n\nUPDATING SELF FROM GITHUB...";
-    tput sgr0;
 
-    cd `mktemp -d`;
-    git clone https://github.com/LacledesLAN/Dockerfiles;
-    rm -rf *.git;
-    cd `ls -A | head -1`;
-    rm -f *.md;
-    cd linux
-    cp -r * "$script_directory"
-
-    echo ".done."
-}
 
 function warning_message() {
     tput setaf 1; tput bold;
@@ -182,14 +146,14 @@ function warning_message() {
 #===  PROCESS LINE ARGUMENTS  ================================================================================
 #=============================================================================================================
 while getopts ":z" opt; do
-  case $opt in
-    z)
-      script_skip_update=true;
-      ;;
-    \?)
-      echo "Invalid option: -$OPTARG" >&2
-      ;;
-  esac
+    case $opt in
+        s)
+            script_skip_steam_validate=true;
+            ;;
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
+            ;;
+    esac
 done
 
 
@@ -226,15 +190,15 @@ tput sgr0;
 #= MENU
 #==============
 
-echo "    What do you want to rebuild?"
-echo "    "
+echo "    What do you want to rebuild?";
+echo "    ";
 echo "    0) Rebuild Everything";
 echo "    1) Rebuild Starting with the Category Level (Level 1+)";
 echo "    2) Rebuild Starting with the Apllication/Content Level (Level 2+)";
 echo "    3) Rebuild Starting with the Configuration Level (Level 3)";
-echo "    "
-echo "    u) Update script and exit "
-echo "    x) Exit without doing anything"
+echo "    ";
+echo "    x) Exit without doing anything";
+echo "    ";
 
 declare selected_rebuild_level=""
 until [ ! -z $selected_rebuild_level ]; do
@@ -249,10 +213,6 @@ until [ ! -z $selected_rebuild_level ]; do
         selected_rebuild_level="2";
     elif [ $x == 3 ] ; then
         selected_rebuild_level="3";
-    elif [ $x == "u" ] ; then
-        selected_rebuild_level="99";
-    elif [ $x == "U" ] ; then
-        selected_rebuild_level="99";
     elif [ $x == "x" ] ; then
         echo -e "\n\nAborting...\n"
         exit;
@@ -353,7 +313,7 @@ fi
 
 if [ $selected_rebuild_level -le 0 ] ; then
 
-    section_head "ubuntu";
+    section_head "ubuntu:latest";
 
     echo "Pulling ubuntu:latest from Docker hub";
 
@@ -405,6 +365,7 @@ if [ $selected_rebuild_level -le 1 ] ; then
 
     section_end;
 fi
+
 
 
 #     ____ _____ _____ ___  ___  ______   _______      ______________ _____
@@ -525,11 +486,9 @@ if [ $selected_rebuild_level -le 3 ] ; then
     destination_directory="$script_directory/gamesvr-csgo-tourney";
     
     #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
-    
     tput setaf 1;
     echo "--=> gamesvr-srcds-metamod.linux";
     tput sgr0; tput dim; tput setaf 6;
-   
     cd `mktemp -d` && \
         git clone git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux && \
         rm -rf *.git && \
@@ -537,42 +496,38 @@ if [ $selected_rebuild_level -le 3 ] ; then
         rm -f *.md && \
         cp -r * "$destination_directory/";
 
-        
-        
+
+
     #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-sourcemod.linux"
-    
     tput setaf 1;
     echo "--=> gamesvr-srcds-sourcemod.linux ";
     tput sgr0; tput dim; tput setaf 6;
-    
-    RUN cd `mktemp -d` && \
+    cd `mktemp -d` && \
         git clone git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux && \
         rm -rf *.git && \
         cd `ls -A | head -1` && \
         rm -f *.md && \
         cp -r * "$destination_directory/";
-        
-        
+
+
+
     #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-csgo"
-    
     tput setaf 1;
     echo "--=> gamesvr-srcds-csgo";
     tput sgr0; tput dim; tput setaf 6;
-    
     cd `mktemp -d` && \
         git clone git://github.com/LacledesLAN/gamesvr-srcds-csgo && \
         rm -rf *.git && \
         cd `ls -A | head -1` && \
         rm -f *.md && \
         cp -r * "$destination_directory/";
-        
-        
+
+
+
     #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-csgo-tourney"
-    
     tput setaf 1;
     echo "--=> gamesvr-srcds-csgo-tourney";
     tput sgr0; tput dim; tput setaf 6;
-    
     cd `mktemp -d` && \
         git clone git://github.com/LacledesLAN/gamesvr-srcds-csgo-tourney && \
         rm -rf *.git && \
@@ -584,7 +539,9 @@ if [ $selected_rebuild_level -le 3 ] ; then
     docker build -t ll/gamesvr-csgo-tourney ./gamesvr-csgo-tourney/;
 
     section_end;
+
 fi
+
 
 
 #                                                       __    _____      __
@@ -600,9 +557,9 @@ if [ $selected_rebuild_level -le 2 ] ; then
     section_head "Building ll/gamesvr-hl2dm";
 
     docker_remove_image "ll/gamesvr-hl2dm";
-    
+
     destination_directory="$script_directory/gamesvr-hl2dm";
-    
+
     bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
         +login anonymous \
         +force_install_dir "$destination_directory/" \
@@ -610,13 +567,10 @@ if [ $selected_rebuild_level -le 2 ] ; then
         -validate \
         +quit;
 
-    docker build -t ll/gamesvr-hl2dm ./gamesvr-hl2dm/;
+    docker build -t ll/gamesvr-hl2dm "$destination_directory/";
 
     section_end;
 fi
-
-
-exit;
 
 
 #                                                       __    _____      __                ____                     __
@@ -631,11 +585,51 @@ if [ $selected_rebuild_level -le 3 ] ; then
     section_head "Building ll/gamesvr-hl2dm-freeplay";
 
     docker_remove_image "ll/gamesvr-hl2dm-freeplay";
+    
+    destination_directory="$script_directory/gamesvr-hl2dm-freeplay";
+    
+    #Get and stage from gamesvr GitHub Repo " gamesvr-srcds-metamod.linux"
+    tput setaf 1;
+    echo "--=> gamesvr-srcds-metamod.linux";
+    tput sgr0; tput dim; tput setaf 6;
+    cd `mktemp -d` && \
+        git clone git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux && \
+        rm -rf *.git && \
+        cd `ls -A | head -1` && \
+        rm -f *.md && \
+        cp -r * "$destination_directory/";
 
-    docker build -t ll/gamesvr-hl2dm-freeplay ./gamesvr-hl2dm-freeplay/;
+
+
+    #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-sourcemod.linux"
+    tput setaf 1;
+    echo "--=> gamesvr-srcds-sourcemod.linux";
+    tput sgr0; tput dim; tput setaf 6;
+    cd `mktemp -d` && \
+        git clone git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux && \
+        rm -rf *.git && \
+        cd `ls -A | head -1` && \
+        rm -f *.md && \
+        cp -r * "$destination_directory/";
+
+
+
+    #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-hl2dm-freeplay"
+    tput setaf 1;
+    echo "--=> gamesvr-srcds-hl2dm-freeplay";
+    tput sgr0; tput dim; tput setaf 6;
+    cd `mktemp -d` && \
+        git clone git://github.com/LacledesLAN/gamesvr-srcds-hl2dm-freeplay && \
+        rm -rf *.git && \
+        cd `ls -A | head -1` && \
+        rm -f *.md && \
+        cp -r * "$destination_directory/";
+
+    docker build -t ll/gamesvr-hl2dm-freeplay "$destination_directory/";
 
     section_end;
 fi
+
 
 
 #    _______________
@@ -650,22 +644,17 @@ if [ $selected_rebuild_level -le 2 ] ; then
     section_head "Building ll/gamesvr-tf2";
 
     docker_remove_image "ll/gamesvr-tf2";
-
-
-    if [ "$setting_contextualize_steam" = true ] ; then
-
-        echo "CONTEXTUALIZE_STEAM: Grabbing TF2 Files.."
-
-        bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
-            +login anonymous \
-            +force_install_dir "$script_directory/gamesvr-tf2/" \
-            +app_update 232250 \
-            +quit \
-            -validate;
-
-    fi
     
-    docker build -t ll/gamesvr-tf2 ./gamesvr-tf2/;
+    destination_directory="$script_directory/gamesvr-tf2";
+
+    bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
+        +login anonymous \
+        +force_install_dir "$script_directory/gamesvr-tf2/" \
+        +app_update 232250 \
+        -validate \
+        +quit;
+
+    docker build -t ll/gamesvr-tf2 "$destination_directory/";
 
     section_end;
 fi
@@ -683,8 +672,49 @@ if [ $selected_rebuild_level -le 3 ] ; then
     section_head "Building ll/gamesvr-tf2-blindfrag";
 
     docker_remove_image "ll/gamesvr-tf2-blindfrag";
+    
+    destination_directory="$script_directory/gamesvr-tf2-blindfrag";
+    
+    #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
+    tput setaf 1;
+    echo "--=> gamesvr-srcds-metamod.linux";
+    tput sgr0; tput dim; tput setaf 6;
+    cd `mktemp -d` && \
+        git clone git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux && \
+        rm -rf *.git && \
+        cd `ls -A | head -1` && \
+        rm -f *.md && \
+        cp -r * "$destination_directory/tf/";
+    
+    
+    
+    #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-sourcemod.linux"
+    tput setaf 1;
+    echo "--=> gamesvr-srcds-sourcemod.linux";
+    tput sgr0; tput dim; tput setaf 6;
+    cd `mktemp -d` && \
+        git clone git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux && \
+        rm -rf *.git && \
+        cd `ls -A | head -1` && \
+        rm -f *.md && \
+        cp -r * "$destination_directory/tf/";
 
-    docker build -t ll/gamesvr-tf2-blindfrag ./gamesvr-tf2-blindfrag/;
+    
+
+    #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-tf2-blindfrag"
+    tput setaf 1;
+    echo "--=> gamesvr-srcds-tf2-blindfrag";
+    tput sgr0; tput dim; tput setaf 6;
+    cd `mktemp -d` && \
+        git clone git://github.com/LacledesLAN/gamesvr-srcds-tf2-blindfrag && \
+        rm -rf *.git && \
+        cd `ls -A | head -1` && \
+        rm -f *.md && \
+        cp -r * "$destination_directory/";
+
+
+
+    docker build -t ll/gamesvr-tf2-blindfrag "$destination_directory/";
 
     section_end;
 
@@ -704,7 +734,48 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
     docker_remove_image "ll/gamesvr-tf2-freeplay";
 
-    docker build -t ll/gamesvr-tf2-freeplay ./gamesvr-tf2-freeplay/;
+    destination_directory="$script_directory/gamesvr-tf2-freeplay";
+
+    #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
+    tput setaf 1;
+    echo "--=> gamesvr-srcds-metamod.linux";
+    tput sgr0; tput dim; tput setaf 6;
+    cd `mktemp -d` && \
+        git clone git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux && \
+        rm -rf *.git && \
+        cd `ls -A | head -1` && \
+        rm -f *.md && \
+        cp -r * "$destination_directory/tf/";
+
+
+
+    #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-sourcemod.linux"
+    tput setaf 1;
+    echo "--=> gamesvr-srcds-sourcemod.linux";
+    tput sgr0; tput dim; tput setaf 6;
+    cd `mktemp -d` && \
+        git clone git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux && \
+        rm -rf *.git && \
+        cd `ls -A | head -1` && \
+        rm -f *.md && \
+        cp -r * "$destination_directory/tf/";
+
+
+
+    #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-tf2-freeplay"
+    tput setaf 1;
+    echo "--=> gamesvr-srcds-tf2-freeplay";
+    tput sgr0; tput dim; tput setaf 6;
+    cd `mktemp -d` && \
+        git clone git://github.com/LacledesLAN/gamesvr-srcds-tf2-freeplay && \
+        rm -rf *.git && \
+        cd `ls -A | head -1` && \
+        rm -f *.md && \
+        cp -r * "$destination_directory/";
+
+
+
+    docker build -t ll/gamesvr-tf2-freeplay "$destination_directory/";
 
     section_end;
 
@@ -736,7 +807,6 @@ fi
 #  | |/ |/ / /  __/ / /_/ / (__  ) | |/ /  / /    /_____// /__  / /_/ / / / / // /_  /  __/ / / / // /_   _  / /  / /_/ /  / / / /
 #  |__/|__/  \___/ /_.___/ /____/  |___/  /_/            \___/  \____/ /_/ /_/ \__/  \___/ /_/ /_/ \__/  (_)/_/   \__,_/  /_/ /_/ 
 #
-
 if [ $selected_rebuild_level -le 3 ] ; then
 
     section_head "Building ll/websvr-content.lan";
@@ -750,21 +820,10 @@ if [ $selected_rebuild_level -le 3 ] ; then
 fi
 
 
-if [ $script_skip_update != true ] ; then
-    echo "Updaing self...";
-    find $script_directory -name \*dockerfile* -type f -delete	#can be removed once BEan's machines are clean of all instances of improperly-cased "dockerfile"
-    #update_script;
-
-    #. "$script_fullpath" -z;		#Recursively re-run script; disable auto updating to prevent endless loop
-    #exit 0;
-fi
-
 
 tput smul;
 echo -e "\n\n\n\n\nFINISHED\n";
-
 tput sgr0;
-
 
 
 echo "";
@@ -779,4 +838,3 @@ echo "";
 docker run --rm -v /var/run/docker.sock:/var/run/docker.sock nate/dockviz images -tl
 echo "";
 echo "";
-
