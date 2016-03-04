@@ -86,7 +86,7 @@ function import_steam_app() {    # APP ID; destination directory
         +quit;
 }
 
-function import_steamcmd() {
+function import_steam_cmd() {
     echo "";
 }
 
@@ -107,40 +107,6 @@ function section_end() {
     tput sgr0;
 }
 
-function read_key() {
-    read -n 1 x; while read -n 1 -t .1 y; do x="$x$y"; done
-}
-
-function spinner() {
-    local pid=$1
-    local delay=0.75
-    local spinstr='|/-\'
-    while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
-        local temp=${spinstr#?}
-        printf " [%c]  " "$spinstr";
-        local spinstr=$temp${spinstr%"$temp"}
-        sleep $delay;
-        printf "\b\b\b\b\b\b";
-    done
-    printf "    \b\b\b\b";
-}
-
-function warning_message() {
-    tput setaf 1; tput bold;
-    echo ""
-    echo "      .-------,      !!! WARNING !!!"
-    echo "    .'         '.  "
-    echo "  .'  _ ___ _ __ '.      $1"
-    echo "  |  (_' | / \|_) |"
-    echo "  |  ,_) | \_/|   |      $2"
-    echo "  '.             .'"
-    echo "    '.         .'  "
-    echo "      '-------'    "
-    tput sgr0;
-    echo "  Press any key to continue..."
-
-    read_key;
-}
 
 
 #=============================================================================================================
