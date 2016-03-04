@@ -86,8 +86,32 @@ function import_steam_app() {    # APP ID; destination directory
         +quit;
 }
 
-function import_steam_cmd() {
+function import_steam_cmd() { # destination directory
     echo "";
+
+    mkdir -p "$1";
+
+    echo -e -n "\tChecking SteamCMD..";
+    
+    { bash "$1/"steamcmd.sh +quit; }  &> /dev/null;    
+
+    if [ $? -ne 0 ] ; then
+        echo -n ".downloading.."
+
+        #failed to run SteamCMD.  Download
+        {
+            rm -rf "$1/*";
+
+            wget -qO- -r --tries=10 --waitretry=20 --output-document=tmp.tar.gz http://media.steampowered.com/installer/steamcmd_linux.tar.gz;
+            tar -xvzf tmp.tar.gz -C "$1/";
+            rm tmp.tar.gz
+
+            bash "$1/"steamcmd.sh +quit;
+        } &> /dev/null;
+    fi
+
+    echo ".updated...done."
+
 }
 
 function section_head() {
@@ -195,40 +219,7 @@ echo -e "\n\nENVIRONMENT SETUP";
 tput sgr0;
 
 #=========[ Prep Steam contextualization requirements ]-------------------------------------------------------
-if [ "$setting_contextualize_steam" = true ] ; then
 
-    echo "setting_contextualize_steam is Enabled.";
-    echo -e "\tSteam apps will be added through docker build context: reducing bandwidth at the cost of disk space. ";
-
-    echo -e -n "\tVerifying directory structure...";
-    mkdir -p "$script_directory/gamesvr/_util/steamcmd";
-    echo ".good.";
-
-    echo -e -n "\tChecking SteamCMD..";
-
-    { bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh +quit; }  &> /dev/null;
-
-    if [ $? -ne 0 ] ; then
-        echo -n ".downloading.."
-        
-        #failed to run SteamCMD.  Download
-        {
-            rm -rf "$script_directory/gamesvr/_util/steamcmd/*";
-
-            wget -qO- -r --tries=10 --waitretry=20 --output-document=tmp.tar.gz http://media.steampowered.com/installer/steamcmd_linux.tar.gz;
-            tar -xvzf tmp.tar.gz -C "$script_directory/gamesvr/_util/steamcmd";
-            rm tmp.tar.gz
-            
-            bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh +quit;
-        } &> /dev/null;
-    fi
-
-    echo ".updated...done."
-else
-    echo "setting_contextualize_steam is Disabled.";
-fi
-
-echo "";
 
 tput smul
 echo -e "\nDOCKER CLEAN UP";
@@ -302,29 +293,10 @@ if [ $selected_rebuild_level -le 1 ] ; then
     section_head "Building ll/gamesvr";
 
     docker_remove_image "ll/gamesvr";
-    
+
     destination_directory="$script_directory/gamesvr";
 
-    # Download and stage SteamCMD for build context
-        echo -e -n "\Staging SteamCMD..";
-        { mkdir -p "$destination_directory/_util/steamcmd"; } &> /dev/null;
-        
-        { bash "$destination_directory/_util/steamcmd/"steamcmd.sh +quit; }  &> /dev/null;
-
-        if [ $? -ne 0 ] ; then
-            echo -n ".downloading..";
-            
-            #failed to run SteamCMD.  Download
-            {
-                rm -rf "$destination_directory/_util/steamcmd/*";
-
-                wget -qO- -r --tries=10 --waitretry=20 --output-document=tmp.tar.gz http://media.steampowered.com/installer/steamcmd_linux.tar.gz;
-                tar -xvzf tmp.tar.gz -C "$destination_directory/_util/steamcmd";
-                rm tmp.tar.gz
-                
-                bash "$destination_directory/_util/steamcmd/"steamcmd.sh +quit;
-            } &> /dev/null;
-        fi
+    import_steam_cmd "$destination_directory/_util/steamcmd";
 
         echo ".updated...done.";
 
@@ -332,7 +304,6 @@ if [ $selected_rebuild_level -le 1 ] ; then
 
     section_end;
 fi
-
 
 
 #     ____ _____ _____ ___  ___  ______   _______      ______________ _____
