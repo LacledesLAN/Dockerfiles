@@ -9,7 +9,7 @@ RUN `##Set up container enviorment##` && \
     useradd  -m --home /gamesvr/ container -c "Docker image user" && \
     `##Install dependencies##` && \
     apt-get update && \
-    apt-get install -y --no-install-recommends libc6-i386 lib32gcc1 lib32stdc++6 lib32tinfo5 lib32z1 && \
+    apt-get install -y --no-install-recommends tree libc6-i386 lib32gcc1 lib32stdc++6 lib32tinfo5 lib32z1 && \
     apt-get -y autoremove && \
     apt-get -y clean && \
     rm -rf /var/lib/apt/lists/* && \
