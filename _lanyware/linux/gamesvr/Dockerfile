@@ -2,7 +2,7 @@ FROM ubuntu:latest
 
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
-ENV DEBIAN_FRONTEND="noninteractive" HOME="/gamesvr/" SERVER_NAME="ll/gamesvr"
+ENV HOME="/gamesvr/" SERVER_NAME="ll/gamesvr"
 
 # Install required packages and clean up unused dependencies
 RUN `##Set up container enviorment##` && \
@@ -18,8 +18,6 @@ RUN `##Set up container enviorment##` && \
     rm -f /gamesvr/.dockerignore
 
 COPY . /gamesvr/
-
-USER container
 
 WORKDIR /gamesvr
 
