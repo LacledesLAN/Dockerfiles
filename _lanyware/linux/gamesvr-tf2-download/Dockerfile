@@ -2,7 +2,7 @@ FROM ll/gamesvr-tf2
 
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
-ENV DEBIAN_FRONTEND="noninteractive" SERVER_NAME="ll/gamesvr-tf2-download" 
+ENV SERVER_NAME="ll/gamesvr-tf2-download" 
 
 COPY . /gamesvr/tf2/
 

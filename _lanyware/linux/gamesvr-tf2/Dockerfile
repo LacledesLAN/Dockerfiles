@@ -2,16 +2,12 @@ FROM ll/gamesvr
 
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
-ENV DEBIAN_FRONTEND="noninteractive" HOME="/gamesvr/tf2/" SERVER_NAME="ll/gamesvr-tf2"
-
-USER root
+ENV HOME="/gamesvr/tf2/" SERVER_NAME="ll/gamesvr-tf2"
 
 COPY . /gamesvr/tf2/
 
 RUN rm -f /gamesvr/hl2dm/Dockerfile && \
     rm -f /gamesvr/hl2dm/.dockerignore
-
-USER container
 
 WORKDIR /gamesvr/tf2/
 
