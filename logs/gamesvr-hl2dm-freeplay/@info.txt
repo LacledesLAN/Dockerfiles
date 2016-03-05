@@ -1,0 +1,1 @@
+Log files from gamesvr-hl2dm-freeplay will be placed in here.  This text file ensure that the directory is created from the LANYWARE GitHub repo.
