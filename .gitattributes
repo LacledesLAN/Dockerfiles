@@ -4,7 +4,7 @@
 # Linux Files
 *.sh eol=lf
 /_lanyware/linux/*/Dockerfile eol=lf
-/_lanyware/linux/*/.dockerignore eol=fl
+/_lanyware/linux/*/.dockerignore eol=lf
 
 # Windows Specific Files
 *.bat eol=crlf
