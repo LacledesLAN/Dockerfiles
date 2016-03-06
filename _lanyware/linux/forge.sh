@@ -161,8 +161,13 @@ function empty_folder() {
     echo "Clearing folder of all contents";
     echo -e "\t[Target] $1";
     tput sgr0; tput dim; tput setaf 6;
+    
+    # Recursively delete all directories in target folder
+    find "$1/" -mindepth 1 -type d -exec rm -R {};
+    
+    # Delete all files in target folder excep "Dockerfile" and ".dockerignore"
+    find "$1/" -type f -not -name Dockerfile -not -name .dockerignore -exec rm -f {};
 
-    rm -rf "$1/*"
     echo -e "";
 }
 
