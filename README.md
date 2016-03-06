@@ -22,6 +22,7 @@ Where "<USER>" is your local account. Log out and back in for change to take aff
 **5. Set permissions**
 
 `chmod +x ~/*.sh`
+
 `chmod +x ~/_lanyware/linux/*.sh`
 
 
