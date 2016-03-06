@@ -344,7 +344,7 @@ if [ $selected_rebuild_level -le 3 ] ; then
     
     destination_directory="$script_directory/gamesvr-csgo-freeplay";
 
-    rm -rf "$script_directory/gamesvr-csgo-freeplay";
+    rm -rf "$script_directory/gamesvr-csgo-freeplay/";
 
     tput setaf 1;
     echo "--=> gamesvr-srcds-metamod.linux"; tput sgr0; tput dim; tput setaf 6;
@@ -526,7 +526,7 @@ if [ $selected_rebuild_level -le 3 ] ; then
     
     destination_directory="$script_directory/gamesvr-tf2-blindfrag";
     
-    rm -rf "$script_directory/gamesvr-tf2-blindfrag";
+    rm -rf "$script_directory/gamesvr-tf2-blindfrag/";
     
     #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
     tput setaf 1;
