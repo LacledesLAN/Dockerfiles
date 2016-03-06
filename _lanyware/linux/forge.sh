@@ -343,8 +343,9 @@ if [ $selected_rebuild_level -le 3 ] ; then
     docker_remove_image "ll/gamesvr-csgo-freeplay";
     
     destination_directory="$script_directory/gamesvr-csgo-freeplay";
-    
-    
+
+    rm -rf "$script_directory/gamesvr-csgo-freeplay";
+
     tput setaf 1;
     echo "--=> gamesvr-srcds-metamod.linux"; tput sgr0; tput dim; tput setaf 6;
     import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/csgo/";
@@ -384,6 +385,8 @@ if [ $selected_rebuild_level -le 3 ] ; then
     docker_remove_image "ll/gamesvr-csgo-tourney";
     
     destination_directory="$script_directory/gamesvr-csgo-tourney";
+    
+    rm -rf "$script_directory/gamesvr-csgo-tourney/";
     
     #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
     tput setaf 1;
@@ -457,6 +460,8 @@ if [ $selected_rebuild_level -le 3 ] ; then
     docker_remove_image "ll/gamesvr-hl2dm-freeplay";
     
     destination_directory="$script_directory/gamesvr-hl2dm-freeplay";
+    
+    rm -rf "$script_directory/gamesvr-hl2dm-freeplay/";
 
 
     #Get and stage from gamesvr GitHub Repo " gamesvr-srcds-metamod.linux"
@@ -475,7 +480,6 @@ if [ $selected_rebuild_level -le 3 ] ; then
     tput setaf 1;
     echo "--=> gamesvr-srcds-hl2dm-freeplay"; tput sgr0; tput dim; tput setaf 6;
     import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-hl2dm-freeplay" "$destination_directory/";
-
 
     docker build -t ll/gamesvr-hl2dm-freeplay "$destination_directory/";
 
@@ -522,6 +526,8 @@ if [ $selected_rebuild_level -le 3 ] ; then
     
     destination_directory="$script_directory/gamesvr-tf2-blindfrag";
     
+    rm -rf "$script_directory/gamesvr-tf2-blindfrag";
+    
     #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
     tput setaf 1;
     echo "--=> gamesvr-srcds-metamod.linux"; tput sgr0; tput dim; tput setaf 6;
@@ -561,6 +567,8 @@ if [ $selected_rebuild_level -le 3 ] ; then
     docker_remove_image "ll/gamesvr-tf2-freeplay";
 
     destination_directory="$script_directory/gamesvr-tf2-freeplay";
+    
+    rm -rf "$script_directory/gamesvr-tf2-freeplay/";
 
     #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-metamod.linux"
     tput setaf 1;
@@ -578,7 +586,6 @@ if [ $selected_rebuild_level -le 3 ] ; then
     tput setaf 1;
     echo "--=> gamesvr-srcds-tf2-freeplay"; tput sgr0; tput dim; tput setaf 6;
     import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-tf2-freeplay" "$destination_directory/";
-
 
     docker build -t ll/gamesvr-tf2-freeplay "$destination_directory/";
 
