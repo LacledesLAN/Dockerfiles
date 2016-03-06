@@ -36,7 +36,6 @@ readonly script_version=$(stat -c %y "$script_fullpath");
 #=============================================================================================================
 #===  RUNTIME FUNCTIONS  =====================================================================================
 #=============================================================================================================
-
 function docker_remove_image() {
     command -v docker > /dev/null 2>&1 || { echo >&2 "Docker is required.  Aborting."; return 999; }
 
@@ -61,7 +60,9 @@ function docker_remove_image() {
     fi
 
     echo ".done.";
+    echo -e "";
 }
+
 
 function gfx_horizontal_rule() {
     printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =;
@@ -91,19 +92,29 @@ function gfx_section_end() {
 function import_github_repo() { # REPO url; destination directory
     #Header
     tput setaf 2;
-    echo "--=> $1";
+    echo "Importing GITHub Repo";
+    echo -e "\t[Source] $1";
+    echo -e "\t[Destination] $2";
     tput sgr0; tput dim; tput setaf 6;
+    
+    mkdir -p "$2";
 
-    cd `mktemp -d` && \
-        git clone $1 && \
-        rm -rf *.git && \
-        cd `ls -A | head -1` && \
-        rm -f *.md && \
-        cp -r * $2;
+    {
+        cd `mktemp -d` && \
+            git clone "$1" && \
+            rm -rf *.git && \
+            cd `ls -A | head -1` && \
+            rm -f *.md && \
+            cp -r * "$2";
+    } &> /dev/null;
+    
+    echo -e "";
 }
 
 
 function import_steam_app() {    # APP ID; destination directory
+    mkdir -p "$2";
+
     bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
         +login anonymous \
         +force_install_dir $2 \
@@ -114,18 +125,20 @@ function import_steam_app() {    # APP ID; destination directory
 
 
 function import_steam_cmd() { # destination directory
-    echo "";
+    #Header
+    tput setaf 6;
+    echo -e "\tVerifying SteamCMD";
+    echo -e "\t[Target Directory] $1";
+    tput sgr0; tput dim; tput setaf 6;
 
     mkdir -p "$1";
-
-    echo -e -n "\tChecking SteamCMD..";
     
     { bash "$1/"steamcmd.sh +quit; }  &> /dev/null;    
 
     if [ $? -ne 0 ] ; then
         echo -n ".downloading.."
 
-        #failed to run SteamCMD.  Download
+        #failed to run SteamCMD.  Download it.
         {
             rm -rf "$1/*";
 
@@ -138,16 +151,19 @@ function import_steam_cmd() { # destination directory
     fi
 
     echo ".updated...done."
+    echo -e "";
 }
 
 
 function empty_folder() {
     #Header
-    tput setaf 1;
-    echo "--=> Clearing directory $1 of all contents";
+    tput setaf 6;
+    echo "Clearing folder of all contents";
+    echo -e "\t[Target] $1";
     tput sgr0; tput dim; tput setaf 6;
-    
+
     rm -rf "$1/*"
+    echo -e "";
 }
 
 
@@ -373,6 +389,7 @@ if [ $selected_rebuild_level -le 3 ] ; then
     docker build -t ll/gamesvr-csgo-freeplay "$destination_directory/";
 
     gfx_section_end;
+
 fi
 
 
@@ -394,7 +411,7 @@ if [ $selected_rebuild_level -le 3 ] ; then
     empty_folder "$script_directory/gamesvr-csgo-tourney";
     
     import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/csgo/";
-
+    
     import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/csgo/";
 
     import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-csgo" "$destination_directory/";
@@ -447,7 +464,7 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
     destination_directory="$script_directory/gamesvr-hl2dm-freeplay";
 
-    empty_folder "$script_directory/gamesvr-hl2dm-freeplay";
+    empty_folder "$destination_directory";
 
     import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/hl2mp/";
 
@@ -569,7 +586,7 @@ fi
 #  | | /| / / / _ \  / __ \  / ___/| | / /  / ___/ ______ / ___/ / __ \  / __ \ / __/ / _ \  / __ \ / __/     / /  / __ `/  / __ \
 #  | |/ |/ / /  __/ / /_/ / (__  ) | |/ /  / /    /_____// /__  / /_/ / / / / // /_  /  __/ / / / // /_   _  / /  / /_/ /  / / / /
 #  |__/|__/  \___/ /_.___/ /____/  |___/  /_/            \___/  \____/ /_/ /_/ \__/  \___/ /_/ /_/ \__/  (_)/_/   \__,_/  /_/ /_/ 
-#
+#                                                                                                                                 
 if [ $selected_rebuild_level -le 3 ] ; then
 
     gfx_section_start "Building ll/websvr-content.lan";
