@@ -2,13 +2,15 @@
 Install Instructions (Debian-based)
 -----------------------------------
 
-**1. Download repo**
+**1. Install misc dependancies**
+
+` sudo apt-get install -y curl discus htop git libc6-i386 lib32gcc1 lib32stdc++6 lib32tinfo5 lib32z1 tar tree wget`
+
+**2. Download repo into your home directory**
 
 Download this repo and stage to your home directory (~/).
 
-**2. Install misc dependancies**
-
-` sudo apt-get install -y curl discus htop git libc6-i386 lib32gcc1 lib32stdc++6 lib32tinfo5 lib32z1 tar tree wget`
+`cd ~; git clone git://github.com/LacledesLAN/LANYWARE`
 
 **3. Install Docker**
 
