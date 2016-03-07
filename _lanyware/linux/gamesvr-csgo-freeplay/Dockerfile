@@ -4,9 +4,11 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
 ENV HOME="/gamesvr/csgo/" SERVER_NAME="ll/gamesvr-csgo-freeplay"
 
-COPY . /gamesvr/csgo/
+COPY ./files/ /gamesvr/csgo/
 
-RUN rm -f /gamesvr/csgo/Dockerfile && \
-    rm -f /gamesvr/csgo/.dockerignore
+RUN `##Set up container enviorment##` && \
+    useradd  -m --home /gamesvr/csgo/ gamesvr-csgo-freeplay -c "Docker container user for ll/gamesvr-csgo-freeplay"
+
+USER gamesvr-csgo-freeplay
 
 WORKDIR /gamesvr/csgo/

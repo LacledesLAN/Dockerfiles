@@ -21,16 +21,19 @@ readonly setting_contextualize_steam=true;          # If steam apps will be adde
 #=============================================================================================================
 #===  RUNTIME VARIABLES  =====================================================================================
 #=============================================================================================================
-declare mode_docker=true;
-declare mode_local=false;
-declare rebuild_level=0;
-declare script_skip_update=false;
+declare MODE_DOCKER_LIBRARY=false;
+declare MODE_LOCAL_SERVER=false;
+
+declare DOCKER_INSTALLED=false;
+declare DOCKER_REBUILD_LEVEL="";
+
+
 declare script_skip_steam_validate=false;
 
-readonly script_directory="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
-readonly script_filename="$(basename "$(test -L "$0" && readlink "$0" || echo "$0")")";
-readonly script_fullpath="$script_directory/$script_filename";
-readonly script_version=$(stat -c %y "$script_fullpath");
+readonly SCRIPT_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
+readonly SCRIPT_FILENAME="$(basename "$(test -L "$0" && readlink "$0" || echo "$0")")";
+readonly SCRIPT_FULLPATH="$SCRIPT_DIRECTORY/$SCRIPT_FILENAME";
+readonly SCRIPT_VERSION=$(stat -c %y "$SCRIPT_FULLPATH");
 
 
 #=============================================================================================================
@@ -91,11 +94,9 @@ function gfx_section_end() {
 
 function import_github_repo() { # REPO url; destination directory
     #Header
-    tput setaf 2;
     echo "Importing GITHub Repo";
     echo -e "\t[Source] $1";
     echo -e "\t[Destination] $2";
-    tput sgr0; tput dim; tput setaf 6;
     
     mkdir -p "$2";
 
@@ -115,7 +116,7 @@ function import_github_repo() { # REPO url; destination directory
 function import_steam_app() {    # APP ID; destination directory
     mkdir -p "$2";
 
-    bash "$script_directory/gamesvr/_util/steamcmd/"steamcmd.sh \
+    bash "$SCRIPT_DIRECTORY/gamesvr/files/_util/steamcmd/"steamcmd.sh \
         +login anonymous \
         +force_install_dir $2 \
         +app_update $1 \
@@ -160,16 +161,84 @@ function empty_folder() {
     tput setaf 6;
     echo "Clearing folder of all contents";
     echo -e "\t[Target] $1";
-    tput sgr0; tput dim; tput setaf 6;
+    
+    #make sure target folder exists
+    mkdir -p "$1";
     
     # Recursively delete all directories in target folder
-    find "$1/" -mindepth 1 -type d -exec rm -R {};
+    { find "$1/" -mindepth 1 -type d -exec rm -R {}; }  &> /dev/null;  
     
     # Delete all files in target folder excep "Dockerfile" and ".dockerignore"
-    find "$1/" -type f -not -name Dockerfile -not -name .dockerignore -exec rm -f {};
+    { find "$1/" -type f -exec rm -f {};  }  &> /dev/null;  
 
-    echo -e "";
+    echo -e "\n";
 }
+
+
+function menu_docker_library() {
+    tput setaf 3; tput dim;
+    echo "";
+    echo "    ___          _             _    _ _                      ";
+    echo "   |   \ ___  __| |_____ _ _  | |  (_) |__ _ _ __ _ _ _ _  _ ";
+    echo "   | |) / _ \/ _| / / -_) '_| | |__| | '_ \ '_/ _\` | '_| || |";
+    echo "   |___/\___/\__|_\_\___|_|   |____|_|_.__/_| \__,_|_|  \_, |";
+    echo "                                                        |__/ ";
+    echo "";
+    tput sgr0;
+    
+    echo "    What level do you want to rebuild?";
+    echo "    ";
+    echo "    0) Rebuild Everything";
+    echo "    1) Rebuild Starting with the Category Level (Level 1+)";
+    echo "    2) Rebuild Starting with the Apllication/Content Level (Level 2+)";
+    echo "    3) Rebuild Starting with the Configuration Level (Level 3)";
+    echo "    ";
+    echo "    x) Exit without doing anything";
+    echo "    ";
+
+    until [ ! -z $DOCKER_REBUILD_LEVEL ]; do
+        read -n 1 x; while read -n 1 -t .1 y; do x="$x$y"; done
+
+        if [ $x == 0 ] ; then
+            DOCKER_REBUILD_LEVEL="0";
+            bash "$SCRIPT_DIRECTORY"/gfx-allthethings.sh
+        elif [ $x == 1 ] ; then
+            DOCKER_REBUILD_LEVEL="1";
+        elif [ $x == 2 ] ; then
+            DOCKER_REBUILD_LEVEL="2";
+        elif [ $x == 3 ] ; then
+            DOCKER_REBUILD_LEVEL="3";
+        elif [ $x == "x" ] ; then
+            echo -e "\n\nAborting...\n"
+            exit;
+        elif [ $x == "X" ] ; then
+            echo -e "\n\nAborting...\n"
+            exit;
+        fi
+    done
+}
+
+
+function menu_local_server() {
+    tput setaf 3; tput dim;
+    echo "";
+    echo "    _                 _   ___                      ";
+    echo "   | |   ___  __ __ _| | / __| ___ _ ___ _____ _ _ ";
+    echo "   | |__/ _ \/ _/ _\` | | \__ \/ -_) '_\ V / -_) '_|";
+    echo "   |____\___/\__\__,_|_| |___/\___|_|  \_/\___|_|  ";
+    echo "";
+    tput sgr0;
+
+}
+
+
+#=============================================================================================================
+#===  SERVER BUILDER FUNCTIONS  ==============================================================================
+#=============================================================================================================
+function build_gamesvr_csgo() {
+
+}
+
 
 
 #=============================================================================================================
@@ -197,7 +266,7 @@ gfx_horizontal_rule;
 tput sgr0;
 echo -n "   LL Server Build Tool ";
 tput setaf 2; tput dim;
-echo "(build: $script_version)";
+echo "(build: $SCRIPT_VERSION)";
 tput sgr0;
 gfx_horizontal_rule;
 
@@ -216,27 +285,69 @@ echo -e "\n";
 tput sgr0;
 
 
+
+DOCKER_INSTALLED=true;
+command -v docker > /dev/null 2>&1 || { DOCKER_INSTALLED=false; }
+
+if [ "$DOCKER_INSTALLED" = true ] ; then
+    echo "    What are we managing?";
+    echo "    ";
+    echo "    D) Docker image library";
+    echo "    L) Game Server on localhost";
+    echo "    ";
+    echo "    X) Exit without doing anything";
+    echo "    ";
+    
+    until [ "$MODE_DOCKER_LIBRARY" != "$MODE_LOCAL_SERVER" ]; do
+        read -n 1 x; while read -n 1 -t .1 y; do x="$x$y"; done
+
+        if [ $x == "d" ] ; then
+            MODE_DOCKER_LIBRARY=true;
+            menu_docker_library;
+        elif [ $x == "D" ] ; then
+            MODE_DOCKER_LIBRARY=true;
+            menu_docker_library;
+        elif [ $x == "l" ] ; then
+            MODE_LOCAL_SERVER=true;
+            menu_local_server;
+        elif [ $x == "L" ] ; then
+            MODE_LOCAL_SERVER=true;
+            menu_local_server;
+        elif [ $x == "x" ] ; then
+            echo -e "\n\nAborting...\n"
+            exit;
+        elif [ $x == "X" ] ; then
+            echo -e "\n\nAborting...\n"
+            exit;
+        fi
+    done
+
+else
+    echo -e "Could not find Docker on this system; can only manage game servers on localhost.\n";
+    MODE_LOCAL_SERVER=true;
+fi;
+
+
+
+
+
+exit;
+
+
+
+
 #==============
 #= MENU
 #==============
 
-echo "    What do you want to rebuild?";
-echo "    ";
-echo "    0) Rebuild Everything";
-echo "    1) Rebuild Starting with the Category Level (Level 1+)";
-echo "    2) Rebuild Starting with the Apllication/Content Level (Level 2+)";
-echo "    3) Rebuild Starting with the Configuration Level (Level 3)";
-echo "    ";
-echo "    x) Exit without doing anything";
-echo "    ";
 
-declare selected_rebuild_level=""
+declare selected_rebuild_level="";
 until [ ! -z $selected_rebuild_level ]; do
     read -n 1 x; while read -n 1 -t .1 y; do x="$x$y"; done
 
     if [ $x == 0 ] ; then
         selected_rebuild_level="0";
-        bash "$script_directory"/gfx-allthethings.sh
+        bash "$SCRIPT_DIRECTORY"/gfx-allthethings.sh
     elif [ $x == 1 ] ; then
         selected_rebuild_level="1";
     elif [ $x == 2 ] ; then
@@ -258,7 +369,6 @@ echo -e "\n\nENVIRONMENT SETUP";
 tput sgr0;
 
 #=========[ Prep Steam contextualization requirements ]-------------------------------------------------------
-
 
 tput smul
 echo -e "\nDOCKER CLEAN UP";
@@ -333,11 +443,11 @@ if [ $selected_rebuild_level -le 1 ] ; then
 
     docker_remove_image "ll/gamesvr";
 
-    destination_directory="$script_directory/gamesvr";
+    destination_directory="$SCRIPT_DIRECTORY/gamesvr/files";
 
     import_steam_cmd "$destination_directory/_util/steamcmd";
 
-    docker build -t ll/gamesvr "$script_directory/gamesvr/";
+    docker build -t ll/gamesvr "$SCRIPT_DIRECTORY/gamesvr/";
 
     gfx_section_end;
 fi
@@ -356,11 +466,11 @@ if [ $selected_rebuild_level -le 2 ] ; then
 
     docker_remove_image "ll/gamesvr-csgo";
     
-    destination_directory="$script_directory/gamesvr-csgo";
+    destination_directory="$SCRIPT_DIRECTORY/gamesvr-csgo/files";
     
-    import_steam_app 740 "$destination_directory/"
+    import_steam_app 740 "$destination_directory"
 
-    docker build -t ll/gamesvr-csgo "$destination_directory/";
+    docker build -t ll/gamesvr-csgo "$SCRIPT_DIRECTORY/gamesvr-csgo/";
 
     gfx_section_end;
 fi
@@ -379,9 +489,9 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
     docker_remove_image "ll/gamesvr-csgo-freeplay";
     
-    destination_directory="$script_directory/gamesvr-csgo-freeplay";
+    destination_directory="$SCRIPT_DIRECTORY/gamesvr-csgo-freeplay/files";
 
-    empty_folder "$script_directory/gamesvr-csgo-freeplay";
+    empty_folder "$destination_directory";
 
     import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/csgo/";
     
@@ -391,7 +501,7 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
     import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-csgo-freeplay" "$destination_directory/";
 
-    docker build -t ll/gamesvr-csgo-freeplay "$destination_directory/";
+    docker build -t ll/gamesvr-csgo-freeplay "$SCRIPT_DIRECTORY/gamesvr-csgo-freeplay/";
 
     gfx_section_end;
 
@@ -411,9 +521,9 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
     docker_remove_image "ll/gamesvr-csgo-tourney";
     
-    destination_directory="$script_directory/gamesvr-csgo-tourney";
+    destination_directory="$SCRIPT_DIRECTORY/gamesvr-csgo-tourney/files";
     
-    empty_folder "$script_directory/gamesvr-csgo-tourney";
+    empty_folder "$destination_directory";
     
     import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/csgo/";
     
@@ -423,7 +533,7 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
     import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-csgo-tourney" "$destination_directory/";
 
-    docker build -t ll/gamesvr-csgo-tourney "$destination_directory/";
+    docker build -t ll/gamesvr-csgo-tourney "$SCRIPT_DIRECTORY/gamesvr-csgo-tourney/";
 
     gfx_section_end;
 
@@ -444,11 +554,11 @@ if [ $selected_rebuild_level -le 2 ] ; then
 
     docker_remove_image "ll/gamesvr-hl2dm";
 
-    destination_directory="$script_directory/gamesvr-hl2dm";
+    destination_directory="$SCRIPT_DIRECTORY/gamesvr-hl2dm/files";
 
     import_steam_app 232370 "$destination_directory/"
 
-    docker build -t ll/gamesvr-hl2dm "$destination_directory/";
+    docker build -t ll/gamesvr-hl2dm "$SCRIPT_DIRECTORY/gamesvr-hl2dm/";
 
     gfx_section_end;
 fi
@@ -467,7 +577,7 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
     docker_remove_image "ll/gamesvr-hl2dm-freeplay";
 
-    destination_directory="$script_directory/gamesvr-hl2dm-freeplay";
+    destination_directory="$SCRIPT_DIRECTORY/gamesvr-hl2dm-freeplay/files";
 
     empty_folder "$destination_directory";
 
@@ -477,7 +587,7 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
     import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-hl2dm-freeplay" "$destination_directory/";
 
-    docker build -t ll/gamesvr-hl2dm-freeplay "$destination_directory/";
+    docker build -t ll/gamesvr-hl2dm-freeplay "$SCRIPT_DIRECTORY/gamesvr-hl2dm-freeplay/";
 
     gfx_section_end;
 fi
@@ -497,11 +607,11 @@ if [ $selected_rebuild_level -le 2 ] ; then
 
     docker_remove_image "ll/gamesvr-tf2";
     
-    destination_directory="$script_directory/gamesvr-tf2";
+    destination_directory="$SCRIPT_DIRECTORY/gamesvr-tf2/files";
     
     import_steam_app 232250 "$destination_directory/"
 
-    docker build -t ll/gamesvr-tf2 "$destination_directory/";
+    docker build -t ll/gamesvr-tf2 "$SCRIPT_DIRECTORY/gamesvr-tf2/";
 
     gfx_section_end;
 fi
@@ -520,9 +630,9 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
     docker_remove_image "ll/gamesvr-tf2-blindfrag";
     
-    destination_directory="$script_directory/gamesvr-tf2-blindfrag";
+    destination_directory="$SCRIPT_DIRECTORY/gamesvr-tf2-blindfrag/files";
 
-    empty_folder "$script_directory/gamesvr-tf2-blindfrag";
+    empty_folder "$destination_directory";
 
     import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/tf/";
 
@@ -530,7 +640,7 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
     import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-tf2-blindfrag" "$destination_directory/";
 
-    docker build -t ll/gamesvr-tf2-blindfrag "$destination_directory/";
+    docker build -t ll/gamesvr-tf2-blindfrag "$SCRIPT_DIRECTORY/gamesvr-tf2-blindfrag/";
 
     gfx_section_end;
 
@@ -550,9 +660,9 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
     docker_remove_image "ll/gamesvr-tf2-freeplay";
 
-    destination_directory="$script_directory/gamesvr-tf2-freeplay";
+    destination_directory="$SCRIPT_DIRECTORY/gamesvr-tf2-freeplay/files";
 
-    empty_folder "$script_directory/gamesvr-tf2-freeplay";
+    empty_folder "$destination_directory";
 
     import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/tf/";
 
@@ -560,7 +670,7 @@ if [ $selected_rebuild_level -le 3 ] ; then
 
     import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-tf2-freeplay" "$destination_directory/";
 
-    docker build -t ll/gamesvr-tf2-freeplay "$destination_directory/";
+    docker build -t ll/gamesvr-tf2-freeplay "$SCRIPT_DIRECTORY/gamesvr-tf2-freeplay/";
 
     gfx_section_end;
 

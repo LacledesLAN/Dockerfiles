@@ -4,7 +4,7 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
 ENV DEBIAN_FRONTEND="noninteractive" SERVER_NAME="ll/gamesvr-blackmesa" 
 
-COPY . /gamesvr/blackmesa/
+COPY ./files/ /gamesvr/blackmesa/
 
 # Install Black Mesa Dedicated Server using SteamCMD
 RUN mkdir -p /gamesvr/blackmesa && \

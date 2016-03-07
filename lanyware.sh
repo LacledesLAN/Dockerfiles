@@ -20,8 +20,8 @@
 #=============================================================================================================
 tput setaf 1; tput bold;
 cat /etc/debian_version  > /dev/null 2>&1 || { echo >&2 "Debian-based distribution required."; exit 1; }
+
 command -v curl > /dev/null 2>&1 || { echo >&2 "Package curl required.  Aborting."; exit 1; }
-command -v docker > /dev/null 2>&1 || { echo >&2 "Package docker required.  Aborting."; exit 1; }
 command -v git > /dev/null 2>&1 || { echo >&2 "Package git required.  Aborting."; exit 1; }
 dpkg -s lib32gcc1 > /dev/null 2>&1 || { echo >&2 "Library lib32gcc1 required.  Aborting."; exit 1; }
 dpkg -s lib32stdc++6  > /dev/null 2>&1 || { echo >&2 "Library lib32stdc++6 required.  Aborting."; exit 1; }

@@ -4,10 +4,7 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
 ENV HOME="/gamesvr/tf2/" SERVER_NAME="ll/gamesvr-tf2"
 
-COPY . /gamesvr/tf2/
-
-RUN rm -f /gamesvr/hl2dm/Dockerfile && \
-    rm -f /gamesvr/hl2dm/.dockerignore
+COPY ./files/ /gamesvr/tf2/
 
 WORKDIR /gamesvr/tf2/
 

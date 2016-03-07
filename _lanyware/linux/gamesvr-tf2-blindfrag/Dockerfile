@@ -4,9 +4,11 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
 ENV HOME="/gamesvr/tf2/" SERVER_NAME="ll/gamesvr-tf2-blindfrag" 
 
-COPY . /gamesvr/tf2/
+COPY ./files/ /gamesvr/tf2/
 
-RUN rm -f /gamesvr/tf2/Dockerfile && \
-    rm -f /gamesvr/tf2/.dockerignore
+RUN `##Set up container enviorment##` && \
+    useradd  -m --home /gamesvr/tf2/ gamesvr-tf2-blindfrag -c "Docker container user for ll/gamesvr-tf2-blindfrag"
+
+USER gamesvr-tf2-blindfrag
 
 WORKDIR /gamesvr/tf2/

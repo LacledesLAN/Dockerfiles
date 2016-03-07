@@ -4,7 +4,7 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
 ENV SERVER_NAME="ll/gamesvr-tf2-download" 
 
-COPY . /gamesvr/tf2/
+COPY ./files/ /gamesvr/tf2/
 
 #Get and stage from gamesvr GitHub Repo "gamesvr-srcds-tf2-download"
 RUN cd `mktemp -d` && \

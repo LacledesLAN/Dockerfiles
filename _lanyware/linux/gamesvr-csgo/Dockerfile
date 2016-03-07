@@ -4,7 +4,7 @@ MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
 ENV HOME="/gamesvr/csgo/" SERVER_NAME="ll/gamesvr-csgo" 
 
-COPY . /gamesvr/csgo/
+COPY ./files/ /gamesvr/csgo/
 
 WORKDIR /gamesvr/csgo/
 
