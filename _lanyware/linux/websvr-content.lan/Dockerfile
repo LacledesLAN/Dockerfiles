@@ -2,21 +2,8 @@ FROM nginx
 
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
-ENV SERVER_NAME="ll/websvr-content.lan" 
+ENV HOME="/usr/share/nginx/html/" SERVER_NAME="ll/gamesvr-tf2"
 
-COPY . /usr/share/nginx/html/
-
-#Get and stage from gamesvr GitHub Repo "websvr-content.lan"
-RUN apt-get update && \
-    apt-get install -y git && \
-    apt-get -y clean && \
-    apt-get -y autoremove && \
-    rm -fr /tmp/* && \
-    cd `mktemp -d` && \
-    git clone git://github.com/LacledesLAN/websvr-content.lan && \
-    rm -rf *.git && \
-    cd `ls -A | head -1` && \
-    rm -f *.md && \
-    cp -r * /usr/share/nginx/html/
+COPY ./files/ /usr/share/nginx/html/
 
 WORKDIR /usr/share/nginx/html/
