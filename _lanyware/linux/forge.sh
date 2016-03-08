@@ -227,8 +227,15 @@ function menu_local_server() {
     echo "   | |__/ _ \/ _/ _\` | | \__ \/ -_) '_\ V / -_) '_|";
     echo "   |____\___/\__\__,_|_| |___/\___|_|  \_/\___|_|  ";
     echo "";
+    echo "";
     tput sgr0;
-
+    
+    tput setaf 1; tput bold;
+    echo "THIS IS EXPERIMENTAL. PRESS ANY KEY TO CONTINUE!"
+    tput sgr0;
+    echo "";
+    echo "";
+    read -n 1 x; while read -n 1 -t .1 y; do x="$x$y"; done
 }
 
 
@@ -236,9 +243,8 @@ function menu_local_server() {
 #===  SERVER BUILDER FUNCTIONS  ==============================================================================
 #=============================================================================================================
 function build_gamesvr_csgo() {
-
+    echo "";
 }
-
 
 
 #=============================================================================================================
@@ -330,39 +336,6 @@ fi;
 
 
 
-
-exit;
-
-
-
-
-#==============
-#= MENU
-#==============
-
-
-declare selected_rebuild_level="";
-until [ ! -z $selected_rebuild_level ]; do
-    read -n 1 x; while read -n 1 -t .1 y; do x="$x$y"; done
-
-    if [ $x == 0 ] ; then
-        selected_rebuild_level="0";
-        bash "$SCRIPT_DIRECTORY"/gfx-allthethings.sh
-    elif [ $x == 1 ] ; then
-        selected_rebuild_level="1";
-    elif [ $x == 2 ] ; then
-        selected_rebuild_level="2";
-    elif [ $x == 3 ] ; then
-        selected_rebuild_level="3";
-    elif [ $x == "x" ] ; then
-        echo -e "\n\nAborting...\n"
-        exit;
-    elif [ $x == "X" ] ; then
-        echo -e "\n\nAborting...\n"
-        exit;
-    fi
-done
-
 echo "Start time: $(date)";
 tput smul;
 echo -e "\n\nENVIRONMENT SETUP";
@@ -397,18 +370,22 @@ tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 #   / __  /  / __ \ / ___/  / //_/| | / /  / / /_  /
 #  / /_/ /  / /_/ // /__   / ,<   | |/ /  / /   / /_
 #  \__,_/   \____/ \___/  /_/|_|  |___/  /_/   /___/
-#                                                   
-if [ $selected_rebuild_level -le 0 ] ; then
+#                                                  
 
-    gfx_section_start "nate/dockviz";
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 0 ] ; then
 
-    echo "Pulling nate/dockviz:latest from Docker hub";
-    echo "This image provides useful tools to analyze docker images";
+        gfx_section_start "Pulling Docker Image -=> nate/dockviz";
 
-    docker pull nate/dockviz:latest;
+        echo "Pulling nate/dockviz:latest from Docker hub";
+        echo "This image provides useful tools to analyze docker images";
 
-    gfx_section_end;
-fi
+        docker pull nate/dockviz:latest;
+
+        gfx_section_end;
+    fi;
+fi;
+ 
 
 
 #              __                     __         
@@ -417,17 +394,20 @@ fi
 #  / /_/ /  / /_/ // /_/ /  / / / // /_  / /_/ / 
 #  \__,_/  /_.___/ \__,_/  /_/ /_/ \__/  \__,_/  
 #                                                
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 0 ] ; then
 
-if [ $selected_rebuild_level -le 0 ] ; then
+        gfx_section_start "Pulling Docker Image -=> ubuntu:latest";
 
-    gfx_section_start "ubuntu:latest";
+        echo "Pulling ubuntu:latest from Docker hub";
 
-    echo "Pulling ubuntu:latest from Docker hub";
+        docker pull ubuntu:latest;
 
-    docker pull ubuntu:latest;
+        gfx_section_end;
+    fi;
+fi;
 
-    gfx_section_end;
-fi
+
 
 
 #     ____ _____ _____ ___  ___  ______   _______
@@ -436,21 +416,22 @@ fi
 #   \__, /\__,_/_/ /_/ /_/\___/____/ |___/_/
 #  /____/
 #
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 1 ] ; then
 
-if [ $selected_rebuild_level -le 1 ] ; then
+        gfx_section_start "Docker -=> Building Image ll/gamesvr";
 
-    gfx_section_start "Building ll/gamesvr";
+        docker_remove_image "ll/gamesvr";
 
-    docker_remove_image "ll/gamesvr";
+        destination_directory="$SCRIPT_DIRECTORY/gamesvr/files";
 
-    destination_directory="$SCRIPT_DIRECTORY/gamesvr/files";
+        import_steam_cmd "$destination_directory/_util/steamcmd";
 
-    import_steam_cmd "$destination_directory/_util/steamcmd";
+        docker build -t ll/gamesvr "$SCRIPT_DIRECTORY/gamesvr/";
 
-    docker build -t ll/gamesvr "$SCRIPT_DIRECTORY/gamesvr/";
-
-    gfx_section_end;
-fi
+        gfx_section_end;
+    fi;
+fi;
 
 
 #     ____ _____ _____ ___  ___  ______   _______      ______________ _____
@@ -459,21 +440,22 @@ fi
 #   \__, /\__,_/_/ /_/ /_/\___/____/ |___/_/         \___/____/\__, /\____/
 #  /____/                                                     /____/
 #
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 2 ] ; then
 
-if [ $selected_rebuild_level -le 2 ] ; then
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-csgo";
 
-    gfx_section_start "Building ll/gamesvr-csgo";
+        docker_remove_image "ll/gamesvr-csgo";
+        
+        destination_directory="$SCRIPT_DIRECTORY/gamesvr-csgo/files";
+        
+        import_steam_app 740 "$destination_directory"
 
-    docker_remove_image "ll/gamesvr-csgo";
-    
-    destination_directory="$SCRIPT_DIRECTORY/gamesvr-csgo/files";
-    
-    import_steam_app 740 "$destination_directory"
+        docker build -t ll/gamesvr-csgo "$SCRIPT_DIRECTORY/gamesvr-csgo/";
 
-    docker build -t ll/gamesvr-csgo "$SCRIPT_DIRECTORY/gamesvr-csgo/";
-
-    gfx_section_end;
-fi
+        gfx_section_end;
+    fi;
+fi;
 
 
 #                                                                                   ____                     __
@@ -483,29 +465,30 @@ fi
 #   \__, /\__,_/_/ /_/ /_/\___/____/ |___/_/         \___/____/\__, /\____/     /_/ /_/   \___/\___/ .___/_/\__,_/\__, /
 #  /____/                                                     /____/                              /_/            /____/
 #
-if [ $selected_rebuild_level -le 3 ] ; then
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
 
-    gfx_section_start "Building ll/gamesvr-csgo-freeplay";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-csgo-freeplay";
 
-    docker_remove_image "ll/gamesvr-csgo-freeplay";
-    
-    destination_directory="$SCRIPT_DIRECTORY/gamesvr-csgo-freeplay/files";
+        docker_remove_image "ll/gamesvr-csgo-freeplay";
+        
+        destination_directory="$SCRIPT_DIRECTORY/gamesvr-csgo-freeplay/files";
 
-    empty_folder "$destination_directory";
+        empty_folder "$destination_directory";
 
-    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/csgo/";
-    
-    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/csgo/";
+        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/csgo/";
+        
+        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/csgo/";
 
-    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-csgo" "$destination_directory/";
+        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-csgo" "$destination_directory/";
 
-    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-csgo-freeplay" "$destination_directory/";
+        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-csgo-freeplay" "$destination_directory/";
 
-    docker build -t ll/gamesvr-csgo-freeplay "$SCRIPT_DIRECTORY/gamesvr-csgo-freeplay/";
+        docker build -t ll/gamesvr-csgo-freeplay "$SCRIPT_DIRECTORY/gamesvr-csgo-freeplay/";
 
-    gfx_section_end;
-
-fi
+        gfx_section_end;
+    fi;
+fi;
 
 
 #                                                                                   __
@@ -515,29 +498,31 @@ fi
 #   \__, /\__,_/_/ /_/ /_/\___/____/ |___/_/         \___/____/\__, /\____/      \__/\____/\__,_/_/  /_/ /_/\___/\__, /
 #  /____/                                                     /____/                                            /____/
 #
-if [ $selected_rebuild_level -le 3 ] ; then
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
 
-    gfx_section_start "Building ll/gamesvr-csgo-tourney";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-csgo-tourney";
 
-    docker_remove_image "ll/gamesvr-csgo-tourney";
-    
-    destination_directory="$SCRIPT_DIRECTORY/gamesvr-csgo-tourney/files";
-    
-    empty_folder "$destination_directory";
-    
-    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/csgo/";
-    
-    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/csgo/";
+        docker_remove_image "ll/gamesvr-csgo-tourney";
+        
+        destination_directory="$SCRIPT_DIRECTORY/gamesvr-csgo-tourney/files";
+        
+        empty_folder "$destination_directory";
+        
+        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/csgo/";
+        
+        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/csgo/";
 
-    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-csgo" "$destination_directory/";
+        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-csgo" "$destination_directory/";
 
-    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-csgo-tourney" "$destination_directory/";
+        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-csgo-tourney" "$destination_directory/";
 
-    docker build -t ll/gamesvr-csgo-tourney "$SCRIPT_DIRECTORY/gamesvr-csgo-tourney/";
+        docker build -t ll/gamesvr-csgo-tourney "$SCRIPT_DIRECTORY/gamesvr-csgo-tourney/";
 
-    gfx_section_end;
+        gfx_section_end;
 
-fi
+    fi;
+fi;
 
 
 #                                                       __    _____      __
@@ -547,21 +532,22 @@ fi
 #   \__, /\__,_/_/ /_/ /_/\___/____/ |___/_/        /_/ /_/_//____|__,_/_/ /_/ /_/
 #  /____/
 #
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 2 ] ; then
 
-if [ $selected_rebuild_level -le 2 ] ; then
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-hl2dm";
 
-    gfx_section_start "Building ll/gamesvr-hl2dm";
+        docker_remove_image "ll/gamesvr-hl2dm";
 
-    docker_remove_image "ll/gamesvr-hl2dm";
+        destination_directory="$SCRIPT_DIRECTORY/gamesvr-hl2dm/files";
 
-    destination_directory="$SCRIPT_DIRECTORY/gamesvr-hl2dm/files";
+        import_steam_app 232370 "$destination_directory/"
 
-    import_steam_app 232370 "$destination_directory/"
+        docker build -t ll/gamesvr-hl2dm "$SCRIPT_DIRECTORY/gamesvr-hl2dm/";
 
-    docker build -t ll/gamesvr-hl2dm "$SCRIPT_DIRECTORY/gamesvr-hl2dm/";
-
-    gfx_section_end;
-fi
+        gfx_section_end;
+    fi;
+fi;
 
 
 #                                                       __    _____      __                ____                     __
@@ -571,27 +557,28 @@ fi
 #   \__, /\__,_/_/ /_/ /_/\___/____/ |___/_/        /_/ /_/_//____|__,_/_/ /_/ /_/     /_/ /_/   \___/\___/ .___/_/\__,_/\__, /
 #  /____/                                                                                                /_/            /____/
 #
-if [ $selected_rebuild_level -le 3 ] ; then
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
 
-    gfx_section_start "Building ll/gamesvr-hl2dm-freeplay";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-hl2dm-freeplay";
 
-    docker_remove_image "ll/gamesvr-hl2dm-freeplay";
+        docker_remove_image "ll/gamesvr-hl2dm-freeplay";
 
-    destination_directory="$SCRIPT_DIRECTORY/gamesvr-hl2dm-freeplay/files";
+        destination_directory="$SCRIPT_DIRECTORY/gamesvr-hl2dm-freeplay/files";
 
-    empty_folder "$destination_directory";
+        empty_folder "$destination_directory";
 
-    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/hl2mp/";
+        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/hl2mp/";
 
-    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/hl2mp/";
+        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/hl2mp/";
 
-    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-hl2dm-freeplay" "$destination_directory/";
+        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-hl2dm-freeplay" "$destination_directory/";
 
-    docker build -t ll/gamesvr-hl2dm-freeplay "$SCRIPT_DIRECTORY/gamesvr-hl2dm-freeplay/";
+        docker build -t ll/gamesvr-hl2dm-freeplay "$SCRIPT_DIRECTORY/gamesvr-hl2dm-freeplay/";
 
-    gfx_section_end;
-fi
-
+        gfx_section_end;
+    fi;
+fi;
 
 
 #    _______________
@@ -600,21 +587,22 @@ fi
 #   / / / __/  / __/
 #  /_/ /_/    /____/ 
 #
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 2 ] ; then
 
-if [ $selected_rebuild_level -le 2 ] ; then
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-tf2";
 
-    gfx_section_start "Building ll/gamesvr-tf2";
+        docker_remove_image "ll/gamesvr-tf2";
+        
+        destination_directory="$SCRIPT_DIRECTORY/gamesvr-tf2/files";
+        
+        import_steam_app 232250 "$destination_directory/"
 
-    docker_remove_image "ll/gamesvr-tf2";
-    
-    destination_directory="$SCRIPT_DIRECTORY/gamesvr-tf2/files";
-    
-    import_steam_app 232250 "$destination_directory/"
+        docker build -t ll/gamesvr-tf2 "$SCRIPT_DIRECTORY/gamesvr-tf2/";
 
-    docker build -t ll/gamesvr-tf2 "$SCRIPT_DIRECTORY/gamesvr-tf2/";
-
-    gfx_section_end;
-fi
+        gfx_section_end;
+    fi;
+fi;
 
 
 #    _______________      ____  ___           __      ______
@@ -624,27 +612,29 @@ fi
 #  /_/ /_/    /____/  /_____/_/_/_/ /_/\__,_/     /_/   /_/   \__,_/\__, /                                                                  
 #                                                                  /____/
 #
-if [ $selected_rebuild_level -le 3 ] ; then
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
 
-    gfx_section_start "Building ll/gamesvr-tf2-blindfrag";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-tf2-blindfrag";
 
-    docker_remove_image "ll/gamesvr-tf2-blindfrag";
-    
-    destination_directory="$SCRIPT_DIRECTORY/gamesvr-tf2-blindfrag/files";
+        docker_remove_image "ll/gamesvr-tf2-blindfrag";
+        
+        destination_directory="$SCRIPT_DIRECTORY/gamesvr-tf2-blindfrag/files";
 
-    empty_folder "$destination_directory";
+        empty_folder "$destination_directory";
 
-    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/tf/";
+        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/tf/";
 
-    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/tf/";
+        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/tf/";
 
-    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-tf2-blindfrag" "$destination_directory/";
+        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-tf2-blindfrag" "$destination_directory/";
 
-    docker build -t ll/gamesvr-tf2-blindfrag "$SCRIPT_DIRECTORY/gamesvr-tf2-blindfrag/";
+        docker build -t ll/gamesvr-tf2-blindfrag "$SCRIPT_DIRECTORY/gamesvr-tf2-blindfrag/";
 
-    gfx_section_end;
+        gfx_section_end;
 
-fi
+    fi;
+fi;
 
 
 #    _______________      ______                     __
@@ -653,28 +643,30 @@ fi
 #   / / / __/  / __/   / __/ / /  /  __/  __/ /_/ / / /_/ / /_/ /
 #  /_/ /_/    /____/  /_/   /_/   \___/\___/ .___/_/\__,_/\__, /
 #                                         /_/            /____/
+#
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
 
-if [ $selected_rebuild_level -le 3 ] ; then
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-tf2-freeplay";
 
-    gfx_section_start "Building ll/gamesvr-tf2-freeplay";
+        docker_remove_image "ll/gamesvr-tf2-freeplay";
 
-    docker_remove_image "ll/gamesvr-tf2-freeplay";
+        destination_directory="$SCRIPT_DIRECTORY/gamesvr-tf2-freeplay/files";
 
-    destination_directory="$SCRIPT_DIRECTORY/gamesvr-tf2-freeplay/files";
+        empty_folder "$destination_directory";
 
-    empty_folder "$destination_directory";
+        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/tf/";
 
-    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/tf/";
+        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/tf/";
 
-    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/tf/";
+        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-tf2-freeplay" "$destination_directory/";
 
-    import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-tf2-freeplay" "$destination_directory/";
+        docker build -t ll/gamesvr-tf2-freeplay "$SCRIPT_DIRECTORY/gamesvr-tf2-freeplay/";
 
-    docker build -t ll/gamesvr-tf2-freeplay "$SCRIPT_DIRECTORY/gamesvr-tf2-freeplay/";
+        gfx_section_end;
 
-    gfx_section_end;
-
-fi
+    fi;
+fi;
 
 
 #                       _                
@@ -684,16 +676,20 @@ fi
 #  /_/ /_/  \__, /  /_/   /_/ /_/ /_/|_|  
 #          /____/                         
 #
-if [ $selected_rebuild_level -le 0 ] ; then
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 0 ] ; then
 
-    gfx_section_start "nginx:latest";
+        gfx_section_start "Pulling Docker Image -=> nginx:latest";
 
-    echo "Pulling nginx:latest from Docker hub";
+        echo "Pulling nginx:latest from Docker hub";
 
-    docker pull nginx:latest;
+        docker pull nginx:latest;
 
-    gfx_section_end;
-fi
+        gfx_section_end;
+    fi;
+fi;
+
+
 
 
 #                      __                                                         __                  __        __                
@@ -702,17 +698,27 @@ fi
 #  | |/ |/ / /  __/ / /_/ / (__  ) | |/ /  / /    /_____// /__  / /_/ / / / / // /_  /  __/ / / / // /_   _  / /  / /_/ /  / / / /
 #  |__/|__/  \___/ /_.___/ /____/  |___/  /_/            \___/  \____/ /_/ /_/ \__/  \___/ /_/ /_/ \__/  (_)/_/   \__,_/  /_/ /_/ 
 #                                                                                                                                 
-if [ $selected_rebuild_level -le 3 ] ; then
+#
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
 
-    gfx_section_start "Building ll/websvr-content.lan";
+        gfx_section_start "Docker -=> Building Image ll/websvr-content.lan";
 
-    docker_remove_image "ll/websvr-content.lan";
+        docker_remove_image "ll/websvr-content.lan";
+        
+        destination_directory="$SCRIPT_DIRECTORY/websvr-content.lan/files";
 
-    docker build -t ll/websvr-content.lan ./websvr-content.lan/;
+        empty_folder "$destination_directory";
+        
+        import_github_repo "git://github.com/LacledesLAN/websvr-content.lan" "$destination_directory/";
 
-    gfx_section_end;
+        docker build -t ll/websvr-content.lan .$SCRIPT_DIRECTORY/websvr-content.lan/;
 
-fi
+        gfx_section_end;
+
+    fi;
+fi;
+
 
 
 
@@ -728,8 +734,12 @@ echo "   LL Docker Image Management Tool.  Stop time: $(date)";
 gfx_horizontal_rule;
 echo "";
 
-echo "Here's what you've got:";
-echo "";
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock nate/dockviz images -tl
-echo "";
-echo "";
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    echo "Here's what you've got:";
+    echo "";
+    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock nate/dockviz images -tl
+    echo "";
+    echo "";
+    docker images;
+fi;
+
