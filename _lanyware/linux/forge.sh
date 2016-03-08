@@ -15,7 +15,6 @@
 #=============================================================================================================
 #===  SETTINGS  ==============================================================================================
 #=============================================================================================================
-readonly setting_contextualize_steam=true;          # If steam apps will be added via docker build context.
 
 
 #=============================================================================================================
@@ -27,8 +26,7 @@ declare MODE_LOCAL_SERVER=false;
 declare DOCKER_INSTALLED=false;
 declare DOCKER_REBUILD_LEVEL="";
 
-
-declare script_skip_steam_validate=false;
+declare OPTION_STEAM_NO_VALIDATE=false;
 
 readonly SCRIPT_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 readonly SCRIPT_FILENAME="$(basename "$(test -L "$0" && readlink "$0" || echo "$0")")";
@@ -242,7 +240,11 @@ function menu_local_server() {
 #=============================================================================================================
 #===  SERVER BUILDER FUNCTIONS  ==============================================================================
 #=============================================================================================================
-function build_gamesvr_csgo() {
+function build_gamesvr_hl2dm() {
+    echo "";
+}
+
+function build_gamesvr_hl2dm_deathmatch() {
     echo "";
 }
 
@@ -253,7 +255,7 @@ function build_gamesvr_csgo() {
 while getopts ":z" opt; do
     case $opt in
         s)
-            script_skip_steam_validate=true;
+            OPTION_STEAM_NO_VALIDATE=true;
             ;;
         \?)
             echo "Invalid option: -$OPTARG" >&2
@@ -690,8 +692,6 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 fi;
 
 
-
-
 #                      __                                                         __                  __        __                
 #   _      __  ___    / /_    _____ _   __   _____         _____  ____    ____   / /_  ___    ____   / /_      / /  ____ _   ____ 
 #  | | /| / / / _ \  / __ \  / ___/| | / /  / ___/ ______ / ___/ / __ \  / __ \ / __/ / _ \  / __ \ / __/     / /  / __ `/  / __ \
@@ -712,7 +712,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
         
         import_github_repo "git://github.com/LacledesLAN/websvr-content.lan" "$destination_directory/";
 
-        docker build -t ll/websvr-content.lan .$SCRIPT_DIRECTORY/websvr-content.lan/;
+        docker build -t ll/websvr-content.lan "$SCRIPT_DIRECTORY/websvr-content.lan/";
 
         gfx_section_end;
 
