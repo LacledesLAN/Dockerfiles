@@ -100,7 +100,7 @@ function import_github_repo() { # REPO url; destination directory
 
     {
         cd `mktemp -d` && \
-            git clone -b master "$1" && \
+            git clone -b master --single-branch "$1" && \
             rm -rf *.git && \
             cd `ls -A | head -1` && \
             rm -f *.md && \
