@@ -65,7 +65,7 @@ echo -e -n "\n\n\nUPDATING SELF FROM GITHUB.....";
 
 if [ $lanyware_launcher_skip_self_update != true ] ; then
     cd `mktemp -d`;
-    git clone https://github.com/LacledesLAN/LANYWARE/tree/master;
+    git clone -b master https://github.com/LacledesLAN/LANYWARE;
     rm -rf *.git;
     cd `ls -A | head -1`;
     rm -f *.md;
