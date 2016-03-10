@@ -1,4 +1,5 @@
 #!/bin/bash
+source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/functions-misc.sh"
 #=============================================================================================================
 #
 #   FILE:   forge.sh
@@ -65,12 +66,6 @@ function docker_remove_image() {
 }
 
 
-function gfx_horizontal_rule() {
-    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =;
-    return 0;
-}
-
-
 function gfx_section_start() {
     echo "";
     echo "";
@@ -100,12 +95,14 @@ function import_github_repo() { # REPO url; destination directory
 
     {
         cd `mktemp -d` && \
-            git clone -b master --single-branch "$1" && \
+            git clone -b master --single-branch "git://github.com/$1" && \
             rm -rf *.git && \
             cd `ls -A | head -1` && \
             rm -f *.md && \
             cp -r * "$2";
     } &> /dev/null;
+    
+    sleep 5;
     
     echo -e "";
 }
@@ -292,8 +289,6 @@ echo "                    LAN Party Servers. Anytime. Anywhere.                 
 echo -e "\n";
 tput sgr0;
 
-
-
 DOCKER_INSTALLED=true;
 command -v docker > /dev/null 2>&1 || { DOCKER_INSTALLED=false; }
 
@@ -367,13 +362,12 @@ echo ".done.";
 tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 
 
-#         __                  __             _      
-#    ____/ /  ____   _____   / /__ _   __   (_) ____
-#   / __  /  / __ \ / ___/  / //_/| | / /  / / /_  /
-#  / /_/ /  / /_/ // /__   / ,<   | |/ /  / /   / /_
-#  \__,_/   \____/ \___/  /_/|_|  |___/  /_/   /___/
-#                                                  
-
+#         __              __           _     
+#    ____/ /____   _____ / /__ _   __ (_)____
+#   / __  // __ \ / ___// //_/| | / // //_  /
+#  / /_/ // /_/ // /__ / ,<   | |/ // /  / /_
+#  \__,_/ \____/ \___//_/|_|  |___//_/  /___/
+#                                            
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 0 ] ; then
 
@@ -390,12 +384,12 @@ fi;
  
 
 
-#              __                     __         
-#    __  __   / /_   __  __   ____   / /_  __  __
-#   / / / /  / __ \ / / / /  / __ \ / __/ / / / /
-#  / /_/ /  / /_/ // /_/ /  / / / // /_  / /_/ / 
-#  \__,_/  /_.___/ \__,_/  /_/ /_/ \__/  \__,_/  
-#                                                
+#            __                          __        
+#    __  __ / /_   __  __ ____   __  __ / /_ __  __
+#   / / / // __ \ / / / // __ \ / / / // __// / / /
+#  / /_/ // /_/ // /_/ // / / // /_/ // /_ / /_/ / 
+#  \__,_//_.___/ \__,_//_/ /_/ \__,_/ \__/ \__,_/  
+#                                                  
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 0 ] ; then
 
@@ -412,11 +406,12 @@ fi;
 
 
 
-#     ____ _____ _____ ___  ___  ______   _______
-#    / __ `/ __ `/ __ `__ \/ _ \/ ___/ | / / ___/
-#   / /_/ / /_/ / / / / / /  __(__  )| |/ / /
-#   \__, /\__,_/_/ /_/ /_/\___/____/ |___/_/
-#  /____/
+#                                                      
+#     ____ _ ____ _ ____ ___   ___   _____ _   __ _____
+#    / __ `// __ `// __ `__ \ / _ \ / ___/| | / // ___/
+#   / /_/ // /_/ // / / / / //  __/(__  ) | |/ // /    
+#   \__, / \__,_//_/ /_/ /_/ \___//____/  |___//_/     
+#  /____/                                              
 #
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 1 ] ; then
@@ -478,13 +473,13 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         empty_folder "$destination_directory";
 
-        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/csgo/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/csgo/";
         
-        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/csgo/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/csgo/";
 
-        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-csgo" "$destination_directory/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-csgo" "$destination_directory/";
 
-        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-csgo-freeplay" "$destination_directory/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-csgo-freeplay" "$destination_directory/";
 
         docker build -t ll/gamesvr-csgo-freeplay "$SCRIPT_DIRECTORY/gamesvr-csgo-freeplay/";
 
@@ -511,13 +506,13 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
         
         empty_folder "$destination_directory";
         
-        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/csgo/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/csgo/";
         
-        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/csgo/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/csgo/";
 
-        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-csgo" "$destination_directory/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-csgo" "$destination_directory/";
 
-        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-csgo-tourney" "$destination_directory/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-csgo-tourney" "$destination_directory/";
 
         docker build -t ll/gamesvr-csgo-tourney "$SCRIPT_DIRECTORY/gamesvr-csgo-tourney/";
 
@@ -552,13 +547,12 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 fi;
 
 
-#                                                       __    _____      __                ____                     __
-#     ____ _____ _____ ___  ___  ______   _______      / /_  / /__ \____/ /___ ___        / __/_______  ___  ____  / /___ ___  __
-#    / __ `/ __ `/ __ `__ \/ _ \/ ___/ | / / ___/_____/ __ \/ /__/ / __  / __ `__ \______/ /_/ ___/ _ \/ _ \/ __ \/ / __ `/ / / /
-#   / /_/ / /_/ / / / / / /  __(__  )| |/ / /  /_____/ / / / // __/ /_/ / / / / / /_____/ __/ /  /  __/  __/ /_/ / / /_/ / /_/ /
-#   \__, /\__,_/_/ /_/ /_/\___/____/ |___/_/        /_/ /_/_//____|__,_/_/ /_/ /_/     /_/ /_/   \___/\___/ .___/_/\__,_/\__, /
-#  /____/                                                                                                /_/            /____/
-#
+#                                                               __     __ ___       __                   ____                          __
+#     ____ _ ____ _ ____ ___   ___   _____ _   __ _____        / /_   / /|__ \ ____/ /____ ___          / __/_____ ___   ___   ____   / /____ _ __  __
+#    / __ `// __ `// __ `__ \ / _ \ / ___/| | / // ___/______ / __ \ / / __/ // __  // __ `__ \ ______ / /_ / ___// _ \ / _ \ / __ \ / // __ `// / / /
+#   / /_/ // /_/ // / / / / //  __/(__  ) | |/ // /   /_____// / / // / / __// /_/ // / / / / //_____// __// /   /  __//  __// /_/ // // /_/ // /_/ /
+#   \__, / \__,_//_/ /_/ /_/ \___//____/  |___//_/          /_/ /_//_/ /____/\__,_//_/ /_/ /_/       /_/  /_/    \___/ \___// .___//_/ \__,_/ \__, /
+#  /____/                                                                                                                  /_/               /____/
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
 
@@ -570,11 +564,11 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         empty_folder "$destination_directory";
 
-        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/hl2mp/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/hl2mp/";
 
-        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/hl2mp/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/hl2mp/";
 
-        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-hl2dm-freeplay" "$destination_directory/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-hl2dm-freeplay" "$destination_directory/";
 
         docker build -t ll/gamesvr-hl2dm-freeplay "$SCRIPT_DIRECTORY/gamesvr-hl2dm-freeplay/";
 
@@ -583,12 +577,13 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 fi;
 
 
-#    _______________
-#   /_  __/ ____/__ \
-#    / / / /_   __/ /
-#   / / / __/  / __/
-#  /_/ /_/    /____/ 
-#
+#                                                             ______ ______ ___
+#     ____ _ ____ _ ____ ___   ___   _____ _   __ _____      /_  __// ____/|__ \
+#    / __ `// __ `// __ `__ \ / _ \ / ___/| | / // ___/______ / /  / /_    __/ /
+#   / /_/ // /_/ // / / / / //  __/(__  ) | |/ // /   /_____// /  / __/   / __/
+#   \__, / \__,_//_/ /_/ /_/ \___//____/  |___//_/          /_/  /_/     /____/
+#  /____/                                                                       
+#           
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 2 ] ; then
 
@@ -607,12 +602,12 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 fi;
 
 
-#    _______________      ____  ___           __      ______
-#   /_  __/ ____/__ \    / __ )/ (_)___  ____/ /     / ____/________ _____ _
-#    / / / /_   __/ /   / __  / / / __ \/ __  /_____/ /_  / ___/ __ `/ __ `/
-#   / / / __/  / __/   / /_/ / / / / / / /_/ /_____/ __/ / /  / /_/ / /_/ /
-#  /_/ /_/    /____/  /_____/_/_/_/ /_/\__,_/     /_/   /_/   \__,_/\__, /                                                                  
-#                                                                  /____/
+#                                                             ______ ______ ___          __     __ _             __ ____
+#     ____ _ ____ _ ____ ___   ___   _____ _   __ _____      /_  __// ____/|__ \        / /_   / /(_)____   ____/ // __/_____ ____ _ ____ _
+#    / __ `// __ `// __ `__ \ / _ \ / ___/| | / // ___/______ / /  / /_    __/ /______ / __ \ / // // __ \ / __  // /_ / ___// __ `// __ `/
+#   / /_/ // /_/ // / / / / //  __/(__  ) | |/ // /   /_____// /  / __/   / __//_____// /_/ // // // / / // /_/ // __// /   / /_/ // /_/ /
+#   \__, / \__,_//_/ /_/ /_/ \___//____/  |___//_/          /_/  /_/     /____/      /_.___//_//_//_/ /_/ \__,_//_/  /_/    \__,_/ \__, /
+#  /____/                                                                                                                         /____/
 #
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
@@ -625,11 +620,11 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         empty_folder "$destination_directory";
 
-        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/tf/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/tf/";
 
-        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/tf/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/tf/";
 
-        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-tf2-blindfrag" "$destination_directory/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-tf2-blindfrag" "$destination_directory/";
 
         docker build -t ll/gamesvr-tf2-blindfrag "$SCRIPT_DIRECTORY/gamesvr-tf2-blindfrag/";
 
@@ -639,12 +634,12 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 fi;
 
 
-#    _______________      ______                     __
-#   /_  __/ ____/__ \    / ____/_______  ___  ____  / /___ ___  __
-#    / / / /_   __/ /   / /_  / ___/ _ \/ _ \/ __ \/ / __ `/ / / /
-#   / / / __/  / __/   / __/ / /  /  __/  __/ /_/ / / /_/ / /_/ /
-#  /_/ /_/    /____/  /_/   /_/   \___/\___/ .___/_/\__,_/\__, /
-#                                         /_/            /____/
+#                                                             ______ ______ ___          ______                          __
+#     ____ _ ____ _ ____ ___   ___   _____ _   __ _____      /_  __// ____/|__ \        / ____/_____ ___   ___   ____   / /____ _ __  __
+#    / __ `// __ `// __ `__ \ / _ \ / ___/| | / // ___/______ / /  / /_    __/ /______ / /_   / ___// _ \ / _ \ / __ \ / // __ `// / / /
+#   / /_/ // /_/ // / / / / //  __/(__  ) | |/ // /   /_____// /  / __/   / __//_____// __/  / /   /  __//  __// /_/ // // /_/ // /_/ /
+#   \__, / \__,_//_/ /_/ /_/ \___//____/  |___//_/          /_/  /_/     /____/      /_/    /_/    \___/ \___// .___//_/ \__,_/ \__, /
+#  /____/                                                                                                    /_/               /____/
 #
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
@@ -657,11 +652,11 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         empty_folder "$destination_directory";
 
-        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/tf/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/tf/";
 
-        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/tf/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/tf/";
 
-        import_github_repo "git://github.com/LacledesLAN/gamesvr-srcds-tf2-freeplay" "$destination_directory/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-tf2-freeplay" "$destination_directory/";
 
         docker build -t ll/gamesvr-tf2-freeplay "$SCRIPT_DIRECTORY/gamesvr-tf2-freeplay/";
 
@@ -671,12 +666,12 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 fi;
 
 
-#                       _                
-#     ____    ____ _   (_)   ____    _  __
-#    / __ \  / __ `/  / /   / __ \  | |/_/
-#   / / / / / /_/ /  / /   / / / / _>  <  
-#  /_/ /_/  \__, /  /_/   /_/ /_/ /_/|_|  
-#          /____/                         
+#                    _             
+#     ____   ____ _ (_)____   _  __
+#    / __ \ / __ `// // __ \ | |/_/
+#   / / / // /_/ // // / / /_>  <  
+#  /_/ /_/ \__, //_//_/ /_//_/|_|  
+#         /____/                   
 #
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 0 ] ; then
@@ -692,12 +687,11 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 fi;
 
 
-#                      __                                                         __                  __        __                
-#   _      __  ___    / /_    _____ _   __   _____         _____  ____    ____   / /_  ___    ____   / /_      / /  ____ _   ____ 
-#  | | /| / / / _ \  / __ \  / ___/| | / /  / ___/ ______ / ___/ / __ \  / __ \ / __/ / _ \  / __ \ / __/     / /  / __ `/  / __ \
-#  | |/ |/ / /  __/ / /_/ / (__  ) | |/ /  / /    /_____// /__  / /_/ / / / / // /_  /  __/ / / / // /_   _  / /  / /_/ /  / / / /
-#  |__/|__/  \___/ /_.___/ /____/  |___/  /_/            \___/  \____/ /_/ /_/ \__/  \___/ /_/ /_/ \__/  (_)/_/   \__,_/  /_/ /_/ 
-#                                                                                                                                 
+#                    __                                                   __                __      __
+#   _      __ ___   / /_   _____ _   __ _____        _____ ____   ____   / /_ ___   ____   / /_    / /____ _ ____
+#  | | /| / // _ \ / __ \ / ___/| | / // ___/______ / ___// __ \ / __ \ / __// _ \ / __ \ / __/   / // __ `// __ \
+#  | |/ |/ //  __// /_/ /(__  ) | |/ // /   /_____// /__ / /_/ // / / // /_ /  __// / / // /_ _  / // /_/ // / / /
+#  |__/|__/ \___//_.___//____/  |___//_/           \___/ \____//_/ /_/ \__/ \___//_/ /_/ \__/(_)/_/ \__,_//_/ /_/
 #
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
@@ -710,7 +704,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         empty_folder "$destination_directory";
         
-        import_github_repo "git://github.com/LacledesLAN/websvr-content.lan" "$destination_directory/";
+        import_github_repo "LacledesLAN/websvr-content.lan" "$destination_directory/";
 
         docker build -t ll/websvr-content.lan "$SCRIPT_DIRECTORY/websvr-content.lan/";
 
@@ -719,6 +713,32 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     fi;
 fi;
 
+
+#                    __                               __              __           __                __
+#   _      __ ___   / /_   _____ _   __ _____        / /____ _ _____ / /___   ____/ /___   _____    / /____ _ ____
+#  | | /| / // _ \ / __ \ / ___/| | / // ___/______ / // __ `// ___// // _ \ / __  // _ \ / ___/   / // __ `// __ \
+#  | |/ |/ //  __// /_/ /(__  ) | |/ // /   /_____// // /_/ // /__ / //  __// /_/ //  __/(__  )_  / // /_/ // / / /
+#  |__/|__/ \___//_.___//____/  |___//_/          /_/ \__,_/ \___//_/ \___/ \__,_/ \___//____/(_)/_/ \__,_//_/ /_/
+#
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
+    
+        gfx_section_start "Docker -=> Building Image ll/websvr-lacledes.lan";
+        
+        docker_remove_image "ll/websvr-lacledes.lan";
+        
+        destination_directory="$SCRIPT_DIRECTORY/websvr-lacledes.lan/files";
+        
+        empty_folder "$destination_directory";
+        
+        import_github_repo "LacledesLAN/websvr-lacledes.lan" "$destination_directory/";
+        
+        docker build -t ll/websvr-lacledes.lan "$SCRIPT_DIRECTORY/websvr-content.lan/";
+        
+        gfx_section_end;
+
+    fi;
+fi;
 
 
 
