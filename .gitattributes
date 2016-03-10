@@ -1,5 +1,9 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+*.ico binary
+*.gif binary
+*.jpg binary
+*.png binary
 
 # Linux Specific Files
 *.sh eol=lf

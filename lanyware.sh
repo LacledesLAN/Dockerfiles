@@ -1,4 +1,5 @@
 #!/bin/bash
+source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/_lanyware/linux/functions-misc.sh"
 #=============================================================================================================
 #
 #   FILE:   lanyware.sh
@@ -13,7 +14,6 @@
 #                   Packges: curl docker git libc6-i386 lib32gcc1 lib32stdc++6 lib32tinfo5 lib32z1 tar wget
 #
 #=============================================================================================================
-
 
 #=============================================================================================================
 #===  VALIDATE HOST ENVIRONMENT REQUIREMENTS =================================================================
@@ -64,15 +64,15 @@ done
 echo -e -n "\n\n\nUPDATING SELF FROM GITHUB.....";
 
 if [ $lanyware_launcher_skip_self_update != true ] ; then
-    cd `mktemp -d`;
-    git clone -b master --single-branch https://github.com/LacledesLAN/LANYWARE;
-    rm -rf *.git;
-    cd `ls -A | head -1`;
-    rm -f *.md;
-    cd linux
-    cp -r * "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
+    #cd `mktemp -d`;
+    #git clone -b master --single-branch https://github.com/LacledesLAN/LANYWARE;
+    #rm -rf *.git;
+    #cd `ls -A | head -1`;
+    #rm -f *.md;
+    #cd linux
+    #cp -r * "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 
-    echo ".done.";
+    echo ".not implemented.";
 else
     echo "..skipped.";
 fi
