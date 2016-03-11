@@ -733,7 +733,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
         
         import_github_repo "LacledesLAN/websvr-lacledes.lan" "$destination_directory/";
         
-        docker build -t ll/websvr-lacledes.lan "$SCRIPT_DIRECTORY/websvr-content.lan/";
+        docker build -t ll/websvr-lacledes.lan "$SCRIPT_DIRECTORY/websvr-lacledes.lan/";
         
         gfx_section_end;
 
