@@ -2,20 +2,13 @@ FROM ll/gamesvr-tf2
 
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
-ENV SERVER_NAME="ll/gamesvr-tf2-download" 
+ENV HOME="/gamesvr/tf2/" SERVER_NAME="ll/gamesvr-tf2-download" 
 
 COPY ./files/ /gamesvr/tf2/
 
-#Get and stage from gamesvr GitHub Repo "gamesvr-srcds-tf2-download"
-RUN cd `mktemp -d` && \
-    git clone git://github.com/LacledesLAN/gamesvr-srcds-tf2-download && \
-    rm -rf *.git && \
-    cd `ls -A | head -1` && \
-    rm -f *.md && \
-    cp -r * /gamesvr/tf2/
+RUN `##Set up container enviorment##` && \
+    useradd  -m --home /gamesvr/tf2/ gamesvr-tf2-download -c "Docker container user for ll/gamesvr-tf2-download"
 
-# Clean out tmp directory
-RUN rm -fr /tmp/* `#Clean out temp directory to save space#` && \
-    mv /gamesvr/tf2 /gamesvr/tf2
+USER gamesvr-tf2-download
 
 WORKDIR /gamesvr/tf2/
