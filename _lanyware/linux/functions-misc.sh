@@ -1,12 +1,5 @@
 #!/bin/bash
 
-function gfx_horizontal_rule() {
-    printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =;
-    return 0;
-}
-
-
-
 function extname() #{{{1
 {
     # <doc:extname> {{{

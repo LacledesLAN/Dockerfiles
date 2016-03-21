@@ -1,4 +1,5 @@
 #!/bin/bash
+source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/functions-gfx.sh"
 source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/functions-misc.sh"
 #=============================================================================================================
 #
@@ -63,25 +64,6 @@ function docker_remove_image() {
 
     echo ".done.";
     echo -e "";
-}
-
-
-function gfx_section_start() {
-    echo "";
-    echo "";
-    tput sgr0;
-    tput bold;
-    gfx_horizontal_rule;
-    echo "   $1";
-    gfx_horizontal_rule;
-    tput sgr0;
-    tput dim;
-    tput setaf 6;
-}
-
-
-function gfx_section_end() {
-    tput sgr0;
 }
 
 
@@ -196,7 +178,7 @@ function menu_docker_library() {
 
         if [ $x == 0 ] ; then
             DOCKER_REBUILD_LEVEL="0";
-            bash "$SCRIPT_DIRECTORY"/gfx-allthethings.sh
+            gfx_allthethings;
         elif [ $x == 1 ] ; then
             DOCKER_REBUILD_LEVEL="1";
         elif [ $x == 2 ] ; then
@@ -278,14 +260,14 @@ gfx_horizontal_rule;
 echo -e "\n";
 
 tput setaf 3; tput bold;
-echo "    ██╗      █████╗ ███╗   ██╗██╗   ██╗██╗    ██╗ █████╗ ██████╗ ███████╗    ";
-echo "    ██║     ██╔══██╗████╗  ██║╚██╗ ██╔╝██║    ██║██╔══██╗██╔══██╗██╔════╝    ";
-echo "    ██║     ███████║██╔██╗ ██║ ╚████╔╝ ██║ █╗ ██║███████║██████╔╝█████╗      ";
-echo "    ██║     ██╔══██║██║╚██╗██║  ╚██╔╝  ██║███╗██║██╔══██║██╔══██╗██╔══╝      ";
-echo "    ███████╗██║  ██║██║ ╚████║   ██║   ╚███╔███╔╝██║  ██║██║  ██║███████╗    ";
-echo "    ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝    ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝    ";
+echo "    ██╗      █████╗ ███╗   ██╗██╗   ██╗██╗    ██╗ █████╗ ██████╗ ███████╗ ";
+echo "    ██║     ██╔══██╗████╗  ██║╚██╗ ██╔╝██║    ██║██╔══██╗██╔══██╗██╔════╝ ";
+echo "    ██║     ███████║██╔██╗ ██║ ╚████╔╝ ██║ █╗ ██║███████║██████╔╝█████╗   ";
+echo "    ██║     ██╔══██║██║╚██╗██║  ╚██╔╝  ██║███╗██║██╔══██║██╔══██╗██╔══╝   ";
+echo "    ███████╗██║  ██║██║ ╚████║   ██║   ╚███╔███╔╝██║  ██║██║  ██║███████╗ ";
+echo "    ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝    ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝ ";
 tput sgr0; tput dim; tput setaf 6;
-echo "                    LAN Party Servers. Anytime. Anywhere.                    ";
+echo "                    LAN Party Servers. Anytime. Anywhere.                 ";
 echo -e "\n";
 tput sgr0;
 
@@ -331,8 +313,6 @@ else
 fi;
 
 
-
-
 echo "Start time: $(date)";
 tput smul;
 echo -e "\n\nENVIRONMENT SETUP";
@@ -362,12 +342,12 @@ echo ".done.";
 tput smul; echo -e "\nREBUILDING IMAGES"; tput sgr0;
 
 
-#         __              __           _     
+#         __              __           _
 #    ____/ /____   _____ / /__ _   __ (_)____
 #   / __  // __ \ / ___// //_/| | / // //_  /
 #  / /_/ // /_/ // /__ / ,<   | |/ // /  / /_
 #  \__,_/ \____/ \___//_/|_|  |___//_/  /___/
-#                                            
+#
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 0 ] ; then
 
@@ -381,15 +361,14 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
         gfx_section_end;
     fi;
 fi;
- 
 
 
-#            __                          __        
+#            __                          __
 #    __  __ / /_   __  __ ____   __  __ / /_ __  __
 #   / / / // __ \ / / / // __ \ / / / // __// / / /
-#  / /_/ // /_/ // /_/ // / / // /_/ // /_ / /_/ / 
-#  \__,_//_.___/ \__,_//_/ /_/ \__,_/ \__/ \__,_/  
-#                                                  
+#  / /_/ // /_/ // /_/ // / / // /_/ // /_ / /_/ /
+#  \__,_//_.___/ \__,_//_/ /_/ \__,_/ \__/ \__,_/
+#
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 0 ] ; then
 
@@ -404,14 +383,11 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 fi;
 
 
-
-
-#                                                      
 #     ____ _ ____ _ ____ ___   ___   _____ _   __ _____
 #    / __ `// __ `// __ `__ \ / _ \ / ___/| | / // ___/
-#   / /_/ // /_/ // / / / / //  __/(__  ) | |/ // /    
-#   \__, / \__,_//_/ /_/ /_/ \___//____/  |___//_/     
-#  /____/                                              
+#   / /_/ // /_/ // / / / / //  __/(__  ) | |/ // /
+#   \__, / \__,_//_/ /_/ /_/ \___//____/  |___//_/
+#  /____/
 #
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 1 ] ; then
@@ -425,6 +401,60 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
         import_steam_cmd "$destination_directory/_util/steamcmd";
 
         docker build -t ll/gamesvr "$SCRIPT_DIRECTORY/gamesvr/";
+
+        gfx_section_end;
+    fi;
+fi;
+
+
+#                                                               __     __              __
+#     ____ _ ____ _ ____ ___   ___   _____ _   __ _____        / /_   / /____ _ _____ / /__ ____ ___   ___   _____ ____ _
+#    / __ `// __ `// __ `__ \ / _ \ / ___/| | / // ___/______ / __ \ / // __ `// ___// //_// __ `__ \ / _ \ / ___// __ `/
+#   / /_/ // /_/ // / / / / //  __/(__  ) | |/ // /   /_____// /_/ // // /_/ // /__ / ,<  / / / / / //  __/(__  )/ /_/ /
+#   \__, / \__,_//_/ /_/ /_/ \___//____/  |___//_/          /_.___//_/ \__,_/ \___//_/|_|/_/ /_/ /_/ \___//____/ \__,_/
+#  /____/
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 2 ] ; then
+
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-blackmesa";
+
+        docker_remove_image "ll/gamesvr-blackmesa";
+
+        destination_directory="$SCRIPT_DIRECTORY/gamesvr-blackmesa/files";
+
+        import_steam_app 346680 "$destination_directory"
+
+        docker build -t ll/gamesvr-blackmesa "$SCRIPT_DIRECTORY/gamesvr-blackmesa/";
+
+        gfx_section_end;
+    fi;
+fi;
+
+
+#                                                               __     __              __                                         ____                          __
+#     ____ _ ____ _ ____ ___   ___   _____ _   __ _____        / /_   / /____ _ _____ / /__ ____ ___   ___   _____ ____ _        / __/_____ ___   ___   ____   / /____ _ __  __
+#    / __ `// __ `// __ `__ \ / _ \ / ___/| | / // ___/______ / __ \ / // __ `// ___// //_// __ `__ \ / _ \ / ___// __ `/______ / /_ / ___// _ \ / _ \ / __ \ / // __ `// / / /
+#   / /_/ // /_/ // / / / / //  __/(__  ) | |/ // /   /_____// /_/ // // /_/ // /__ / ,<  / / / / / //  __/(__  )/ /_/ //_____// __// /   /  __//  __// /_/ // // /_/ // /_/ /
+#   \__, / \__,_//_/ /_/ /_/ \___//____/  |___//_/          /_.___//_/ \__,_/ \___//_/|_|/_/ /_/ /_/ \___//____/ \__,_/       /_/  /_/    \___/ \___// .___//_/ \__,_/ \__, /
+#  /____/                                                                                                                                           /_/               /____/
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
+
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-blackmesa-freeplay";
+
+        docker_remove_image "ll/gamesvr-blackmesa-freeplay";
+
+        destination_directory="$SCRIPT_DIRECTORY/gamesvr-blackmesa-freeplay/files";
+
+        empty_folder "$destination_directory";
+
+        import_github_repo "LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/bms/";
+
+        import_github_repo "LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/bms/";
+
+        import_github_repo "LacledesLAN/gamesvr-srcds-blackmesa-freeplay" "$destination_directory/";
+
+        docker build -t ll/gamesvr-blackmesa-freeplay "$SCRIPT_DIRECTORY/gamesvr-blackmesa-freeplay/";
 
         gfx_section_end;
     fi;
@@ -522,6 +552,60 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 fi;
 
 
+#                                                                   __            __
+#     ____ _ ____ _ ____ ___   ___   _____ _   __ _____        ____/ /____   ____/ /_____
+#    / __ `// __ `// __ `__ \ / _ \ / ___/| | / // ___/______ / __  // __ \ / __  // ___/
+#   / /_/ // /_/ // / / / / //  __/(__  ) | |/ // /   /_____// /_/ // /_/ // /_/ /(__  )
+#   \__, / \__,_//_/ /_/ /_/ \___//____/  |___//_/           \__,_/ \____/ \__,_//____/
+#  /____/
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 2 ] ; then
+
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-dods";
+
+        docker_remove_image "ll/gamesvr-dods";
+        
+        destination_directory="$SCRIPT_DIRECTORY/gamesvr-dods/files";
+        
+        import_steam_app 232290 "$destination_directory"
+
+        docker build -t ll/gamesvr-dods "$SCRIPT_DIRECTORY/gamesvr-dods/";
+
+        gfx_section_end;
+    fi;
+fi;
+
+
+#                                                                   __            __              ____                          __
+#     ____ _ ____ _ ____ ___   ___   _____ _   __ _____        ____/ /____   ____/ /_____        / __/_____ ___   ___   ____   / /____ _ __  __
+#    / __ `// __ `// __ `__ \ / _ \ / ___/| | / // ___/______ / __  // __ \ / __  // ___/______ / /_ / ___// _ \ / _ \ / __ \ / // __ `// / / /
+#   / /_/ // /_/ // / / / / //  __/(__  ) | |/ // /   /_____// /_/ // /_/ // /_/ /(__  )/_____// __// /   /  __//  __// /_/ // // /_/ // /_/ /
+#   \__, / \__,_//_/ /_/ /_/ \___//____/  |___//_/           \__,_/ \____/ \__,_//____/       /_/  /_/    \___/ \___// .___//_/ \__,_/ \__, /
+#  /____/                                                                                                           /_/               /____/
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
+
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-dods-freeplay";
+
+        docker_remove_image "ll/gamesvr-dods-freeplay";
+        
+        destination_directory="$SCRIPT_DIRECTORY/gamesvr-dods-freeplay/files";
+        
+        empty_folder "$destination_directory";
+        
+        import_github_repo "LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/dod/";
+        
+        import_github_repo "LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/dod/";
+
+        import_github_repo "LacledesLAN/gamesvr-srcds-dods-freeplay" "$destination_directory/";
+
+        docker build -t ll/gamesvr-dods-freeplay "$SCRIPT_DIRECTORY/gamesvr-dods-freeplay/";
+
+        gfx_section_end;
+    fi;
+fi;
+
+
 #                                                       __    _____      __
 #     ____ _____ _____ ___  ___  ______   _______      / /_  / /__ \____/ /___ ___
 #    / __ `/ __ `/ __ `__ \/ _ \/ ___/ | / / ___/_____/ __ \/ /__/ / __  / __ `__ \
@@ -615,7 +699,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
         gfx_section_start "Docker -=> Building Image ll/gamesvr-tf2-blindfrag";
 
         docker_remove_image "ll/gamesvr-tf2-blindfrag";
-        
+
         destination_directory="$SCRIPT_DIRECTORY/gamesvr-tf2-blindfrag/files";
 
         empty_folder "$destination_directory";
@@ -630,6 +714,32 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         gfx_section_end;
 
+    fi;
+fi;
+
+
+#                                                             ______ ______ ___              __                        __                   __
+#     ____ _ ____ _ ____ ___   ___   _____ _   __ _____      /_  __// ____/|__ \        ____/ /____  _      __ ____   / /____   ____ _ ____/ /
+#    / __ `// __ `// __ `__ \ / _ \ / ___/| | / // ___/______ / /  / /_    __/ /______ / __  // __ \| | /| / // __ \ / // __ \ / __ `// __  /
+#   / /_/ // /_/ // / / / / //  __/(__  ) | |/ // /   /_____// /  / __/   / __//_____// /_/ // /_/ /| |/ |/ // / / // // /_/ // /_/ // /_/ /
+#   \__, / \__,_//_/ /_/ /_/ \___//____/  |___//_/          /_/  /_/     /____/       \__,_/ \____/ |__/|__//_/ /_//_/ \____/ \__,_/ \__,_/
+#  /____/
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
+    
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-tf2-download";
+
+        docker_remove_image "ll/gamesvr-tf2-download";
+        
+        destination_directory="$SCRIPT_DIRECTORY/gamesvr-tf2-download/files";
+        
+        empty_folder "$destination_directory";
+        
+        import_github_repo "LacledesLAN/gamesvr-srcds-tf2-download" "$destination_directory/";
+
+        docker build -t ll/gamesvr-tf2-download "$SCRIPT_DIRECTORY/gamesvr-tf2-download/";
+
+        gfx_section_end;
     fi;
 fi;
 
@@ -739,7 +849,6 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
     fi;
 fi;
-
 
 
 tput smul;

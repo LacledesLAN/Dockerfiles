@@ -1,15 +1,11 @@
-# Windows image file caches
+# Windows junk
+$RECYCLE.BIN/
+Desktop.ini
 Thumbs.db
 ehthumbs.db
 
-# Folder config file
-Desktop.ini
-
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
-
-# Mac crap
+# Apple junk
 .DS_Store
 
-# Misc for Development
+# Misc for Dev/Testing
 /*test.*

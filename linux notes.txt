@@ -7,3 +7,6 @@ steamcmd either exist in ../_lanyware/linux/gamesvr/_util/steamcmd/
 
 /gamesvr/_util/steamcmd/
 
+
+
+verify empty folder is working!
