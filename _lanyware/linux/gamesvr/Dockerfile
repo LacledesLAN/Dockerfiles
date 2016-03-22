@@ -6,10 +6,13 @@ ENV HOME="/gamesvr/" SERVER_NAME="ll/gamesvr"
 
 # Install required packages and clean up unused dependencies
 RUN `##Install dependencies##` && \
+    export DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
     apt-get install -y libc6-i386 lib32gcc1 lib32stdc++6 lib32tinfo5 lib32z1 && \
     apt-get -y autoremove && \
     apt-get -y clean && \
+    `##PREFORM CLEANUP##` && \
+    export DEBIAN_FRONTEND=newt && \
     rm -rf /var/lib/apt/lists/* && \
     rm -fr /tmp/* && \
     rm -f /gamesvr/Dockerfile && \
