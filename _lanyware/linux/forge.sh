@@ -95,12 +95,12 @@ function import_steam_app() {    # APP ID; destination directory
 
     echo "Getting and verifying Steam Application #$1"
 
-    unbuffer bash "$SCRIPT_DIRECTORY/gamesvr/files/_util/steamcmd/"steamcmd.sh \
+    script -q --command "bash $SCRIPT_DIRECTORY/gamesvr/files/_util/steamcmd/steamcmd.sh \
         +login anonymous \
         +force_install_dir $2 \
         +app_update $1 \
         -validate \
-        +quit | while IFS= read line
+        +quit" | while IFS= read line
         do
             if [[ $line == *"Update state ("*")"* ]]
             then
