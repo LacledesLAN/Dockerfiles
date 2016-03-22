@@ -93,12 +93,30 @@ function import_github_repo() { # REPO url; destination directory
 function import_steam_app() {    # APP ID; destination directory
     mkdir -p "$2";
 
-    bash "$SCRIPT_DIRECTORY/gamesvr/files/_util/steamcmd/"steamcmd.sh \
+    echo "Getting and verifying Steam Application #$1"
+
+    unbuffer bash "$SCRIPT_DIRECTORY/gamesvr/files/_util/steamcmd/"steamcmd.sh \
         +login anonymous \
         +force_install_dir $2 \
         +app_update $1 \
         -validate \
-        +quit;
+        +quit | while IFS= read line
+        do
+            if [[ $line == *"Update state ("*")"* ]]
+            then
+                echo -en "\e[0K\r\t$line";
+                
+            else
+                echo -e "\t$line";
+            fi
+        done
+
+    if [[ $? != 0 ]]; 
+    then 
+        echo "bad"
+    else 
+        echo "good"
+  fi
 }
 
 
@@ -111,7 +129,7 @@ function import_steam_cmd() { # destination directory
 
     mkdir -p "$1";
     
-    { bash "$1/"steamcmd.sh +quit; }  &> /dev/null;    
+    { bash "$1/"steamcmd.sh +quit; }  &> /dev/null;
 
     if [ $? -ne 0 ] ; then
         echo -n ".downloading.."

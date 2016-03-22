@@ -10,3 +10,44 @@ steamcmd either exist in ../_lanyware/linux/gamesvr/_util/steamcmd/
 
 
 verify empty folder is working!
+
+
+Steam Console Client (c) Valve Corporation
+-- type 'quit' to exit --
+Loading Steam API...Created shared memory when not owner SteamController_Shared_mem
+OK.
+
+
+
+Connecting anonymously to Steam Public...Logged in OK
+Waiting for license info...OK
+Update state (0x3) reconfiguring, progress: 0.00 (0 / 0)
+Update state (0x5) validating, progress: 1.11 (67157058 / 6074954691)
+Update state (0x5) validating, progress: 3.82 (232259777 / 607
+
+
+
+Update state (0x3) reconfiguring, progress: 0.00 (0 / 0)
+Update state (0x61) downloading, progress: 0.25 (24516302 / 9935471607)
+Update state (0x61) downloading, progress: 0.97 (96006346 / 9935471607)
+Update state (0x61) downloading, progress: 1.07 (106068874 / 9935471607)
+Update state (0x61) downloading, progress: 1.07 (106068874 / 9935471607)
+Update state (0x61) downloading, progress: 1.07 (106068874 / 9935471607)
+
+
+
+Error! App '90' state is 0x206 after update job.
+Error! App '237410' state is 0x10502 after update job
+
+
+stdbuf -oL ping google.com -c 4 |
+  while IFS= read -r line
+  do
+        if [[ $line == *"rtt"* ]] 
+        then
+            echo -en "\e[0K\r RESULTS: $line";
+            echo "";
+        else
+            echo -en "\e[0K\r $line";
+        fi
+  done

@@ -51,6 +51,7 @@ function extname() #{{{1
     echo "$exts"
 }
 
+
 function abspath() #{{{1
 {
     # <doc:abspath> {{{
@@ -98,6 +99,7 @@ function abspath() #{{{1
     IFS=$OIFS
 }
 
+
 function tempdir() #{{{1
 {
     # <doc:tempdir> {{{
@@ -112,6 +114,24 @@ function tempdir() #{{{1
     tempfile -d -t "$(basename "$0").XXXXXX"
     TEMPDIR=$TEMPFILE
 }
+
+
+function tolower()
+{
+    # <doc:tolower> {{{
+    #
+    # Lowercases all letters in a string
+    #
+    # Usage: tolower "String To Convert To Lowercase"
+    #
+    # Usage examples:
+    #     tolower "String To Convert To Lowercase"     #==> "string to convert to lowercase"
+    #
+    # </doc:filename> }}}
+
+    return $(echo "$1" | tr '[:upper:]' '[:lower:]')
+}
+
 
 function filename() #{{{1
 {
@@ -147,6 +167,7 @@ function trim() #{{{1
     ltrim "$1" | rtrim "$1"
 }
 
+
 function ltrim() #{{{1
 {
     # <doc:ltrim> {{{
@@ -159,6 +180,7 @@ function ltrim() #{{{1
     sed "s%^[${char//%/\\%}]*%%"
 }
 
+
 function rtrim() #{{{1
 {
     # <doc:rtrim> {{{
@@ -170,3 +192,4 @@ function rtrim() #{{{1
     local char=${1:-[:space:]}
     sed "s%[${char//%/\\%}]*$%%"
 }
+
