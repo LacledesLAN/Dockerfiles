@@ -7,7 +7,7 @@ ENV HOME="/gamesvr/csgo/" SERVER_NAME="ll/gamesvr-csgo-tourney"
 COPY ./files/ /gamesvr/csgo/
 
 RUN `##Set up container enviorment##` && \
-    useradd  -m --home /gamesvr/csgo/ gamesvr-csgo-tourney -c "Docker container user for ll/gamesvr-csgo-tourney"
+    useradd -M --home /gamesvr/csgo/ gamesvr-csgo-tourney -c "Docker container user for ll/gamesvr-csgo-tourney"
 
 USER gamesvr-csgo-tourney
 

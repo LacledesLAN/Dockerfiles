@@ -7,7 +7,7 @@ ENV HOME="/gamesvr/dods/" SERVER_NAME="ll/gamesvr-dods-freeplay"
 COPY ./files/ /gamesvr/dods/
 
 RUN `##Set up container enviorment##` && \
-    useradd  -m --home /gamesvr/dods/ gamesvr-dods-freeplay -c "Docker container user for ll/gamesvr-dods-freeplay"
+    useradd -M --home /gamesvr/dods/ gamesvr-dods-freeplay -c "Docker container user for ll/gamesvr-dods-freeplay"
 
 USER gamesvr-dods-freeplay
 

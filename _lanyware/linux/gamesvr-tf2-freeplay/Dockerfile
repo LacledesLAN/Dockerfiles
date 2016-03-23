@@ -7,7 +7,7 @@ ENV HOME="/gamesvr/tf2/" SERVER_NAME="ll/gamesvr-tf2-freeplay"
 COPY ./files/ /gamesvr/tf2/
 
 RUN `##Set up container enviorment##` && \
-    useradd  -m --home /gamesvr/tf2/ gamesvr-tf2-freeplay -c "Docker container user for ll/gamesvr-tf2-freeplay"
+    useradd -M --home /gamesvr/tf2/ gamesvr-tf2-freeplay -c "Docker container user for ll/gamesvr-tf2-freeplay"
 
 USER gamesvr-tf2-freeplay
 
