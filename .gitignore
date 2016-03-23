@@ -9,3 +9,6 @@ ehthumbs.db
 
 # Misc for Dev/Testing
 /*test.*
+
+# Any log files that may have been downloaded
+/logs/*/*.log
