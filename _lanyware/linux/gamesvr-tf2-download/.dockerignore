@@ -1,5 +1,4 @@
-Dockerfile
-.dockerignore
 .git
+.listing
 *.md
 !@*.md
