@@ -58,23 +58,13 @@ function gfx_section_start() {
     tput sgr0;
     tput dim;
     tput setaf 6;
-    return 0;
-}
 
-function gfx_seriousface() {
-    echo -e "(ಠ_ಠ)";
-    sleep 0.2;
-    return 0;
-}
+    if [[ "$SETTING_ENABLE_LOGGING" = true ]] ; then
+        echo "" >> $SCRIPT_LOGFILE;
+        gfx_horizontal_rule >> $SCRIPT_LOGFILE;
+        echo -e "\t$1" >> $SCRIPT_LOGFILE;
+        gfx_horizontal_rule >> $SCRIPT_LOGFILE;
+    fi
 
-function gfx_tableflip() {
-    echo -e "(╯°□°）╯︵ ┻━┻";
-    sleep 0.2;
-    return 0;
-}
-
-function gfx_tablefix() {
-    echo -e "┬──┬ ノ( ゜-゜ノ)";
-    sleep 0.2;
     return 0;
 }

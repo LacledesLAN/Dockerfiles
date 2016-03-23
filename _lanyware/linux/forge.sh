@@ -1,6 +1,7 @@
 #!/bin/bash
-source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/functions-gfx.sh"
-source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/functions-misc.sh"
+source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/functions-gfx.sh";
+source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/functions-misc.sh";
+source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/functions-steam.sh";
 #=============================================================================================================
 #
 #   FILE:   forge.sh
@@ -17,6 +18,7 @@ source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/functions-misc.sh"
 #=============================================================================================================
 #===  SETTINGS  ==============================================================================================
 #=============================================================================================================
+declare SETTING_ENABLE_LOGGING=true;
 
 
 #=============================================================================================================
@@ -34,6 +36,14 @@ readonly SCRIPT_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 readonly SCRIPT_FILENAME="$(basename "$(test -L "$0" && readlink "$0" || echo "$0")")";
 readonly SCRIPT_FULLPATH="$SCRIPT_DIRECTORY/$SCRIPT_FILENAME";
 readonly SCRIPT_VERSION=$(stat -c %y "$SCRIPT_FULLPATH");
+
+if [[ "$SETTING_ENABLE_LOGGING" = true ]] ; then
+    readonly SCRIPT_LOGPATH=$(realpath "$SCRIPT_DIRECTORY/../../logs/lanyware");
+else
+    readonly SCRIPT_LOGPATH="/tmp/lanyware";
+fi
+
+readonly SCRIPT_LOGFILE=$(date +"$SCRIPT_LOGPATH/%Y.%m.%d-%Hh%Mm%Ss.log");
 
 
 #=============================================================================================================
@@ -57,7 +67,6 @@ function docker_remove_image() {
 
         # Remove image(s)
         docker rmi -f $1
-
     else
         echo -n "No existing images to remove.";
     fi
@@ -90,67 +99,6 @@ function import_github_repo() { # REPO url; destination directory
 }
 
 
-function import_steam_app() {    # APP ID; destination directory
-    mkdir -p "$2";
-
-    echo "Getting and verifying Steam Application #$1"
-
-    script -q --command "bash $SCRIPT_DIRECTORY/gamesvr/files/_util/steamcmd/steamcmd.sh \
-        +login anonymous \
-        +force_install_dir $2 \
-        +app_update $1 \
-        -validate \
-        +quit" | while IFS= read line
-        do
-            if [[ $line == *"Update state ("*")"* ]]
-            then
-                echo -en "\e[0K\r\t$line";
-                
-            else
-                echo -e "\t$line";
-            fi
-        done
-
-    if [[ $? != 0 ]]; 
-    then 
-        echo "bad"
-    else 
-        echo "good"
-  fi
-}
-
-
-function import_steam_cmd() { # destination directory
-    #Header
-    tput setaf 6;
-    echo -e "\tVerifying SteamCMD";
-    echo -e "\t[Target Directory] $1";
-    tput sgr0; tput dim; tput setaf 6;
-
-    mkdir -p "$1";
-    
-    { bash "$1/"steamcmd.sh +quit; }  &> /dev/null;
-
-    if [ $? -ne 0 ] ; then
-        echo -n ".downloading.."
-
-        #failed to run SteamCMD.  Download it.
-        {
-            rm -rf "$1/*";
-
-            wget -qO- -r --tries=10 --waitretry=20 --output-document=tmp.tar.gz http://media.steampowered.com/installer/steamcmd_linux.tar.gz;
-            tar -xvzf tmp.tar.gz -C "$1/";
-            rm tmp.tar.gz
-
-            bash "$1/"steamcmd.sh +quit;
-        } &> /dev/null;
-    fi
-
-    echo ".updated...done."
-    echo -e "";
-}
-
-
 function empty_folder() {
     #Header
     tput setaf 6;
@@ -159,14 +107,32 @@ function empty_folder() {
     
     #make sure target folder exists
     mkdir -p "$1";
-    
-    # Recursively delete all directories in target folder
-    { find "$1/" -mindepth 1 -type d -exec rm -R {}; }  &> /dev/null;  
-    
-    # Delete all files in target folder excep "Dockerfile" and ".dockerignore"
-    { find "$1/" -type f -exec rm -f {};  }  &> /dev/null;  
+
+    find "$1/" -mindepth 1 -delete;    
 
     echo -e "\n";
+}
+
+
+function wget_wrapper() {
+    # This simple wget wrapper wraps expects the "--no-verbose" argument
+    # The goal is to keep providing updates to the terminal while greatly reducing scroll and log everything in the log file
+    script -q --command "$1" | while IFS= read line
+        do
+            if [[ $line = *".listing\" ["* ]] ; then
+                #do nothing; don't show "downloaded" .listing files
+                echo -n "";
+            elif [[ $line == *"-"*"-"*" "*":"*":"*"URL:"*"["*"] -> "* ]] ; then
+                #print only the downloaded file name
+                echo -en "\e[0K\r\tdownloaded: $(echo "$line" | sed -n -e 's/^.*-> //p')";
+            else
+                echo $line;
+            fi
+
+            if [[ "$SETTING_ENABLE_LOGGING" = true ]] ; then
+                echo -e "\t$(date)\t$line" >> $SCRIPT_LOGFILE;
+            fi
+        done
 }
 
 
@@ -416,7 +382,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$SCRIPT_DIRECTORY/gamesvr/files";
 
-        import_steam_cmd "$destination_directory/_util/steamcmd";
+        steam_import_tool "$destination_directory/_util/steamcmd";
 
         docker build -t ll/gamesvr "$SCRIPT_DIRECTORY/gamesvr/";
 
@@ -440,7 +406,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$SCRIPT_DIRECTORY/gamesvr-blackmesa/files";
 
-        import_steam_app 346680 "$destination_directory"
+        steam_import_app 346680 "$destination_directory";
 
         docker build -t ll/gamesvr-blackmesa "$SCRIPT_DIRECTORY/gamesvr-blackmesa/";
 
@@ -494,7 +460,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
         
         destination_directory="$SCRIPT_DIRECTORY/gamesvr-csgo/files";
         
-        import_steam_app 740 "$destination_directory"
+        steam_import_app 740 "$destination_directory";
 
         docker build -t ll/gamesvr-csgo "$SCRIPT_DIRECTORY/gamesvr-csgo/";
 
@@ -585,7 +551,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
         
         destination_directory="$SCRIPT_DIRECTORY/gamesvr-dods/files";
         
-        import_steam_app 232290 "$destination_directory"
+        steam_import_app 232290 "$destination_directory";
 
         docker build -t ll/gamesvr-dods "$SCRIPT_DIRECTORY/gamesvr-dods/";
 
@@ -640,7 +606,31 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$SCRIPT_DIRECTORY/gamesvr-hl2dm/files";
 
-        import_steam_app 232370 "$destination_directory/"
+        ############ FTP STUFF ############
+
+        # Clear destination to ensure no unintended maps are left.  Eg, if the map is deleted from the repo it should be deleted
+        # from the built server
+        empty_folder "$destination_directory/hl2mp/maps";
+
+        # Download all half-life 2 deathmatch maps from the LL repo
+        wget_wrapper "wget -m \
+            -P $destination_directory/hl2mp/maps/ \
+            ftp://guest:m5lyeREIDy0Zvr2o5wAq@files.lacledeslan.com/content.lan/fastDownloads/hl2dm/maps \
+            -nH \
+            --no-verbose \
+            --cut-dirs 4";
+
+        # Unzip all bz2 files; extracting the maps and deleting the archives
+        echo "bzip2 -f -d $destination_directory/hl2mp/maps/*.bsp.bz2";
+
+        bzip2 -d $destination_directory/hl2mp/maps/*.bsp.bz2;
+
+        # Remove .listing file
+        rm "$destination_directory/hl2mp/maps/.listing";
+
+        ############ END OF FTP STUFF ############
+
+        steam_import_app 232370 "$destination_directory/";
 
         docker build -t ll/gamesvr-hl2dm "$SCRIPT_DIRECTORY/gamesvr-hl2dm/";
 
@@ -695,7 +685,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
         
         destination_directory="$SCRIPT_DIRECTORY/gamesvr-tf2/files";
         
-        import_steam_app 232250 "$destination_directory/"
+        steam_import_app 232250 "$destination_directory/";
 
         docker build -t ll/gamesvr-tf2 "$SCRIPT_DIRECTORY/gamesvr-tf2/";
 
@@ -890,3 +880,8 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     docker images;
 fi;
 
+
+#=============================================================================================================
+#===  UNSET GLOBAL VARIABLES  ================================================================================
+#=============================================================================================================
+unset SETTING_ENABLE_LOGGING;

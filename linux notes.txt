@@ -1,6 +1,19 @@
 
 
 
+DOCKER STEPS
+    *Sending build context to Docker daemon*
+    *Step*:*
+    
+    *Successfully built *
+    
+    -- ON FAIL --
+    
+    
+    
+    
+   ===================================
+
 steamcmd either exist in ../_lanyware/linux/gamesvr/_util/steamcmd/
 
 -or-
