@@ -1,3 +1,16 @@
+Install Instructions (CentOS / Ubunutu)
+----------------------------------
+**1. Download install-lanyware.sh
+
+**2. Add the execute permission to the install script
+
+` chmod 755 ./install-lanyware.sh`
+
+**3. Execute the install script and follow the prompts.
+
+` ./install-lanyware.sh `
+
+DEPRECATED
 Install Instructions (Debian-based)
 -----------------------------------
 **1. Install misc dependancies**
