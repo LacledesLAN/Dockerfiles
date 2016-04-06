@@ -10,7 +10,7 @@ clear
 os=$(cat /etc/os-release | grep ID= | head -1 | cut -d = -f2|tr -d \")
 echo $os
 #CentOS installation
-if [ $os="centos" ]; 
+if [ $os = 'centos' ]; 
 then	
 	echo "Detected CentOS as running operating system"
 	echo "Yum is now installing packages"
@@ -19,7 +19,7 @@ then
 fi
 
 #Ubuntu installation
-if [ $os="ubuntu" ];
+if [ $os = 'ubuntu' ];
 then
 	echo "Detected Ubuntu as running operating system"
 	echo "Aptitude is now installing packages"
@@ -30,7 +30,9 @@ fi
 #Legacy LANYWARE code
 sudo curl -sSL https://get.docker.com/ | sh
 sudo usermod -aG docker $dckeruser
+sudo service docker start
 cd /home/$dkceruser
 git clone git://github.com/LacledesLAN/LANYWARE
 rm -rf /home/$dckeruser/.git
-chmod +x /home/$dckeruser/*.sh +x /home/$dckeruser/_lanyware/linux/*.sh
+chmod +x /home/$dckeruser/*.sh 
+chmod +x /home/$dckeruser/LANYWARE/_lanyware/linux/*.sh
