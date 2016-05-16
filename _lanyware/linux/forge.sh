@@ -44,6 +44,7 @@ else
 fi
 
 readonly SCRIPT_LOGFILE=$(date +"$SCRIPT_LOGPATH/%Y.%m.%d-%Hh%Mm%Ss.log");
+touch $SCRIPT_LOGFILE;
 
 
 #=============================================================================================================

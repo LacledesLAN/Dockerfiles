@@ -8,7 +8,7 @@ ENV HOME="/gamesvr/" SERVER_NAME="ll/gamesvr"
 RUN `##Install dependencies##` && \
     export DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
-    apt-get install -y libc6-i386 lib32gcc1 lib32stdc++6 lib32tinfo5 lib32z1 && \
+    apt-get install -y libc6-i386 lib32gcc1 lib32stdc++6 lib32tinfo5 lib32z1 wget && \
     apt-get -y autoremove && \
     apt-get -y clean && \
     `##PREFORM CLEANUP##` && \
