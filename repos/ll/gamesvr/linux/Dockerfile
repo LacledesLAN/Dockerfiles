@@ -2,7 +2,7 @@ FROM ubuntu:latest
 
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
-ENV HOME="/gamesvr/" SERVER_NAME="ll/gamesvr"
+ENV SERVER_NAME="ll/gamesvr"
 
 # Install required packages and clean up unused dependencies
 RUN `##Install dependencies##` && \

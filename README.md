@@ -1,5 +1,5 @@
 Install Instructions (CentOS / Ubunutu)
-----------------------------------
+---------------------------------------
 **1. Download install-lanyware.sh
 
 **2. Add the execute permission to the install script
@@ -37,97 +37,68 @@ Download this repo and stage to your home directory (~/).
 `chmod +x ~/*.sh;  chmod +x ~/_lanyware/linux/*.sh`
 
 
+`chmod +x *.sh; chmod +x ./bin/*.sh; ./lanyware.sh`
 
 
+DEV NOTES
+=========
 
-LANYWARE Structure Reference
-============================
+<LANYWARE>
+
+    [PRE CHECKS]
+    pre-reqs are installed / available
+    check directories are writable
+
+    [USER MENU OPTIONS]
+    
+    
+    [MAIN LOOP]
+    parse repo tags in alphabetical order    
+        parse repos in alphabetical order
+            Execute Lanywarefile
+            
+            if (DOCKER)
+                if contains "-"
+            
+                try for /*kernel*/Dockerfile
+                try for Dockerfile.kernel
+                try for Dockerfile
+                <FAIL OUT>
+                
+                if clear-cache; clear the cache
+            
+            else if (RAW)
+                try (cp || mv) -=> /kernel/files
+                try (cp || mv) -=> files
+                <failure>
+            else ()
+                FAIL
+
+    [WIND DOWN]
+    
+    
+<UPDATE>
+    Update all files
+    remove files that were removed from github repo
+
+
+Directory Structure
+===================
 ```
-[WORKING DIRECTORY] ("/" inside docker images)
-	└───/_lanyware                                    LANWARE directories
-	|   └───/linux                                        LANYWARE directories for all linux
-	|   |   └───/gamesvr
-	|   |   |   └───/_util
-	|   |   |       └───/steamcmd
-	|   |   └───/gamesvr-blackmesa-freeplay
-	|   |   └───/gamesvr-csgo
-	|   |   └───/gamesvr-csgo-freeplay
-	|   |   └───/gamesvr-csgo-tourney
-	|   |   └───/gamesvr-dods
-	|   |   └───/gamesvr-hl2dm
-	|   |   └───/gamesvr-hl2dm-freeplay
-	|   |   └───/gamesvr-tf2
-	|   |   └───/gamesvr-tf2-blindfrag
-	|   |   └───/gamesvr-tf2-freeplay
-	|   |   └───/websvr-content.lan
-	|   |   └───/websvr-kiosk.lan
-	|   |   └───/websvr-lacledes.lan
-	|   |   └───gfx-allthethings.sh
-	|   |   └───install.sh
-	|   |   └───reset-docker.sh
-	|   └───/windows                                      LANYWARE directories for all windows
-	└───/gamesvr......................................Output directories for local servers
-	|   └───/.svr-bin.....................................Used *only* in docker images. Server folder is just a symlink to this one.
-    |   └───/_util........................................Utilities for use with gameservers
-	|   |   └───/steamcmd.....................................steamcmd utility for use with source servers
-	|   └───/blackmesa-freeplay
-	|   └───/csgo-freeplay
-	|   └───/csgo-tourney
-	|   └───/dods-freeplay
-	|   └───/hl2dm-freeplay
-    |   └───/tf2-blindfrag
-    |   └───/tf2-freeplay
-	└───lanyware.ps1                                  windows (POWERSHELL) entry point for LANYWARE suite
-	└───lanyware.sh                                   linux (BASH) entry point for LANYWARE suite
-```
+    LANYWARE/                                       LANYWARE project directory (created by git repo)
+    |   └───bin/                                        Binary and script files that make lanyware work
+    |   |   └───linux-steamcmd/¹                            Linux version of steamcmd
+    |   |   └───windows-steamcmd/¹                          Windows version of steamcmd
+    |   └───logs/                                       Where log files are dumped
+    |   └───repos/                                      Contains server build repositories
+    |   └───install-linux.sh                            Linux install script
+    |   └───install-windows.ps1                         Windows install script
+    └───lanyware.ps1                                Windows entry point
+    └───lanyware.sh                                 Linux entry point
 
-Docker Image Build
-==================
-```
-** DOCKER IMAGE **                                  ** SOURCES **
-ubuntu:latest                                       hub.docker.com
-└───ll/gamesvr··········································steamcmd
-    └───ll/gamesvr-blackmesa································n/a
-    └───ll/gamesvr-csgo·····································steamapp: csgo
-    |   |                                                   ftp: content.lan/fastDownloads/csgo
-    |   └───ll/gamesvr-csgo-freeplay····························github: gamesvr-srcds-metamod.linux,
-    |   |                                                       github: gamesvr-srcds-sourcemod.linux,
-    |   |                                                       github: gamesvr-srcds-csgo-freeplay
-    |   └───ll/gamesvr-csgo-tourney·····························github: gamesvr-srcds-metamod.linux,
-    |                                                           github: gamesvr-srcds-sourcemod.linux,
-    |                                                           github: gamesvr-srcds-csgo-tourney
-    └───ll/gamesvr-dods·····································steamapp: dods
-    |   └───ll/gamesvr-dods-freeplay.............................github: gamesvr-srcds-dods-freeplay
-    └───ll/gamesvr-hl2dm····································steamapp: hl2dm
-    |   |                                                   ftp: content.lan/fastDownloads/hl2dm
-    |   └───ll/gamesvr-hl2dm-freeplay···························github: gamesvr-srcds-hl2dm-freeplay
-    └───ll/gamesvr-tf2······································steamapp: TF2
-    |   |                                                   ftp: content.lan/fastDownloads/tf2
-    |   └───ll/gamesvr-tf2-blindfrag····························github: gamesvr-srcds-metamod.linux
-    |   |                                                       github: gamesvr-srcds-sourcemod.linux
-    |   |                                                       github: gamescr-srcds-tf2-blindfrag
-    |   └───ll/gamesvr-tf2-download·····························github: gamesvr-srcds-tf2-download
-    |   └───ll/gamesvr-tf2-freeplay·····························github: gamesvr-srcds-metamod.linux
-    |                                                           github: gamesvr-srcds-sourcemod.linux
-    |                                                           github: gamesvr-srcds-tf2-freeplay
-    └───ll/gamesvr-tfc······································steamapp: tfc
-        |                                                   ftp: content.lan/fastDownloads/tfcs
-        └───ll/gamesvr-tfc-freeplay..............................github: gamesvr-srcds-tfc-freeplay
-
-nginx:latest
-└───ll/websvr
-    └───ll/websvr-contet.lan
-    └───ll/websvr-kiosk.lan
-
-microsoft/aspnet:latest
-└───ll/websvr-lacledes.lan
+¹created as-needed by runtime
 ```
 
-
-
-Dockerfiles Collection
-======================
-Library of Dockerfiles for all Dockerized LL Servers
 
 Why We Use Docker
 -----------------
@@ -161,7 +132,6 @@ Application-Level images are derived from a "Category-Level" docker-image.
 3. Configuration Level
 ----------------------
 The Configuration Level should configuration files along with any other files that may change frequently.
-
 
 
 Images at this level are derived from an "Application Level" docker image.

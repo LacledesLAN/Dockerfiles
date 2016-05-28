@@ -1,17 +1,33 @@
 # Auto detect text files and perform LF normalization
 * text=auto
-*.ico binary
+*.dll binary
 *.gif binary
+*.ico binary
 *.jpg binary
 *.png binary
 
-# Linux Specific Files
-*.sh eol=lf
-/_lanyware/linux/*/Dockerfile eol=lf
-/_lanyware/linux/*/.dockerignore eol=lf
 
-# Windows Specific Files
-*.bat eol=crlf
-*.ps1 eol=crlf
-/_lanyware/windows/*/Dockerfile eol=crlf
-/_lanyware/windows/*/.dockerignore eol=crlf
+# OS Agnostic
+# Windows handles LF but Linux can't handle CRLF; so default to LF
+/repos/*.md eol=lf
+/repos/*/.dockerignore eol=lf
+/repos/*/Dockerfile eol=lf
+
+
+# Linux Specific
+/*.sh eol=lf
+/bin/*.sh eol=lf
+/repos/*/*/Dockerfile.linux eol=lf
+/repos/*/*/linux/.dockerignore eol=lf
+/repos/*/*/linux/Dockerfile eol=lf
+/repos/*/*/linux/*.md eol=lf
+
+
+# Windows Specific
+/*.bat eol=crlf
+/*.ps1 eol=crlf
+/bin/*.ps1 eol=crlf
+/repos/*/*/Dockerfile.windows eol=lf
+/repos/*/*/windows/.dockerignore eol=crlf
+/repos/*/*/windows/Dockerfile eol=crlf
+/repos/*/*/windows/*.md eol=crlf

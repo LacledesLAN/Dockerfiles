@@ -64,7 +64,7 @@ function steam_import_app() {    # APP ID; destination directory
         echo "Getting and verifying Steam App '$(steam_get_app_name $1)'" >> $SCRIPT_LOGFILE;
     fi
 
-    script -q --command "bash $SCRIPT_DIRECTORY/gamesvr/files/_util/steamcmd/steamcmd.sh \
+    script -q --command "bash $SCRIPT_DIRECTORY/linux-steamcmd/steamcmd.sh \
         +login anonymous \
         +force_install_dir $2 \
         +app_update $1 \
