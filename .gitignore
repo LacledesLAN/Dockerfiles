@@ -11,4 +11,8 @@ ehthumbs.db
 /*test.*
 
 # Any log files that may have been downloaded
-/logs/*/*.log
+/logs/*
+/logs/*/*
+
+# Don't upload legit user-secrets file
+user-secrets.json
