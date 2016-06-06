@@ -1,0 +1,13 @@
+FROM ll/gamesvr:java
+
+MAINTAINER Laclede's LAN <contact@lacledeslan.com>
+
+ENV HOME="/gamesvr/minecraft/" SERVER_NAME="ll/gamesvr-minecraft"
+
+COPY ./files/ /gamesvr/minecraft/
+
+RUN java -jar /gamesvr/minecraft/BuildTools.jar --rev latest
+
+WORKDIR /gamesvr/minecraft/
+
+CMD ["/bin/bash"]
