@@ -1,0 +1,11 @@
+FROM ll/gamesvr:steamcmd
+
+MAINTAINER Laclede's LAN <contact@lacledeslan.com>
+
+ENV HOME="/gamesvr/svencoop/" SERVER_NAME="ll/gamesvr-svencoop" 
+
+COPY ./files/ /gamesvr/svencoop/
+
+WORKDIR /gamesvr/svencoop/
+
+CMD ["/bin/bash"]
