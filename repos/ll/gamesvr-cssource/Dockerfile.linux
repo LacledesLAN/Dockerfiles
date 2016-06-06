@@ -1,0 +1,11 @@
+FROM ll/gamesvr:steamcmd
+
+MAINTAINER Laclede's LAN <contact@lacledeslan.com>
+
+ENV HOME="/gamesvr/cssource/" SERVER_NAME="ll/gamesvr-cssource" 
+
+COPY ./files/ /gamesvr/cssource/
+
+WORKDIR /gamesvr/cssource/
+
+CMD ["/bin/bash"]
