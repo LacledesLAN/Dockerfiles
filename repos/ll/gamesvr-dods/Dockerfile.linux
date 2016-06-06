@@ -1,4 +1,4 @@
-FROM ll/gamesvr
+FROM ll/gamesvr:steamcmd
 
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
