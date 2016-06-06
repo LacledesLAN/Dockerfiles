@@ -1,0 +1,11 @@
+FROM ll/gamesvr:steamcmd
+
+MAINTAINER Laclede's LAN <contact@lacledeslan.com>
+
+ENV HOME="/gamesvr/garrysmod/" SERVER_NAME="ll/gamesvr-garrysmod" 
+
+COPY ./files/ /gamesvr/garrysmod/
+
+WORKDIR /gamesvr/garrysmod/
+
+CMD ["/bin/bash"]

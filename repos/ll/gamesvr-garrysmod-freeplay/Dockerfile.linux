@@ -1,0 +1,14 @@
+FROM ll/gamesvr-garrysmod
+
+MAINTAINER Laclede's LAN <contact@lacledeslan.com>
+
+ENV HOME="/gamesvr/garrysmod/" SERVER_NAME="ll/gamesvr-garrysmod-freeplay" 
+
+COPY ./files/ /gamesvr/garrysmod/
+
+RUN `##Set up container enviorment##` && \
+    useradd -M --home /gamesvr/garrysmod/ gamesvr-garrysmod-freeplay -c "Docker container user for ll/gamesvr-garrysmod-freeplay"
+
+USER gamesvr-garrysmod-freeplay
+
+WORKDIR /gamesvr/garrysmod/
