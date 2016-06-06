@@ -1,0 +1,14 @@
+FROM ll/gamesvr:steamcmd
+
+MAINTAINER Laclede's LAN <contact@lacledeslan.com>
+
+ENV HOME="/gamesvr/svencoop/" SERVER_NAME="ll/gamesvr-svencoop-freeplay" 
+
+COPY ./files/ /gamesvr/svencoop/
+
+RUN `##Set up container enviorment##` && \
+    useradd -M --home /gamesvr/svencoop/ gamesvr-svencoop-freeplay -c "Docker container user for ll/gamesvr-svencoop-freeplay"
+
+USER gamesvr-svencoop-freeplay
+
+WORKDIR /gamesvr/svencoop/
