@@ -358,7 +358,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$REPO_DIRECTORY/ll/gamesvr_java/linux/files";
         
-        mkdir "$destination_directory";
+        mkdir "$destination_directory" --parents;
 
         docker build -t ll/gamesvr:java "$REPO_DIRECTORY/ll/gamesvr_java/linux/";
 
@@ -382,7 +382,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$REPO_DIRECTORY/ll/gamesvr_steamcmd/linux/files";
         
-        mkdir "$destination_directory";
+        mkdir "$destination_directory" --parents;
 
         steam_import_tool "$destination_directory/_steamcmd";
 
@@ -408,7 +408,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$REPO_DIRECTORY/ll/gamesvr-blackmesa/files";
         
-        mkdir "$destination_directory";
+        mkdir "$destination_directory" --parents;
 
         steam_import_app 346680 "$destination_directory";
 
@@ -434,7 +434,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$REPO_DIRECTORY/ll/gamesvr-blackmesa-freeplay/linux/files";
         
-        mkdir "$destination_directory";
+        mkdir "$destination_directory" --parents;
 
         empty_folder "$destination_directory";
 
@@ -465,7 +465,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$REPO_DIRECTORY/ll/gamesvr-cssource";
         
-        mkdir "$destination_directory";
+        mkdir "$destination_directory" --parents;
 
         steam_import_app 232330 "$destination_directory/files";
 
@@ -490,11 +490,11 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$REPO_DIRECTORY/ll/gamesvr-csgo";
         
-        mkdir "$destination_directory";
+        mkdir "$destination_directory" --parents;
 
         steam_import_app 740 "$destination_directory/files";
 
-        ftp_import_content source "$destination_directory/files";
+        #ftp_import_content source "$destination_directory/files";
 
         docker build -t ll/gamesvr-csgo -f "$REPO_DIRECTORY/ll/gamesvr-csgo/Dockerfile.linux" "$REPO_DIRECTORY/ll/gamesvr-csgo/";
 
@@ -518,7 +518,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$REPO_DIRECTORY/ll/gamesvr-csgo-freeplay/linux/files";
         
-        mkdir "$destination_directory";
+        mkdir "$destination_directory" --parents;
 
         empty_folder "$destination_directory";
 
@@ -552,7 +552,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$REPO_DIRECTORY/ll/gamesvr-csgo-tourney/linux/files";
         
-        mkdir "$destination_directory";
+        mkdir "$destination_directory" --parents;
 
         empty_folder "$destination_directory";
 
@@ -587,7 +587,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$REPO_DIRECTORY/ll/gamesvr-dods/files";
         
-        mkdir "$destination_directory";
+        mkdir "$destination_directory" --parents;
         
         steam_import_app 232290 "$destination_directory";
 
@@ -613,7 +613,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$REPO_DIRECTORY/ll/gamesvr-dods-freeplay/linux/files";
         
-        mkdir "$destination_directory";
+        mkdir "$destination_directory" --parents;
 
         empty_folder "$destination_directory";
 
@@ -645,7 +645,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$REPO_DIRECTORY/ll/gamesvr-hl2dm/files";
         
-        mkdir "$destination_directory";
+        mkdir "$destination_directory" --parents;
 
         ############ FTP STUFF ############
 
@@ -693,7 +693,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$REPO_DIRECTORY/ll/gamesvr-hl2dm-freeplay/linux/files";
 
-        mkdir "$destination_directory";
+        mkdir "$destination_directory" --parents;
         
         empty_folder "$destination_directory";
 
@@ -749,7 +749,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$REPO_DIRECTORY/ll/gamesvr-garrysmod-freeplay/files";
         
-        mkdir "$destination_directory";
+        mkdir "$destination_directory" --parents;
 
         empty_folder "$destination_directory";
 
@@ -778,7 +778,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$REPO_DIRECTORY/ll/gamesvr-minecraft/files";
 
-        mkdir "$destination_directory";
+        mkdir "$destination_directory" --parents;
         
         empty_folder "$destination_directory";
 
@@ -822,7 +822,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$REPO_DIRECTORY/ll/gamesvr-svencoop/files";
         
-        mkdir "$destination_directory";
+        mkdir "$destination_directory" --parents;
         
         empty_folder "$destination_directory";
 
@@ -850,7 +850,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$REPO_DIRECTORY/ll/gamesvr-svencoop-freeplay/files";
         
-        mkdir "$destination_directory";
+        mkdir "$destination_directory" --parents;
 
         empty_folder "$destination_directory";
 
@@ -878,7 +878,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$REPO_DIRECTORY/ll/gamesvr-tf2/files";
         
-        mkdir "$destination_directory";
+        mkdir "$destination_directory" --parents;
 
         steam_import_app 232250 "$destination_directory/";
 
@@ -905,7 +905,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$REPO_DIRECTORY/ll/gamesvr-tf2-blindfrag/linux/files";
         
-        mkdir "$destination_directory";
+        mkdir "$destination_directory" --parents;
 
         empty_folder "$destination_directory";
 
@@ -938,7 +938,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$REPO_DIRECTORY/ll/gamesvr-tf2-download/files";
         
-        mkdir "$destination_directory";
+        mkdir "$destination_directory" --parents;
 
         empty_folder "$destination_directory";
 
@@ -966,7 +966,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         destination_directory="$REPO_DIRECTORY/ll/gamesvr-tf2-freeplay/linux/files";
         
-        mkdir "$destination_directory";
+        mkdir "$destination_directory" --parents;
 
         empty_folder "$destination_directory";
 
