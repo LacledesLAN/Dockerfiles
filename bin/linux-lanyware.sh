@@ -492,7 +492,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
         
         mkdir "$destination_directory";
 
-        #steam_import_app 740 "$destination_directory/files";
+        steam_import_app 740 "$destination_directory/files";
 
         ftp_import_content source "$destination_directory/files";
 
