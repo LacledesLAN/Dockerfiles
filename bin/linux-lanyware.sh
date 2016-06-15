@@ -149,6 +149,9 @@ function menu_docker_library() {
     tput sgr0;
 
     echo "    What level do you want to rebuild?";
+    tput dim;
+    echo "      (if new installation select 0)";
+    tput sgr0;
     echo "    ";
     echo "    0) Update/Re-Pull base images from hub.docker.com";
     echo "    1) Rebuild Starting with the Category Level (Level 1+)";
