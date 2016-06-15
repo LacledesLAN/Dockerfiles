@@ -534,7 +534,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         import_github_repo "LacledesLAN/gamesvr-srcds-csgo-freeplay" "$destination_directory/";
 
-        #docker build -t ll/gamesvr-csgo-freeplay "$REPO_DIRECTORY/ll/gamesvr-csgo-freeplay/linux/";
+        docker build -t ll/gamesvr-csgo-freeplay "$REPO_DIRECTORY/ll/gamesvr-csgo-freeplay/linux/";
 
         gfx_section_end;
     fi;
