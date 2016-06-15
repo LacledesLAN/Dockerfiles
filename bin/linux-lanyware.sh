@@ -507,6 +507,35 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 fi;
 
 
+#                                                                                                    __                        __                   __
+#     ____ _ ____ _ ____ ___   ___   _____ _   __ _____        _____ _____ ____ _ ____          ____/ /____  _      __ ____   / /____   ____ _ ____/ /
+#    / __ `// __ `// __ `__ \ / _ \ / ___/| | / // ___/______ / ___// ___// __ `// __ \ ______ / __  // __ \| | /| / // __ \ / // __ \ / __ `// __  /
+#   / /_/ // /_/ // / / / / //  __/(__  ) | |/ // /   /_____// /__ (__  )/ /_/ // /_/ //_____// /_/ // /_/ /| |/ |/ // / / // // /_/ // /_/ // /_/ /
+#   \__, / \__,_//_/ /_/ /_/ \___//____/  |___//_/           \___//____/ \__, / \____/        \__,_/ \____/ |__/|__//_/ /_//_/ \____/ \__,_/ \__,_/
+#  /____/                                                               /____/
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
+
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-csgo-download";
+
+        docker_remove_image "ll/gamesvr-csgo-download";
+
+        destination_directory="$REPO_DIRECTORY/ll/gamesvr-csgo-download/files";
+
+        mkdir "$destination_directory" --parents;
+
+        empty_folder "$destination_directory";
+
+        import_github_repo "LacledesLAN/gamesvr-srcds-csgo-download" "$destination_directory/csgo/";
+
+        docker build -t ll/gamesvr-csgo-download -f "$REPO_DIRECTORY/ll/gamesvr-csgo-download/Dockerfile.linux" "$REPO_DIRECTORY/ll/gamesvr-csgo-download/";
+
+        gfx_section_end;
+
+    fi;
+fi;
+
+
 #                                                                                   ____                     __
 #     ____ _____ _____ ___  ___  ______   _______      ______________ _____        / __/_______  ___  ____  / /___ ___  __
 #    / __ `/ __ `/ __ `__ \/ _ \/ ___/ | / / ___/_____/ ___/ ___/ __ `/ __ \______/ /_/ ___/ _ \/ _ \/ __ \/ / __ `/ / / /
