@@ -16,17 +16,7 @@ Where "<USER>" is your local account. Log out and back in for change to take aff
 
 **4. Download repo into your home directory**
 
-Option 1 - Clone GitHUB Repo
-
-` cd ~; git clone git://github.com/LacledesLAN/LANYWARE; rm -rf ./.git; `
-
-Option 2 - Manually Download
-
-    2a) download https://github.com/LacledesLAN/LANYWARE/archive/master.zip
-    
-    2b) extract to ~/
-    
-    A ~/LANYWARE directory should now exist with all files inside of it.
+` cd ~; rm -rf ~/.git; git clone git://github.com/LacledesLAN/LANYWARE; rm -rf ~/.git; `
 
 **5. Set permissions**
 
