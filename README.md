@@ -16,7 +16,7 @@ Where "<USER>" is your local account. Log out and back in for change to take aff
 
 **4. Download repo into your home directory**
 
-` cd ~; rm -rf ~/.git; git clone git://github.com/LacledesLAN/LANYWARE; rm -rf ~/.git; `
+` cd ~; git clone git://github.com/LacledesLAN/LANYWARE; rm -rf ~/LANYWARE/.git; `
 
 **5. Set permissions**
 
