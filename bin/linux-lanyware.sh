@@ -31,13 +31,14 @@ declare DOCKER_REBUILD_LEVEL="";
 
 readonly SCRIPT_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 readonly SCRIPT_FILENAME="$(basename "$(test -L "$0" && readlink "$0" || echo "$0")")";
-readonly SCRIPT_FUllPATH="$SCRIPT_DIRECTORY/$SCRIPT_FILENAME";
+readonly SCRIPT_FUllPATH=$(realpath "$SCRIPT_DIRECTORY/$SCRIPT_FILENAME");
 readonly SCRIPT_VERSION=$(stat -c %y "$SCRIPT_FUllPATH");
 
-readonly REPO_DIRECTORY="$SCRIPT_DIRECTORY/../repos";
+readonly REPO_DIRECTORY=$(realpath "$SCRIPT_DIRECTORY/../repos");
 
 if [[ "$SETTING_ENABLE_LOGGING" = true ]] ; then
     readonly SCRIPT_LOGPATH=$(realpath "$SCRIPT_DIRECTORY/../logs");
+    mkdir "$SCRIPT_LOGPATH" --parents;
 else
     readonly SCRIPT_LOGPATH="/tmp/lanyware";
 fi
@@ -82,7 +83,7 @@ function import_github_repo() { # REPO url; destination directory
     echo -e "\t[Source] $1";
     echo -e "\t[Destination] $2";
 
-    mkdir -p "$2";
+    mkdir "$2" --parents;
 
     {
         cd `mktemp -d` && \
