@@ -1,5 +1,47 @@
-Install Instructions (CentOS / Ubunutu)
----------------------------------------
+Install Instructions (Debian-based)
+-----------------------------------
+
+**1. Install Dependancies**
+
+` sudo apt-get install -y curl discus git htop libc6-i386 lib32gcc1 lib32stdc++6 lib32tinfo5 lib32z1 realpath screen tar tree util-linux wget; `
+
+**2. Install Docker**
+
+` sudo curl -sSL https://get.docker.com/ | sh `
+
+**3. Add your linux user account to docker group**
+
+` sudo usermod -aG docker <USER> `
+Where "<USER>" is your local account. Log out and back in for change to take affect.
+
+**4. Download repo into your home directory**
+
+Option 1 - Clone GitHUB Repo
+
+` cd ~; git clone git://github.com/LacledesLAN/LANYWARE; rm -rf ./.git; `
+
+Option 2 - Manually Download
+
+    2a) download https://github.com/LacledesLAN/LANYWARE/archive/master.zip
+    
+    2b) extract to ~/
+    
+    A ~/LANYWARE directory should now exist with all files inside of it.
+
+**5. Set permissions**
+
+`cd ~/LANYWARE; chmod +x *.sh; chmod +x ./bin/*.sh; `
+
+
+Execution
+---------
+
+` cd ~/LANYWARE; ./lanyware.sh; `
+
+
+
+[INCOMPLETE SCRIPT] Install Instructions (CentOS / Ubunutu)
+-----------------------------------------------------------
 **1. Download install-lanyware.sh
 
 **2. Add the execute permission to the install script
@@ -10,34 +52,7 @@ Install Instructions (CentOS / Ubunutu)
 
 ` ./install-lanyware.sh `
 
-DEPRECATED
-Install Instructions (Debian-based)
------------------------------------
-**1. Install misc dependancies**
 
-` sudo apt-get install -y bridge-utils curl discus git htop libc6-i386 lib32gcc1 lib32stdc++6 lib32tinfo5 lib32z1 realpath screen tar tree util-linux wget;`
-
-**2. Install Docker**
-
-` sudo curl -sSL https://get.docker.com/ | sh`
-
-**3. Add your linux user account to docker group**
-
-` sudo usermod -aG docker <USER>`
-Where "<USER>" is your local account. Log out and back in for change to take affect.
-
-**4. Download repo into your home directory**
-
-Download this repo and stage to your home directory (~/).
-
-`cd ~; git clone git://github.com/LacledesLAN/LANYWARE; rm -rf ./.git;`
-
-**5. Set permissions**
-
-`chmod +x ~/*.sh;  chmod +x ~/_lanyware/linux/*.sh`
-
-
-`chmod +x *.sh; chmod +x ./bin/*.sh; ./lanyware.sh`
 
 
 DEV NOTES
