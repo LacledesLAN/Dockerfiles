@@ -60,10 +60,12 @@ function gfx_section_start() {
     tput setaf 6;
 
     if [[ "$SETTING_ENABLE_LOGGING" = true ]] ; then
-        echo "" >> $SCRIPT_LOGFILE;
-        gfx_horizontal_rule >> $SCRIPT_LOGFILE;
-        echo -e "\t$1" >> $SCRIPT_LOGFILE;
-        gfx_horizontal_rule >> $SCRIPT_LOGFILE;
+        {
+                echo -e "\n";
+                gfx_horizontal_rule;
+                echo -e "\t$1";
+                gfx_horizontal_rule;
+        }  >> $SCRIPT_LOGFILE;
     fi
 
     return 0;
