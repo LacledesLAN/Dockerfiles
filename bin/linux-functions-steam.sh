@@ -77,10 +77,10 @@ function steam_import_app() {    # APP ID; destination directory
                     # Remove any leading whitespace
                     line="$(echo -e "${line}" | sed -e 's/^[[:space:]]*//')";
 
-                    if [[ $line = $loc_prev_line ]] ; then
+                    if [[ $line = "$loc_prev_line" ]] ; then
                         loc_prev_line=line;
                         loc_counter=$((loc_counter+1))
-                        line = "$line - x$loc_counter"
+                        line="$line - x$loc_counter";
                     else
                         loc_counter=1;
                         loc_prev_line=line;
@@ -120,11 +120,11 @@ function steam_import_tool() { # destination directory
 
         #failed to run SteamCMD.  Download it.
         {
-            rm -rf "$1/*";
+            rm -rf "${$1:?}/*";
 
             wget -qO- -r --tries=10 --waitretry=20 --output-document=tmp.tar.gz http://media.steampowered.com/installer/steamcmd_linux.tar.gz;
             tar -xvzf tmp.tar.gz -C "$1/";
-            rm tmp.tar.gz
+            rm tmp.tar.gz;
 
             bash "$1/"steamcmd.sh +quit;
         } &> /dev/null;
@@ -133,4 +133,3 @@ function steam_import_tool() { # destination directory
     echo ".updated...done."
     echo -e "";
 }
-
