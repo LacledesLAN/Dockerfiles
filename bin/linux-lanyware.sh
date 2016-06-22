@@ -51,7 +51,7 @@ touch $SCRIPT_LOGFILE;
 #===  RUNTIME FUNCTIONS  =====================================================================================
 #=============================================================================================================
 function docker_remove_image() {
-    command -v docker > /dev/null 2>&1 || { echo >&2 "Docker is required.  Aborting."; return 999; }
+    command -v docker > /dev/null 2>&1 || { echo >&2 "Docker is required.  Aborting."; return 255; }
 
     image_count=$(docker images $1 | grep -o "$1" | wc -l);
 
@@ -1134,6 +1134,4 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     echo "";
     docker images;
 fi;
-
-
 unset SETTING_ENABLE_LOGGING;
