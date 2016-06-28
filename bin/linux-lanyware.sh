@@ -442,9 +442,9 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         empty_folder "$destination_directory";
 
-        import_github_repo "LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/bms/addons";
+        import_github_repo "LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/bms/";
 
-        import_github_repo "LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/bms/addons";
+        import_github_repo "LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/bms/";
 
         import_github_repo "LacledesLAN/gamesvr-srcds-blackmesa-freeplay" "$destination_directory/";
 
@@ -472,10 +472,6 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
         mkdir "$destination_directory" --parents;
 
         steam_import_app 232330 "$destination_directory/files";
-        
-        import_github_repo "LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/cstrike/addons";
-
-        import_github_repo "LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/cstrike/addons";
 
         docker build -t ll/gamesvr-cssource -f "$REPO_DIRECTORY/ll/gamesvr-cssource/Dockerfile.linux" "$REPO_DIRECTORY/ll/gamesvr-cssource/";
 
