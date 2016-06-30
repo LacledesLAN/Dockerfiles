@@ -26,7 +26,7 @@ declare SETTING_ENABLE_LOGGING=true;
 declare MODE_DOCKER_LIBRARY=false;
 declare MODE_LOCAL_SERVER=false;
 
-declare DOCKER_INSTAllED=false;
+declare DOCKER_INSTALLED=false;
 declare DOCKER_REBUILD_LEVEL="";
 
 readonly SCRIPT_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
@@ -232,10 +232,10 @@ echo "                    LAN Party Servers. Anytime. Anywhere.                 
 echo -e "\n";
 tput sgr0;
 
-DOCKER_INSTAllED=true;
-command -v docker > /dev/null 2>&1 || { DOCKER_INSTAllED=false; }
+DOCKER_INSTALLED=true;
+command -v docker > /dev/null 2>&1 || { DOCKER_INSTALLED=false; }
 
-if [ "$DOCKER_INSTAllED" = true ] ; then
+if [ "$DOCKER_INSTALLED" = true ] ; then
     echo "    What are we managing?";
     echo "    ";
     echo "    D) Docker image library";
