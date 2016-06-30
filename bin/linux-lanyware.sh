@@ -889,7 +889,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         import_github_repo "LacledesLAN/gamesvr-svencoop-freeplay" "$destination_directory/";
 
-        docker build -t ll/gamesvr-svencoop -f "$REPO_DIRECTORY/ll/gamesvr-svencoop-freeplay/Dockerfile.linux" "$REPO_DIRECTORY/ll/gamesvr-svencoop-freeplay/";
+        docker build -t ll/gamesvr-svencoop-freeplay -f "$REPO_DIRECTORY/ll/gamesvr-svencoop-freeplay/Dockerfile.linux" "$REPO_DIRECTORY/ll/gamesvr-svencoop-freeplay/";
 
         gfx_section_end;
     fi;
