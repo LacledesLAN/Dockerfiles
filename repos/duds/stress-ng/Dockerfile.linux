@@ -2,4 +2,5 @@ FROM ubuntu:latest
 
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
-RUN apt-get install -y stress-ng
+RUN apt-get update && \
+    apt-get install -y stress-ng
