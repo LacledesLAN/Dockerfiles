@@ -736,7 +736,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         import_github_repo "LacledesLAN/gamesvr-srcds-hl2dm-freeplay" "$destination_directory/";
 
-        #docker build -t ll/gamesvr-hl2dm-freeplay "$REPO_DIRECTORY/ll/gamesvr-hl2dm-freeplay/linux/";
+        docker build -t ll/gamesvr-hl2dm-freeplay "$REPO_DIRECTORY/ll/gamesvr-hl2dm-freeplay/linux/";
 
         gfx_section_end;
     fi;
@@ -837,7 +837,11 @@ fi;
 #   \__, / \__,_//_/ /_/ /_/ \___//____/  |___//_/          /_/ /_/ /_//_//_/ /_/ \___/ \___//_/    \__,_//_/   \__/       /_.___/ \__,_//_//_/ \__,_//_.___/ \____//_/|_|
 #  /____/
 
-# coming soon?
+
+
+        import_github_repo "LacledesLAN/gamesvr-svencoop-freeplay" "$destination_directory/";
+
+
 
 
 #                                                                                                                 

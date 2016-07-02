@@ -94,11 +94,13 @@ function steam_import_app() {    # APP ID; destination directory
                 echo -e "\t$(date)\t$line" >> $SCRIPT_LOGFILE;
             fi
         done
-    if [[ $? != 0 ]] ; then 
+    if [[ $? != 0 ]] ; then
         echo "TODO: PROCESS FAILED DOWNLOAD"
-    else 
+    else
         echo -n ""; #do nothing
   fi
+
+  touch "$2/@steamapp-$1.has";
 
   echo "";
 }
