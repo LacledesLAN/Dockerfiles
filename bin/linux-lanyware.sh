@@ -287,17 +287,17 @@ tput smul
 echo -e "\nDOCKER CLEAN UP";
 tput sgr0
 
-echo -n "Destroying all ll docker containers..";
-{
-    docker rm -f $(docker ps -a -q);   #todo: add filter for ll/*
-} &> /dev/null;
-echo ".done.";
+#echo -n "Destroying all ll docker containers..";
+#{
+#    #docker rm -f $(docker ps -a -q);   #todo: add filter for ll/*
+#} &> /dev/null;
+#echo ".done.";
 
-echo -n "Destroying all docker dangiling images..";
-{
-    docker rmi $(docker images -qf "dangling=true")
-} &> /dev/null;
-echo ".done.";
+#echo -n "Destroying all docker dangiling images..";
+#{
+#    #docker rmi $(docker images -qf "dangling=true")
+#} &> /dev/null;
+#echo ".done.";
 
 #DELETE All DOCKER IMAGES
 #docker rmi $(docker images -q)
@@ -816,8 +816,8 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
         empty_folder "$destination_directory";
 
         # Download Minecraft
-        curl https://s3.amazonaws.com/Minecraft.Download/versions/1.9.4/minecraft_server.1.9.4.jar \
-            > "$destination_directory/minecraft_server.1.9.4.jar"
+        curl https://s3.amazonaws.com/Minecraft.Download/versions/1.10.2/minecraft_server.1.10.2.jar \
+            > "$destination_directory/minecraft_server.1.10.2.jar"
         
         # Download spigot
         curl https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar \
@@ -1019,6 +1019,10 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
     fi;
 fi;
+
+
+exit;
+exit;
 
 
 #                    _
