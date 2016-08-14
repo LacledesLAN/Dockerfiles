@@ -1,5 +1,21 @@
 #!/bin/bash
 
+# Determine if a provided array (haystack) contains a value (needle)
+# $1 Array (haystack) to check
+# $2 Value (needle) to search for
+array_contains () { 
+    local haystack="$1[@]";
+    local needle=$2;
+    local in=false;
+    for element in "${!haystack}"; do
+        if [[ $element == "$needle" ]]; then
+            in=true;
+            break;
+        fi;
+    done;
+    return $in;
+}
+
 
 function import_ftp() { # username, password, sourcedir, directory
     echo -n ""; #do nothing for now

@@ -1,5 +1,6 @@
 #!/bin/bash
 source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/linux-functions-gfx.sh"
+source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/linux-functions-git.sh"
 source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/linux-functions-misc.sh"
 source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/bin/linux-functions-steam.sh"
 

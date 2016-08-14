@@ -34,7 +34,11 @@ readonly SCRIPT_FILENAME="$(basename "$(test -L "$0" && readlink "$0" || echo "$
 readonly SCRIPT_FUllPATH=$(realpath "$SCRIPT_DIRECTORY/$SCRIPT_FILENAME");
 readonly SCRIPT_VERSION=$(stat -c %y "$SCRIPT_FUllPATH");
 
+readonly CACHE_DIRECTORY=$(realpath "$SCRIPT_DIRECTORY/../cache");
+mkdir "$CACHE_DIRECTORY" --parents;
+
 readonly REPO_DIRECTORY=$(realpath "$SCRIPT_DIRECTORY/../repos");
+mkdir "$REPO_DIRECTORY" --parents;
 
 if [[ "$SETTING_ENABLE_LOGGING" = true ]] ; then
     readonly SCRIPT_LOGPATH=$(realpath "$SCRIPT_DIRECTORY/../logs");
@@ -73,29 +77,6 @@ function docker_remove_image() {
     fi
 
     echo ".done.";
-    echo -e "";
-}
-
-
-function import_github_repo() { # REPO url; destination directory
-    #Header
-    echo "Importing GITHub Repo";
-    echo -e "\t[Source] $1";
-    echo -e "\t[Destination] $2";
-
-    mkdir "$2" --parents;
-
-    {
-        cd `mktemp -d` && \
-            git clone -b master --single-branch "git://github.com/$1" && \
-            rm -rf *.git && \
-            cd `ls -A | head -1` && \
-            rm -f *.md && \
-            cp -r * "$2";
-    } &> /dev/null;
-
-    sleep 5;
-
     echo -e "";
 }
 
