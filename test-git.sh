@@ -31,15 +31,14 @@ array_contains () {
 echo "===[ STARTING TEST ]===";
 echo "STILL NEED FLAG TO PREVENT DOWNLOADS!!";
 echo "STILL NEED FLAG TO PREVENT DOWNLOADS!!";
-echo "STILL NEED FLAG TO PREVENT DOWNLOADS!!";
 echo "";
 
 # Downloads a repo from GitHub; caches it; and places the content in a specified directory
-# $1 The URL (without protocol) of the GitHub repo to use
+# $1 The GitHub repo name include the GitHub group (group/name)
 # $2 The destination directory
-function import_github_repo() { # REPO url; destination directory.
+function import_github_repo() {
 
-    # URL_GITHUB_REPO (Parameter $1)
+    # GITHUB_REPO_NAME (Parameter $1)
     if [ -z "$1" ]; then
         echo "-Parameter #1 (repository name) is required; cannot be zero length1";
         exit 1;
@@ -47,7 +46,7 @@ function import_github_repo() { # REPO url; destination directory.
         echo "-Parameter #1 (repository name) cannot contain protocol information!";
         exit 1;
     else
-        local URL_GITHUB_REPO="$1";
+        local GITHUB_REPO_NAME="$1";
     fi;
 
     # PATH_DESTINATION (Parameter $2)
@@ -65,15 +64,24 @@ function import_github_repo() { # REPO url; destination directory.
         fi
     fi;
 
+    # parse additional options
+    for arg in "$@"; do
+        shift
+        case in
+            "--skip-remote" ;;
+            "" ;;
+        esac
+    done;
+
     # PATH_CACHED_REPO 
     local PATH_CACHED_REPO="";
-    PATH_CACHED_REPO=$(echo $URL_GITHUB_REPO | sed -e 's/\//_/g');      # PATH_CACHED_REPO with "/" replaced with "_"
+    PATH_CACHED_REPO=$(echo $GITHUB_REPO_NAME | sed -e 's/\//_/g');      # PATH_CACHED_REPO with "/" replaced with "_"
     PATH_CACHED_REPO="$CACHE_DIRECTORY/github.com/$PATH_CACHED_REPO";   # Append cache directory
     mkdir "$PATH_CACHED_REPO" --parents;
 
     # GFX Header
     echo "Importing GITHub Repo";
-    echo -e "\t[Source] $URL_GITHUB_REPO";
+    echo -e "\t[Remote Source] $GITHUB_REPO_NAME";
     tput dim;
     echo -e "\t[Cache] $PATH_CACHED_REPO";
     tput sgr0;
@@ -82,7 +90,7 @@ function import_github_repo() { # REPO url; destination directory.
 
 
     local REPO_UPATED;
-    array_contains LANYWARE_GITHUB_IMPORT_HISTORY "$URL_GITHUB_REPO" && REPO_UPATED=true || REPO_UPATED=false;
+    array_contains LANYWARE_GITHUB_IMPORT_HISTORY "$GITHUB_REPO_NAME" && REPO_UPATED=true || REPO_UPATED=false;
 
     if [ $REPO_UPATED = true ]; then
         echo -e "\tRepo already up to date; no need to redownload";
@@ -93,7 +101,7 @@ function import_github_repo() { # REPO url; destination directory.
                 git -C "$PATH_CACHED_REPO/" pull;
             else
                 # if cache directory not empty; preform a git pull
-                git clone "git://github.com/$URL_GITHUB_REPO" $PATH_CACHED_REPO;
+                git clone "git://github.com/$GITHUB_REPO_NAME" $PATH_CACHED_REPO;
             fi;
         } &> /dev/null;
 
@@ -105,9 +113,9 @@ function import_github_repo() { # REPO url; destination directory.
         fi;
 
         if [[ ${#LANYWARE_GITHUB_IMPORT_HISTORY[@]} ]]; then
-            LANYWARE_GITHUB_IMPORT_HISTORY+=("$URL_GITHUB_REPO");
+            LANYWARE_GITHUB_IMPORT_HISTORY+=("$GITHUB_REPO_NAME");
         else
-            LANYWARE_GITHUB_IMPORT_HISTORY[0]="$URL_GITHUB_REPO";
+            LANYWARE_GITHUB_IMPORT_HISTORY[0]="$GITHUB_REPO_NAME";
         fi;
     fi;
 
