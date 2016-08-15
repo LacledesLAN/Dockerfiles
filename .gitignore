@@ -10,7 +10,7 @@ ehthumbs.db
 # Misc for Dev/Testing
 /*test.*
 /*/test.*
-.vscode
+.vscode/
 
 
 # Any log files that may have been downloaded
