@@ -1,0 +1,1 @@
+start powershell -command "& '.\.lanyware.ps1'"

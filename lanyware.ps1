@@ -1,1 +1,0 @@
-Write-Host "Windows not yet supported!"
