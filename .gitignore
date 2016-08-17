@@ -13,6 +13,9 @@ ehthumbs.db
 .vscode/
 
 
+# We don't want to upload anything from the cache directory
+/cache
+
 # Any log files that may have been downloaded
 /logs/*
 /logs/*/*
