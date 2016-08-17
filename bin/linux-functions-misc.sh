@@ -4,16 +4,16 @@
 # $1 Array (haystack) to check
 # $2 Value (needle) to search for
 array_contains () { 
-    local haystack="$1[@]";
-    local needle=$2;
-    local in=false;
-    for element in "${!haystack}"; do
-        if [[ $element == "$needle" ]]; then
-            in=true;
-            break;
-        fi;
-    done;
-    return $in;
+    local array="$1[@]"
+    local seeking=$2
+    local in=1
+    for element in "${!array}"; do
+        if [[ $element == "$seeking" ]]; then
+            in=0
+            break
+        fi
+    done
+    return $in
 }
 
 
