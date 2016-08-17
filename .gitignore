@@ -1,24 +1,34 @@
-# Apple junk
-.DS_Store
+### Apple junk ###
+.apdisk
+.AppleDB
+.AppleDesktop
+.AppleDouble
+.com.apple.timemachine.donotpresent
+*.DS_Store
+.fseventsd
+.LSOverride
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
 
-
-# Windows junk
+### Windows junk ##
+*.lnk
 $RECYCLE.BIN/
 Desktop.ini
 Thumbs.db
 ehthumbs.db
 
+### Notepad++ Backup Files ###
+/*.bak
 
-# Misc for Dev/Testing
-/*test.*
-.vscode/
+### Visual Studo Code ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
 
-
-# Don't upload legit user-secrets file
-user-secrets.json
-
-
-# Files that may have been created by runtime
+### Files that may have been created by runtime ###
 *.filepart
 /bin/linux-steamcmd
 /cache
