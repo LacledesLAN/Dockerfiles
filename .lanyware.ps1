@@ -49,7 +49,7 @@ $sourceDrive = (Get-Item -Path $sourceDir).PSDrive.Root
 
     Write-Host "Starting Container: '$containerName'"
     
-    $command = "docker run -it --rm --name $containerName -v " + '"' + "$sourceDir" + ':' + '/LANYWARE/' + '" ' + "ubuntu:latest"
+    $command = "docker run -it --rm --name $containerName -v " + '"' + "$sourceDir" + ':' + '/root/LANYWARE/' + '" ' + "ubuntu:latest"
     write-host $command;
 
     Invoke-Expression $command;
