@@ -1,24 +1,26 @@
+# Apple junk
+.DS_Store
+
+
 # Windows junk
 $RECYCLE.BIN/
 Desktop.ini
 Thumbs.db
 ehthumbs.db
 
-# Apple junk
-.DS_Store
 
 # Misc for Dev/Testing
 /*test.*
-/*/test.*
 .vscode/
 
 
-# We don't want to upload anything from the cache directory
-/cache
-
-# Any log files that may have been downloaded
-/logs/*
-/logs/*/*
-
 # Don't upload legit user-secrets file
 user-secrets.json
+
+
+# Files that may have been created by runtime
+*.filepart
+/bin/linux-steamcmd
+/cache
+/logs
+/tmp.tar.gz
