@@ -1,5 +1,6 @@
 #!/bin/bash
 source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/linux-functions-gfx.sh"
+source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/linux-functions-git.sh"
 source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/linux-functions-misc.sh"
 source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/linux-functions-steam.sh"
 #=============================================================================================================
@@ -49,6 +50,9 @@ fi
 
 readonly SCRIPT_LOGFILE=$(date +"$SCRIPT_LOGPATH/linux-%Y.%m.%d-%Hh%Mm%Ss.log");
 touch $SCRIPT_LOGFILE;
+
+declare -a LANYWARE_GITHUB_IMPORT_HISTORY;
+LANYWARE_GITHUB_IMPORT_HISTORY[0]="Array created at $(date)";
 
 
 #=============================================================================================================
@@ -1098,3 +1102,5 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     docker images;
 fi;
 unset SETTING_ENABLE_LOGGING;
+
+unset LANYWARE_GITHUB_IMPORT_HISTORY;
