@@ -33,4 +33,5 @@ ehthumbs.db
 /bin/linux-steamcmd
 /cache
 /logs
+/tmp/
 /tmp.tar.gz
