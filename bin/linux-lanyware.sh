@@ -1027,32 +1027,6 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 fi;
 
 
-#                    __                                                   __                __      __
-#   _      __ ___   / /_   _____ _   __ _____        _____ ____   ____   / /_ ___   ____   / /_    / /____ _ ____
-#  | | /| / // _ \ / __ \ / ___/| | / // ___/______ / ___// __ \ / __ \ / __// _ \ / __ \ / __/   / // __ `// __ \
-#  | |/ |/ //  __// /_/ /(__  ) | |/ // /   /_____// /__ / /_/ // / / // /_ /  __// / / // /_ _  / // /_/ // / / /
-#  |__/|__/ \___//_.___//____/  |___//_/           \___/ \____//_/ /_/ \__/ \___//_/ /_/ \__/(_)/_/ \__,_//_/ /_/
-if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
-    if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
-
-        gfx_section_start "Docker -=> Building Image ll/websvr-content.lan";
-
-        docker_remove_image "ll/websvr-content.lan";
-
-        destination_directory="$REPO_DIRECTORY/ll/websvr-content.lan/files";
-
-        empty_folder "$destination_directory";
-
-        import_github_repo "LacledesLAN/websvr-content.lan" "$destination_directory/";
-
-        docker build -t ll/websvr-content.lan -f "$REPO_DIRECTORY/ll/websvr-content.lan/Dockerfile.linux" "$REPO_DIRECTORY/ll/websvr-content.lan/";
-
-        gfx_section_end;
-
-    fi;
-fi;
-
-
 #                    __                               __              __           __                __
 #   _      __ ___   / /_   _____ _   __ _____        / /____ _ _____ / /___   ____/ /___   _____    / /____ _ ____
 #  | | /| / // _ \ / __ \ / ___/| | / // ___/______ / // __ `// ___// // _ \ / __  // _ \ / ___/   / // __ `// __ \
