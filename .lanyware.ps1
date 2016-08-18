@@ -45,11 +45,15 @@ $sourceDrive = (Get-Item -Path $sourceDir).PSDrive.Root
         $volDir = $sourceDir;
     }
 
-    $containerName = (Get-Item -Path ".\" -Verbose).Name + "-" + (Get-Date).Ticks
+    
+    Write-Host "Pulling Docker image";
+    $command = "docker pull lacledeslan/lanyware-test-env";
+    Invoke-Expression $command;
 
+    $containerName = (Get-Item -Path ".\" -Verbose).Name + "-" + (Get-Date).Ticks
     Write-Host "Starting Container: '$containerName'"
     
-    $command = "docker run -it --rm --name $containerName -v " + '"' + "$sourceDir" + ':' + '/root/LANYWARE/' + '" ' + "ubuntu:latest"
+    $command = "docker run -it --rm --name $containerName -v " + '"' + "$sourceDir" + ':' + '/root/LANYWARE/' + '" ' + "lacledeslan/lanyware-test-env";
     write-host $command;
 
     Invoke-Expression $command;
