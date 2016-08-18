@@ -115,7 +115,10 @@ function steam_import_tool() { # destination directory
 
     mkdir -p "$1";
     
-    { bash "$1/"steamcmd.sh +quit; }  &> /dev/null;
+    {
+        chmod "$1/*.sh" +x;
+        bash "$1/"steamcmd.sh +quit;
+    }  &> /dev/null;
     
     if [ $? -ne 0 ] ; then
         echo -n ".downloading.."
@@ -129,6 +132,8 @@ function steam_import_tool() { # destination directory
             wget -qO- -r --tries=10 --waitretry=20 --output-document=tmp.tar.gz http://media.steampowered.com/installer/steamcmd_linux.tar.gz;
             tar -xvzf tmp.tar.gz -C "$1/";
             rm tmp.tar.gz;
+
+            chmod "$1/*.sh" +x;
 
             bash "$1/"steamcmd.sh +quit;
         } &> /dev/null;
