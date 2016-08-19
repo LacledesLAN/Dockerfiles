@@ -86,8 +86,6 @@ function import_github_repo() {
 
     mkdir "$PATH_CACHED_REPO" --parents;
 
-
-
     if [[ "$SKIP_REMOTE" = false ]]; then
         echo -e "\t[Remote Source] $GITHUB_REPO_NAME";
 

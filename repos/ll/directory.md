@@ -34,9 +34,5 @@ ll/gamesvrsteamcmd
                                                                 github: gamesvr-srcds-tf2-freeplay
 
 ll/websvr
-+---ll/websvr-contet.lan
-+---ll/websvr-kiosk.lan
-
-microsoft/aspnet:latest
 +---ll/websvr-lacledes.lan
 ```

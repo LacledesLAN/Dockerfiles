@@ -1,8 +1,8 @@
 #!/bin/bash
-source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/linux-functions-gfx.sh"
-source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/linux-functions-git.sh"
-source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/linux-functions-misc.sh"
-source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/linux-functions-steam.sh"
+source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/linux-functions-gfx.sh";
+source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/linux-functions-git.sh";
+source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/linux-functions-misc.sh";
+source "$( cd "${BASH_SOURCE[0]%/*}" && pwd )/linux-functions-steam.sh";
 #=============================================================================================================
 #
 #   FILE:   forge.sh
@@ -771,7 +771,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         empty_folder "$destination_directory";
 
-        import_github_repo "github.com/LacledesLAN/gamesvr-srcds-garrysmod-freeplay" "$destination_directory/garrysmod";
+        import_github_repo "LacledesLAN/gamesvr-srcds-garrysmod-freeplay" "$destination_directory/garrysmod";
 
         #docker build -t ll/gamesvr-garrysmod-freeplay -f "$REPO_DIRECTORY/ll/gamesvr-garrysmod-freeplay/Dockerfile.linux" "$REPO_DIRECTORY/ll/gamesvr-garrysmod-freeplay/";
 
