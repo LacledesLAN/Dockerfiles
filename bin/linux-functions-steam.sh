@@ -60,11 +60,11 @@ function steam_import_app() {    # APP ID; destination directory
     local loc_counter=1;
 
     echo "Getting and verifying Steam App '$(steam_get_app_name $1)'";
-    if [[ "$SETTING_ENABLE_LOGGING" = true ]] ; then
-        echo "Getting and verifying Steam App '$(steam_get_app_name $1)'" >> $SCRIPT_LOGFILE;
+    if [[ "$LANYWARE_LOGGING_ENABLED" = true ]] ; then
+        echo "Getting and verifying Steam App '$(steam_get_app_name $1)'" >> $LANYWARE_LOGFILE;
     fi
 
-    script -q --command "bash $SCRIPT_DIRECTORY/linux-steamcmd/steamcmd.sh \
+    script -q --command "bash $LANYWARE_BIN_PATH/linux-steamcmd/steamcmd.sh \
         +login anonymous \
         +force_install_dir $2 \
         +app_update $1 \
@@ -90,8 +90,8 @@ function steam_import_app() {    # APP ID; destination directory
                 else
                     echo -e "\t$line   ";
                 fi
-            if [[ "$SETTING_ENABLE_LOGGING" = true ]] ; then
-                echo -e "\t$(date)\t$line" >> $SCRIPT_LOGFILE;
+            if [[ "$LANYWARE_LOGGING_ENABLED" = true ]] ; then
+                echo -e "\t$(date)\t$line" >> $LANYWARE_LOGFILE;
             fi
         done
     if [[ $? != 0 ]] ; then

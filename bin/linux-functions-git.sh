@@ -79,7 +79,7 @@ function import_github_repo() {
         PATH_CACHED_REPO=$(mktemp -d);
     else
         PATH_CACHED_REPO=$(echo "$GITHUB_REPO_NAME" | sed -e 's/\//_/g');       # PATH_CACHED_REPO with "/" replaced with "_"
-        PATH_CACHED_REPO="$CACHE_DIRECTORY/github.com/$PATH_CACHED_REPO";       # Append cache directory
+        PATH_CACHED_REPO="$LANYWARE_CACHE_PATH/github.com/$PATH_CACHED_REPO";       # Append cache directory
 
         array_contains LANYWARE_GITHUB_IMPORT_HISTORY "$GITHUB_REPO_NAME" && REPO_ALREADY_PULLED=true;
     fi;

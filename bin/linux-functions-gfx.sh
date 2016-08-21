@@ -48,25 +48,19 @@ function gfx_section_end() {
 }
 
 function gfx_section_start() {
-    echo "";
-    echo "";
-    tput sgr0;
-    tput bold;
-    gfx_horizontal_rule;
-    echo "   $1";
-    gfx_horizontal_rule;
-    tput sgr0;
-    tput dim;
-    tput setaf 6;
+    
+    echo -e "\n\n";   
 
-    if [[ "$LANYWARE_LOGGING_ENABLED" = true ]] ; then
-        {
-                echo -e "\n";
-                gfx_horizontal_rule;
-                echo -e "\t$1";
-                gfx_horizontal_rule;
-        }  >> $LANYWARE_LOGFILE;
-    fi
+    tput sgr0; tput bold;
+
+    {
+        echo -e "\n";    
+        gfx_horizontal_rule;
+        echo -e "\t$1";
+        gfx_horizontal_rule;
+    } 2>&1 | $LANYWARE_LOGFILE;
+
+    tput sgr0; tput dim; tput setaf 6;
 
     return 0;
 }
