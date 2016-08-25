@@ -210,14 +210,10 @@ fi
 
 
 echo -e "\n\n\n";
-gfx_horizontal_rule;
-tput setaf 2; tput dim;
-echo "(build: $SCRIPT_VERSION)" 2>&1 | tee "$LANYWARE_LOGFILE";
+gfx_section_start "LANYWARE (build: $SCRIPT_VERSION)";
 tput sgr0;
-gfx_horizontal_rule;
 
-echo -e "\n";
-
+echo -e "\n" | tee "$LANYWARE_LOGFILE";
 
 
 tput setaf 3; tput bold;
@@ -1070,27 +1066,22 @@ fi;
 #===  WRAP UP  ===============================================================================================
 #=============================================================================================================
 
-tput smul;
-echo -e "\n\n\n\n\nFINISHED\n";
+
+echo -e "\n\n\n\n\n";
+gfx_section_start "Finished at $(date)";
 tput sgr0;
 
+echo -e "\n" | tee "$LANYWARE_LOGFILE";
 
-echo "";
-echo "";
-gfx_horizontal_rule;
-echo "   ll Docker Image Management Tool.  Stop time: $(date)";
-gfx_horizontal_rule;
-echo "";
 
-if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
-    echo "Here's what you've got:";
-    echo "";
-    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock nate/dockviz images -tl
-    echo "";
-    echo "";
-    docker images;
-fi;
-
+{
+    if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+        echo "Here's what you've got:";
+        echo -e "\n";
+        docker images;
+        echo -e "\n";
+    fi;
+} 2>&1 | tee "$LANYWARE_LOGFILE";
 
 
 unset LANYWARE_GITHUB_IMPORT_HISTORY;
