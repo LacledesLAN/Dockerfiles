@@ -20,16 +20,16 @@ function import_github_repo() {
     } &> /dev/null;
 
     if [ $? -ne 0 ]; then
-        echo "ERROR: git command must be installed!" >&2;
-        exit 3;
+        echo "ERROR: git command must be installed!" | tee -a "$LANYWARE_LOGFILE";
+        exit 123;
     fi
 
     # GITHUB_REPO_NAME (Parameter $1)
     if [ -z "$1" ]; then
-        echo "-Parameter #1 (repository name) is required; cannot be zero length1";
+        echo "ERROR: parameter #1 (repository name) is required; cannot be zero length1" | tee -a "$LANYWARE_LOGFILE";
         exit 1;
     elif [[ "$1" == *"://"* ]]; then
-        echo "-Parameter #1 (repository name) cannot contain protocol information!";
+        echo "ERROR: parameter #1 (repository name) cannot contain protocol information!" | tee -a "$LANYWARE_LOGFILE";
         exit 1;
     else
         local GITHUB_REPO_NAME="$1";
@@ -37,16 +37,16 @@ function import_github_repo() {
 
     # PATH_DESTINATION (Parameter $2)
     if [ -z "$1" ]; then
-        echo "-Parameter #2 (destination path) is required; cannot be zero length1";
-        exit 1;
+        echo "ERROR: parameter #2 (destination path) is required; cannot be zero length1" | tee -a "$LANYWARE_LOGFILE";
+        exit 123;
     else
         local PATH_DESTINATION;
         PATH_DESTINATION=$(realpath "$2");
         mkdir "$PATH_DESTINATION" --parents;
 
         if [ $? -ne 0 ]; then
-            echo "Could not prepare destination directory" >&2;
-            exit 2;
+            echo "Could not prepare destination directory" | tee -a "$LANYWARE_LOGFILE";
+            exit 123;
         fi
     fi;
 
@@ -66,11 +66,11 @@ function import_github_repo() {
     done;
 
     if [[ "$SKIP_CACHE" = true ]] && [[ "$SKIP_REMOTE" = true ]]; then
-        echo "ERROR: cannot simultaneously --skip-cache and --skip-remote" >&2;
-        exit 2;
+        echo "ERROR: cannot simultaneously --skip-cache and --skip-remote" | tee -a "$LANYWARE_LOGFILE";
+        exit 123;
     fi;
 
-    echo -e "Importing GITHub Repo";
+    echo -e "Importing GITHub Repo" | tee -a "$LANYWARE_LOGFILE";
 
     # PATH_CACHED_REPO 
     local PATH_CACHED_REPO="";
@@ -87,10 +87,10 @@ function import_github_repo() {
     mkdir "$PATH_CACHED_REPO" --parents;
 
     if [[ "$SKIP_REMOTE" = false ]]; then
-        echo -e "\t[Remote Source] $GITHUB_REPO_NAME";
+        echo -e "\t[Remote Source] $GITHUB_REPO_NAME" | tee -a "$LANYWARE_LOGFILE";
 
         if [ $REPO_ALREADY_PULLED = true ]; then
-            echo -e "\tRepo already up to date";
+            echo -e "\tRepo already up to date" | tee -a "$LANYWARE_LOGFILE";
         elif [ $REPO_ALREADY_PULLED = false ]; then
             {
                 if [[ "$(ls -A $PATH_CACHED_REPO/)" ]]; then
@@ -103,10 +103,10 @@ function import_github_repo() {
             } &> /dev/null;
 
             if [ $? -ne 0 ]; then
-                echo -e "\tERROR: Could not clone/pull repo. Check that provided repo is valid." >&2
+                echo -e "\tERROR: Could not clone/pull repo. Check that provided repo is valid." | tee -a "$LANYWARE_LOGFILE";
                 exit 2;
             else
-                echo -e "\t                Repo succesfully updated from remote source GitHub.com";
+                echo -e "\t                Repo succesfully updated from remote source GitHub.com" | tee -a "$LANYWARE_LOGFILE";
             fi;
 
             if [[ "$SKIP_CACHE" = false ]]; then
@@ -118,18 +118,18 @@ function import_github_repo() {
             fi;
         fi;
     else
-        echo -e "\t[Remote Source] (skipped)";
+        echo -e "\t[Remote Source] (skipped)"  | tee -a "$LANYWARE_LOGFILE";
     fi;
 
-    echo -e "\t[Cache] $PATH_CACHED_REPO"; 
+    echo -e "\t[Cache] $PATH_CACHED_REPO"  | tee -a "$LANYWARE_LOGFILE";
 
     # Copy from cache to the destination directory; excluding the ".git" directory
     if [[ "$SKIP_DESTINATION" = true ]]; then
-        echo -e "\t[Destination] (skipped)";
+        echo -e "\t[Destination] (skipped)" | tee -a "$LANYWARE_LOGFILE";
     else
         rsync -ahr --exclude=.git --exclude=README.md "$PATH_CACHED_REPO/" "$PATH_DESTINATION";
-        echo -e "\t[Destination] $PATH_DESTINATION";
+        echo -e "\t[Destination] $PATH_DESTINATION" | tee -a "$LANYWARE_LOGFILE";
     fi;
 
-    echo "";
+    echo "\n" | tee -a "$LANYWARE_LOGFILE";
 }
