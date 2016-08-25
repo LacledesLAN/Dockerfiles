@@ -38,7 +38,7 @@ readonly LANYWARE_REPO_PATH=$(realpath "$LANYWARE_BIN_PATH/../repos");
 mkdir "$LANYWARE_REPO_PATH" --parents;
 
 if [[ "$LANYWARE_LOGGING_ENABLED" = true ]] ; then
-    local LOGPATH=$(realpath "$LANYWARE_BIN_PATH/../logs");
+    declare LOGPATH=$(realpath "$LANYWARE_BIN_PATH/../logs");
     readonly LANYWARE_LOGFILE=$(date +"$LOGPATH/linux-%Y.%m.%d-%Hh%Mm%Ss.log");
 
     mkdir "$LOGPATH" --parents;
@@ -198,27 +198,25 @@ function menu_local_server() {
 {
     git status;
 } &> /dev/null;
-
 if [ $? -ne 0 ]; then
-    local SCRIPT_FILENAME="$(basename "$(test -L "$0" && readlink "$0" || echo "$0")")";
-    local SCRIPT_FUllPATH=$(realpath "$LANYWARE_BIN_PATH/$SCRIPT_FILENAME");
-    local SCRIPT_VERSION=$(stat -c %y "$SCRIPT_FUllPATH");
+    declare SCRIPT_FILENAME="$(basename "$(test -L "$0" && readlink "$0" || echo "$0")")";
+    declare SCRIPT_FUllPATH=$(realpath "$LANYWARE_BIN_PATH/$SCRIPT_FILENAME");
+    declare SCRIPT_VERSION=$(stat -c %y "$SCRIPT_FUllPATH");
 
     unset SCRIPT_FILENAME; unset SCRIPT_FUllPATH;
 else
-    local SCRIPT_VERSION=$(git rev-parse --verify HEAD);
+    declare SCRIPT_VERSION=$(git rev-parse --verify HEAD);
 fi
+
 
 echo -e "\n\n\n";
 gfx_horizontal_rule;
 tput setaf 2; tput dim;
-echo "(build: $SCRIPT_VERSION)" 2>&1 | tee $LANYWARE_LOGFILE;
+echo "(build: $SCRIPT_VERSION)" 2>&1 | tee "$LANYWARE_LOGFILE";
 tput sgr0;
 gfx_horizontal_rule;
 
 echo -e "\n";
-
-unset SCRIPT_VERSION;
 
 
 
@@ -248,13 +246,13 @@ if [ "$DOCKER_INSTALLED" = true ] ; then
     until [ "$MODE_DOCKER_LIBRARY" != "$MODE_LOCAL_SERVER" ]; do
         read -n 1 x; while read -n 1 -t .1 y; do x="$x$y"; done
 
-        if [ $x == "d" || $x == "D" ] ; then
+        if [[ $x == "d" || $x == "D" ]] ; then
             MODE_DOCKER_LIBRARY=true;
             menu_docker_library;
-        elif [ $x == "l" || $x == "L" ] ; then
+        elif [[ $x == "l" || $x == "L" ]] ; then
             MODE_LOCAL_SERVER=true;
             menu_local_server;
-        elif [ $x == "x" || $x == "X" ] ; then
+        elif [[ $x == "x" || $x == "X" ]] ; then
             echo -e "\n\nAborting...\n"
             exit;
         fi
@@ -1097,3 +1095,4 @@ fi;
 
 unset LANYWARE_GITHUB_IMPORT_HISTORY;
 unset LANYWARE_LOGGING_ENABLED;
+unset SCRIPT_VERSION;
