@@ -59,7 +59,7 @@ function gfx_section_start() {
             echo -e "\t$1";
             printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' =;
         fi
-    } 2>&1 | tee "$LANYWARE_LOGFILE";
+    } 2>&1 | tee -a "$LANYWARE_LOGFILE";
 
     # Set optional foreground color
     if [[ -z "$2" ]]; then

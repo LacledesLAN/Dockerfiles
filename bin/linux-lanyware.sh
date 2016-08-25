@@ -188,7 +188,7 @@ echo -e "\n\n\n";
 gfx_section_start "LANYWARE (build: $SCRIPT_VERSION)";
 tput sgr0;
 
-echo -e "\n" | tee "$LANYWARE_LOGFILE";
+echo -e "\n" | tee -a "$LANYWARE_LOGFILE";
 
 
 tput setaf 3; tput bold;
@@ -1043,7 +1043,7 @@ gfx_section_start "Summary (Finished at $(date))";
     if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
         docker images;
     fi;
-} 2>&1 | tee "$LANYWARE_LOGFILE";
+} 2>&1 | tee -a "$LANYWARE_LOGFILE";
 
 gfx_section_end;
 
