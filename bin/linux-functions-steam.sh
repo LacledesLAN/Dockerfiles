@@ -106,6 +106,8 @@ function import_steam_app() {    # APP ID; destination directory
 }
 
 
+# Downloads, extracts, and updates SteamCMD to the specified destination
+# $1 The full path to the destination for SteamCMD
 function import_steamcmd() { # destination directory
     #Header
     tput setaf 6;
