@@ -1,13 +1,8 @@
 // Place your settings in this file to overwrite default and user settings.
 {
-
-    // GIT Settings
     "git.enabled": true,
     "git.autorefresh": true,
-    "git.confirmSync": true
-
-
-    //  Search Settings
+    "git.confirmSync": true,
     "search.exclude": {
         "**/bin/*-steamcmd/": true,
         "**/cache/": true

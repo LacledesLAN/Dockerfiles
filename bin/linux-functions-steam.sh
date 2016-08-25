@@ -53,7 +53,7 @@ function steam_get_app_name() {
 }
 
 
-function steam_import_app() {    # APP ID; destination directory
+function import_steam_app() {    # APP ID; destination directory
     mkdir -p "$2";
 
     local loc_prev_line="thisValueWillNeverOccurNormally";
@@ -106,7 +106,7 @@ function steam_import_app() {    # APP ID; destination directory
 }
 
 
-function steam_import_tool() { # destination directory
+function import_steamcmd() { # destination directory
     #Header
     tput setaf 6;
     echo -e "\tVerifying SteamCMD";
