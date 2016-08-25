@@ -209,7 +209,8 @@ if [ "$DOCKER_INSTALLED" = true ] ; then
     echo "    What are we managing?";
     echo "    ";
     echo "    D) Docker image library";
-    echo "    L) Game Server on localhost";
+    echo "    V) Development Mode (coming soon)";
+    echo "    L) Game Server on localhost (coming eventually)";
     echo "    ";
     echo "    X) Exit without doing anything";
     echo "    ";
@@ -1032,6 +1033,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
     fi;
 fi;
+
 
 #=============================================================================================================
 #===  WRAP UP  ===============================================================================================
