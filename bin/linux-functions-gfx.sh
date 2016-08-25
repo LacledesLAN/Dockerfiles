@@ -58,7 +58,7 @@ function gfx_section_start() {
         gfx_horizontal_rule;
         echo -e "\t$1";
         gfx_horizontal_rule;
-    } 2>&1 | $LANYWARE_LOGFILE;
+    } 2>&1 | tee "$LANYWARE_LOGFILE";
 
     tput sgr0; tput dim; tput setaf 6;
 
