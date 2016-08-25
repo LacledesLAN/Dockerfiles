@@ -12,6 +12,10 @@
 .Trashes
 .VolumeIcon.icns
 
+### Linux junk ###
+*~
+.Trash-*
+
 ### Windows junk ##
 *.lnk
 $RECYCLE.BIN/
