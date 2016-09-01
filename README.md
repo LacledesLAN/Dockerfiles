@@ -3,7 +3,7 @@ Install Instructions (Debian-based)
 
 **1. Install Dependancies**
 
-` sudo apt-get install -y curl discus git htop libc6-i386 lib32gcc1 lib32stdc++6 lib32tinfo5 lib32z1 realpath screen tar tree wget; `
+` sudo apt-get install -y curl discus git htop libc6-i386 lib32gcc1 lib32stdc++6 lib32tinfo5 lib32z1 libunwind8 libicu55 realpath screen tar tree wget; `
 
 **2. Install Docker**
 
