@@ -30,6 +30,15 @@ Execution
 
 
 
+TODO
+====
+if screen exists
+   if lanyware.sh running - connect
+   else kill screen
+   create new screen
+   execute lanyware
+
+
 [INCOMPLETE SCRIPT] Install Instructions (CentOS / Ubunutu)
 -----------------------------------------------------------
 **1. Download install-lanyware.sh
