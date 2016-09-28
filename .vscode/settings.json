@@ -1,10 +1,30 @@
 // Place your settings in this file to overwrite default and user settings.
 {
+    // Columns at which to show vertical rulers
+    "editor.rulers": [140],
+
+    // Controls if lines should wrap. The lines will wrap at min(editor.wrappingColumn, viewportWidthInColumns).
+    "editor.wordWrap": false,
+
+    // The default character set encoding to use when reading and writing files.
+    "files.encoding": "utf8",
+
+
+    // When enabled, will trim trailing whitespace when you save a file.
+    "files.trimTrailingWhitespace": true,
+
+
     "git.enabled": true,
     "git.autorefresh": true,
+
+    // Confirm before synchronizing git repositories.
     "git.confirmSync": true,
+
     "search.exclude": {
         "**/bin/*-steamcmd/": true,
         "**/cache/": true
-    }
+    },
+
+    // 64-bit PowerShell if available, otherwise 32-bit
+    "terminal.integrated.shell.windows":"C:\\Windows\\sysnative\\WindowsPowerShell\\v1.0\\powershell.exe"
 }
