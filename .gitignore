@@ -18,6 +18,7 @@
 
 ### Windows junk ##
 *.lnk
+!/.dev/*.lnk
 $RECYCLE.BIN/
 Desktop.ini
 Thumbs.db
