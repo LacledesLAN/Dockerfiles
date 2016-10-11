@@ -5,7 +5,7 @@ function steam_get_app_name() {
     #List updated 9/2016; Created using "dataFormatter-steam_get_app_name.xlsx" located inside of ".dev" folder
     #source: https://developer.valvesoftware.com/wiki/Dedicated_Servers_List
     case "$1" in
-        "90")       echo -n "GoldSource Dedicated Server";
+        "90")       echo -n "GoldSource Dedicated Server";;
         "205")      echo -n "Source SDK Base 2006 MP Dedicated Server";;
         "310")      echo -n "Source 2007 Dedicated Server";;
         "570")      echo -n "Dota 2 Dedicated Server (Linux)";;
