@@ -356,7 +356,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         #remove_docker_image "ll/gamesvr-blackmesa";
 
-        #destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-blackmesa/files";
+        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-blackmesa/files";
 
         #mkdir "$destination_directory" --parents;
 
@@ -382,7 +382,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         #remove_docker_image "ll/gamesvr-blackmesa-freeplay";
 
-        #destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-blackmesa-freeplay/linux/files";
+        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-blackmesa-freeplay/linux/files";
 
         #mkdir "$destination_directory" --parents;
 
@@ -413,7 +413,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         #remove_docker_image "ll/gamesvr-cssource";
 
-        #destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-cssource";
+        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-cssource";
 
         #mkdir "$destination_directory" --parents;
 
@@ -438,7 +438,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         remove_docker_image "ll/gamesvr-csgo";
 
-        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-csgo";
+        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-csgo/files";
 
         mkdir "$destination_directory" --parents;
 
@@ -486,7 +486,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         #remove_docker_image "ll/gamesvr-csgo-download";
 
-        #destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-csgo-download/files";
+        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-csgo-download/files";
 
         #mkdir "$destination_directory" --parents;
 
@@ -613,7 +613,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         #remove_docker_image "ll/gamesvr-dods";
 
-        #destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-dods/files";
+        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-dods/files";
 
         #mkdir "$destination_directory" --parents;
 
@@ -639,7 +639,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         #remove_docker_image "ll/gamesvr-dods-freeplay";
 
-        #destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-dods-freeplay/linux/files";
+        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-dods-freeplay/linux/files";
 
         #mkdir "$destination_directory" --parents;
 
@@ -751,7 +751,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         #remove_docker_image "ll/gamesvr-garrysmod";
 
-        #destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-garrysmod/files";
+        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-garrysmod/files";
 
         #import_steam_app 4020 "$destination_directory";
 
@@ -775,7 +775,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         #remove_docker_image "ll/gamesvr-garrysmod-freeplay";
 
-        #destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-garrysmod-freeplay/files";
+        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-garrysmod-freeplay/files";
 
         #mkdir "$destination_directory" --parents;
 
@@ -804,7 +804,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         #remove_docker_image "ll/gamesvr-minecraft";
 
-        #destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-minecraft/files";
+        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-minecraft/files";
 
         #mkdir "$destination_directory" --parents;
 
@@ -852,7 +852,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         #remove_docker_image "ll/gamesvr-svencoop";
 
-        #destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-svencoop/files";
+        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-svencoop/files";
 
         #mkdir "$destination_directory" --parents;
 
@@ -880,7 +880,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         #remove_docker_image "ll/gamesvr-svencoop-freeplay";
 
-        #destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-svencoop-freeplay/files";
+        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-svencoop-freeplay/files";
 
         #mkdir "$destination_directory" --parents;
 
@@ -908,7 +908,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         #remove_docker_image "ll/gamesvr-tf2";
 
-        #destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-tf2/files";
+        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-tf2/files";
 
         #mkdir "$destination_directory" --parents;
 
@@ -935,7 +935,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         #remove_docker_image "ll/gamesvr-tf2-blindfrag";
 
-        #destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-tf2-blindfrag/linux/files";
+        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-tf2-blindfrag/linux/files";
 
         #mkdir "$destination_directory" --parents;
 
@@ -968,7 +968,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         #remove_docker_image "ll/gamesvr-tf2-download";
 
-        #destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-tf2-download/files";
+        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-tf2-download/files";
 
         #mkdir "$destination_directory" --parents;
 
@@ -996,7 +996,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         #remove_docker_image "ll/gamesvr-tf2-freeplay";
 
-        #destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-tf2-freeplay/linux/files";
+        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-tf2-freeplay/linux/files";
 
         #mkdir "$destination_directory" --parents;
 
@@ -1049,7 +1049,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         #remove_docker_image "ll/websvr-lacledes.lan";
 
-        #destination_directory="$LANYWARE_REPO_PATH/ll/websvr-lacledes.lan/files";
+        destination_directory="$LANYWARE_REPO_PATH/ll/websvr-lacledes.lan/files";
 
         #empty_folder "$destination_directory";
 
@@ -1072,13 +1072,13 @@ fi;
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 0 ] ; then
 
-        #gfx_section_start "Docker -=> Building Image duds/stress-ng";
+        gfx_section_start "Docker -=> Building Image duds/stress-ng";
 
-        #remove_docker_image "duds/stress-ng";
+        remove_docker_image "duds/stress-ng";
 
-        #docker build -t duds/stress-ng -f "$LANYWARE_REPO_PATH/duds/stress-ng/Dockerfile.linux" "$LANYWARE_REPO_PATH/duds/stress-ng/";
+        docker build -t duds/stress-ng -f "$LANYWARE_REPO_PATH/duds/stress-ng/Dockerfile.linux" "$LANYWARE_REPO_PATH/duds/stress-ng/";
 
-        #gfx_section_end;
+        gfx_section_end;
 
     fi;
 fi;
