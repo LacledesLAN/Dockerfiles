@@ -555,7 +555,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         empty_folder "$destination_directory";
 
-        import_github_repo "LacledesLAN/LacledesLAN/gamesvr-srcds-csgo-test" "$destination_directory/csgo/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-csgo-test" "$destination_directory/csgo/";
 
         docker build -t ll/gamesvr-csgo-test "$LANYWARE_REPO_PATH/ll/gamesvr-csgo-test/linux/";
 
