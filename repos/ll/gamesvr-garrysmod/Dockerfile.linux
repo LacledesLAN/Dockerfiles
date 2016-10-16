@@ -1,8 +1,8 @@
-FROM ll/gamesvr:steamcmd
+FROM ll/gamesvr:srcds
 
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
-ENV HOME="/gamesvr/garrysmod/" SERVER_NAME="ll/gamesvr-garrysmod" 
+ENV HOME="/gamesvr/garrysmod/" SERVER_NAME="ll/gamesvr-garrysmod"
 
 COPY ./files/ /gamesvr/garrysmod/
 

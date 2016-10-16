@@ -143,26 +143,6 @@ function menu_docker_library() {
 }
 
 
-function menu_local_server() {
-    tput setaf 3; tput dim;
-    echo "";
-    echo "    _                 _   ___                      ";
-    echo "   | |   ___  __ __ _| | / __| ___ _ ___ _____ _ _ ";
-    echo "   | |__/ _ \/ _/ _\`| | \__ \/ -_) '_\ V / -_) '_|";
-    echo "   |____\___/\__\__,_|_| |___/\___|_|  \_/\___|_|  ";
-    echo "";
-    echo "";
-    tput sgr0;
-
-    tput setaf 1; tput bold;
-    echo "THIS IS EXPERIMENTAL. PRESS ANY KEY TO CONTINUE!"
-    tput sgr0;
-    echo "";
-    echo "";
-    read -n 1 x; while read -n 1 -t .1 y; do x="$x$y"; done
-}
-
-
 ##############################################################################################################
 ####======================================================================================================####
 ####  SHEll SCRIPT RUNTIME  ==============================================================================####
@@ -209,7 +189,7 @@ if [ "$DOCKER_INSTALLED" = true ] ; then
     echo "    What are we managing?";
     echo "    ";
     echo "    D) Docker image library";
-    echo "    V) Development Mode (coming soon)";
+    echo "    V) Development Mode (coming eventually)";
     echo "    L) Game Server on localhost (coming eventually)";
     echo "    ";
     echo "    X) Exit without doing anything";
@@ -221,9 +201,6 @@ if [ "$DOCKER_INSTALLED" = true ] ; then
         if [[ $x == "d" || $x == "D" ]] ; then
             MODE_DOCKER_LIBRARY=true;
             menu_docker_library;
-        elif [[ $x == "l" || $x == "L" ]] ; then
-            MODE_LOCAL_SERVER=true;
-            menu_local_server;
         elif [[ $x == "x" || $x == "X" ]] ; then
             echo -e "\n\nAborting...\n"
             exit;
@@ -302,41 +279,39 @@ fi;
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 1 ] ; then
 
-        gfx_section_start "Docker -=> Building Image ll/gamesvr:java";
+        #gfx_section_start "Docker -=> Building Image ll/gamesvr:java";
 
-        remove_docker_image "ll/gamesvr:java";
+        #remove_docker_image "ll/gamesvr:java";
 
         destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr_java/linux/files";
 
-        mkdir "$destination_directory" --parents;
+        #mkdir "$destination_directory" --parents;
 
-        docker build -t ll/gamesvr:java "$LANYWARE_REPO_PATH/ll/gamesvr_java/linux/";
+        #docker build -t ll/gamesvr:java "$LANYWARE_REPO_PATH/ll/gamesvr_java/linux/";
 
-        gfx_section_end;
+        #gfx_section_end;
     fi;
 fi;
 
 
-#                                                                 __                                                __
-#     ____ _ ____ _ ____ ___   ___   _____ _   __ _____ _  _____ / /_ ___   ____ _ ____ ___   _____ ____ ___   ____/ /
-#    / __ `// __ `// __ `__ \ / _ \ / ___/| | / // ___/(_)/ ___// __// _ \ / __ `// __ `__ \ / ___// __ `__ \ / __  /
-#   / /_/ // /_/ // / / / / //  __/(__  ) | |/ // /   _  (__  )/ /_ /  __// /_/ // / / / / // /__ / / / / / // /_/ /
-#   \__, / \__,_//_/ /_/ /_/ \___//____/  |___//_/   (_)/____/ \__/ \___/ \__,_//_/ /_/ /_/ \___//_/ /_/ /_/ \__,_/
+#                                                                                 __
+#     ____ _ ____ _ ____ ___   ___   _____ _   __ _____ _  _____ _____ _____ ____/ /_____
+#    / __ `// __ `// __ `__ \ / _ \ / ___/| | / // ___/(_)/ ___// ___// ___// __  // ___/
+#   / /_/ // /_/ // / / / / //  __/(__  ) | |/ // /   _  (__  )/ /   / /__ / /_/ /(__  )
+#   \__, / \__,_//_/ /_/ /_/ \___//____/  |___//_/   (_)/____//_/    \___/ \__,_//____/
 #  /____/
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 1 ] ; then
 
-        gfx_section_start "Docker -=> Building Image ll/gamesvr:steamdcmd";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr:srcds";
 
-        remove_docker_image "ll/gamesvr:steamcmd";
+        remove_docker_image "ll/gamesvr:srcds";
 
-        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr_steamcmd/linux/files";
+        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr_srcds/linux/files";
 
         mkdir "$destination_directory" --parents;
 
-        import_steamcmd "$destination_directory/_steamcmd";
-
-        docker build -t ll/gamesvr:steamcmd "$LANYWARE_REPO_PATH/ll/gamesvr_steamcmd/linux/";
+        docker build -t ll/gamesvr:srcds "$LANYWARE_REPO_PATH/ll/gamesvr_srcds/linux/";
 
         gfx_section_end;
     fi;
@@ -549,7 +524,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         remove_docker_image "ll/gamesvr-csgo-test";
 
-        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-csgo-test/linux/files";
+        destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-csgo-test/files";
 
         mkdir "$destination_directory" --parents;
 
@@ -557,10 +532,9 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         import_github_repo "LacledesLAN/gamesvr-srcds-csgo-test" "$destination_directory/csgo/";
 
-        docker build -t ll/gamesvr-csgo-test "$LANYWARE_REPO_PATH/ll/gamesvr-csgo-test/linux/";
+        docker build -t ll/gamesvr-csgo-test "$LANYWARE_REPO_PATH/ll/gamesvr-csgo-test/";
 
         gfx_section_end;
-
     fi;
 fi;
 

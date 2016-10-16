@@ -1,8 +1,8 @@
-FROM ll/gamesvr:steamcmd
+FROM ll/gamesvr:srcds
 
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
-ENV HOME="/gamesvr/blackmesa/" SERVER_NAME="ll/gamesvr-blackmesa" 
+ENV HOME="/gamesvr/blackmesa/" SERVER_NAME="ll/gamesvr-blackmesa"
 
 COPY ./files/ /gamesvr/blackmesa/
 

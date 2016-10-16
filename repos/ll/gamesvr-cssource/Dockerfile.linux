@@ -1,8 +1,8 @@
-FROM ll/gamesvr:steamcmd
+FROM ll/gamesvr:srcds
 
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
-ENV HOME="/gamesvr/cssource/" SERVER_NAME="ll/gamesvr-cssource" 
+ENV HOME="/gamesvr/cssource/" SERVER_NAME="ll/gamesvr-cssource"
 
 COPY ./files/ /gamesvr/cssource/
 

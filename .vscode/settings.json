@@ -1,7 +1,13 @@
 // Place your settings in this file to overwrite default and user settings.
 {
+    // Insert spaces when pressing Tab. This setting is overriden based on the file contents when `editor.detectIndentation` is on.
+    "editor.insertSpaces": true,
+
+    // Controls visibility of line numbers
+    "editor.lineNumbers": "on",
+
     // Columns at which to show vertical rulers
-    "editor.rulers": [140],
+    "editor.rulers": [150],
 
     // Controls if lines should wrap. The lines will wrap at min(editor.wrappingColumn, viewportWidthInColumns).
     "editor.wordWrap": false,
@@ -9,10 +15,8 @@
     // The default character set encoding to use when reading and writing files.
     "files.encoding": "utf8",
 
-
     // When enabled, will trim trailing whitespace when you save a file.
     "files.trimTrailingWhitespace": true,
-
 
     "git.enabled": true,
     "git.autorefresh": true,
@@ -22,7 +26,8 @@
 
     "search.exclude": {
         "**/bin/*-steamcmd/": true,
-        "**/cache/": true
+        "**/cache/": true,
+        ".vscode/*": true
     },
 
     // 64-bit PowerShell if available, otherwise 32-bit

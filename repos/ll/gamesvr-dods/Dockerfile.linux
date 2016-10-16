@@ -1,8 +1,8 @@
-FROM ll/gamesvr:steamcmd
+FROM ll/gamesvr:srcds
 
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
-ENV HOME="/gamesvr/dods/" SERVER_NAME="ll/gamesvr-dods" 
+ENV HOME="/gamesvr/dods/" SERVER_NAME="ll/gamesvr-dods"
 
 COPY ./files/ /gamesvr/dods/
 

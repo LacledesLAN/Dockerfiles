@@ -1,8 +1,8 @@
-FROM ll/gamesvr:steamcmd
+FROM ll/gamesvr:srcds
 
 MAINTAINER Laclede's LAN <contact@lacledeslan.com>
 
-ENV HOME="/gamesvr/svencoop/" SERVER_NAME="ll/gamesvr-svencoop" 
+ENV HOME="/gamesvr/svencoop/" SERVER_NAME="ll/gamesvr-svencoop"
 
 COPY ./files/ /gamesvr/svencoop/
 
