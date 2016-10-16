@@ -464,7 +464,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         ############ END OF FTP STUFF ############
 
-        import_steam_app 740 "$destination_directory/files";
+        import_steam_app 740 "$destination_directory";
 
         docker build -t ll/gamesvr-csgo -f "$LANYWARE_REPO_PATH/ll/gamesvr-csgo/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-csgo/";
 
