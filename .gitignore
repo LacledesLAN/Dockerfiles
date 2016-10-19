@@ -35,7 +35,8 @@ ehthumbs.db
 
 ### Files that may have been created by runtime ###
 *.filepart
-/bin/linux-steamcmd
+/bin/*-steamcmd
+!/bin/linux-functions*.sh
 /cache
 /logs
 /tmp/

@@ -20,6 +20,7 @@
 
     "git.enabled": true,
     "git.autorefresh": true,
+    "git.autofetch": true,
 
     // Confirm before synchronizing git repositories.
     "git.confirmSync": true,

@@ -7,7 +7,7 @@ ENV HOME="/gamesvr/svencoop/" SERVER_NAME="ll/gamesvr-svencoop-freeplay"
 COPY ./files/ /gamesvr/svencoop/
 
 RUN `##Set up container enviorment##` && \
-    useradd -M --home /gamesvr/svencoop/ gamesvr-svencoop-freeplay -c "Docker container user for ll/gamesvr-svencoop-freeplay"
+    useradd --home /gamesvr/svencoop/ --create-home gamesvr-svencoop-freeplay
 
 USER gamesvr-svencoop-freeplay
 
