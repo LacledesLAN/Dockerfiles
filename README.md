@@ -14,20 +14,18 @@ Install Instructions (Debian-based)
 ` sudo usermod -aG docker <USER> `
 Where "<USER>" is your local account. Log out and back in for change to take affect.
 
-**4. Download repo into your home directory**
+**4. Download repo into home directory and set permissions**
 
-` cd ~; git clone git://github.com/LacledesLAN/LANYWARE; rm -rf ~/LANYWARE/.git; `
-
-**5. Set permissions**
-
-`cd ~/LANYWARE; chmod +x *.sh; chmod +x ./bin/*.sh; `
-
+`cd ~; git clone git://github.com/LacledesLAN/LANYWARE; rm -rf ~/LANYWARE/.git; cd ~/LANYWARE; chmod +x *.sh; chmod +x ./bin/*.sh;`
 
 Execution
 ---------
 
 ` cd ~/LANYWARE; ./lanyware.sh; `
 
+Upgrade String (Debian-based)
+-----------------------------------
+`rm -rf ~/LANYWARE; cd ~; git clone git://github.com/LacledesLAN/LANYWARE; rm -rf ~/LANYWARE/.git; cd ~/LANYWARE; chmod +x *.sh; chmod +x ./bin/*.sh;`
 
 
 TODO
