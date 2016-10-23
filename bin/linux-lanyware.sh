@@ -218,7 +218,14 @@ tput smul;
 echo -e "\n\nENVIRONMENT SETUP";
 tput sgr0;
 
-import_steamcmd "$LANYWARE_BIN_PATH/linux-steamcmd";
+if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+    if [ $DOCKER_REBUILD_LEVEL -le 2 ] ; then
+
+        import_steamcmd "$LANYWARE_BIN_PATH/linux-steamcmd";
+
+    fi;
+fi;
+
 
 #=========[ Prep Steam contextualization requirements ]-------------------------------------------------------
 
@@ -310,6 +317,8 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
         destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr_srcds/linux/files";
 
         mkdir "$destination_directory" --parents;
+
+        import_steamcmd "$destination_directory";
 
         docker build -t ll/gamesvr:srcds "$LANYWARE_REPO_PATH/ll/gamesvr_srcds/linux/";
 
