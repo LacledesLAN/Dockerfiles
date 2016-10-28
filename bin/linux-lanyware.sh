@@ -318,7 +318,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         mkdir "$destination_directory" --parents;
 
-        import_steamcmd "$destination_directory";
+        #import_steamcmd "$destination_directory";
 
         docker build -t ll/gamesvr:srcds "$LANYWARE_REPO_PATH/ll/gamesvr_srcds/linux/";
 
