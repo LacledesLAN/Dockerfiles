@@ -435,7 +435,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
         # Download all half-life 2 deathmatch maps from the ll repo
         wget_wrapper "wget -m \
             -P $destination_directory/csgo/maps/ \
-            ftp://guest:m5lyeREIDy0Zvr2o5wAq@files.lacledeslan.net/content.lan/fastDownloads/csgo/maps \
+            ftp://guest:m5lyeREIDy0Zvr2o5wAq@172.30.0.110/content.lan/fastDownloads/csgo/maps \
             -nH --no-verbose --cut-dirs 4";
 
         # Unzip all bz2 files; extracting the maps and deleting the archives
@@ -673,7 +673,7 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
         # Download all half-life 2 deathmatch maps from the ll repo
         wget_wrapper "wget -m \
             -P $destination_directory/hl2mp/maps/ \
-            ftp://guest:m5lyeREIDy0Zvr2o5wAq@files.lacledeslan.net/content.lan/fastDownloads/hl2dm/maps \
+            ftp://guest:m5lyeREIDy0Zvr2o5wAq@172.30.0.110/content.lan/fastDownloads/hl2dm/maps \
             -nH --no-verbose --cut-dirs 4";
 
         # Unzip all bz2 files; extracting the maps and deleting the archives
