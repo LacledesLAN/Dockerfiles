@@ -16,16 +16,16 @@ Where "<USER>" is your local account. Log out and back in for change to take aff
 
 **4. Download repo into home directory and set permissions**
 
-`cd ~; git clone git://github.com/LacledesLAN/LANYWARE; rm -rf ~/LANYWARE/.git; cd ~/LANYWARE; chmod +x *.sh; chmod +x ./bin/*.sh;`
+`cd ~; git clone git://github.com/LacledesLAN/LANYWARE-BASH; rm -rf ~/LANYWARE-BASH/.git; cd ~/LANYWARE-BASH; chmod +x *.sh; chmod +x ./bin/*.sh;`
 
 Execution
 ---------
 
-` cd ~/LANYWARE; ./lanyware.sh; `
+` cd ~/LANYWARE-BASH; ./lanyware.sh; `
 
 Upgrade String (Debian-based)
 -----------------------------------
-`rm -rf ~/LANYWARE; cd ~; git clone git://github.com/LacledesLAN/LANYWARE; rm -rf ~/LANYWARE/.git; cd ~/LANYWARE; chmod +x *.sh; chmod +x ./bin/*.sh;`
+`rm -rf ~/LANYWARE-BASH; cd ~; git clone git://github.com/LacledesLAN/LANYWARE-BASH; rm -rf ~/LANYWARE-BASH/.git; cd ~/LANYWARE-BASH; chmod +x *.sh; chmod +x ./bin/*.sh;`
 
 
 TODO
@@ -35,19 +35,6 @@ if screen exists
    else kill screen
    create new screen
    execute lanyware
-
-
-[INCOMPLETE SCRIPT] Install Instructions (CentOS / Ubunutu)
------------------------------------------------------------
-**1. Download install-lanyware.sh
-
-**2. Add the execute permission to the install script
-
-` chmod 755 ./install-lanyware.sh`
-
-**3. Execute the install script and follow the prompts.
-
-` ./install-lanyware.sh `
 
 
 
@@ -62,23 +49,23 @@ DEV NOTES
     check directories are writable
 
     [USER MENU OPTIONS]
-    
-    
+
+
     [MAIN LOOP]
-    parse repo tags in alphabetical order    
+    parse repo tags in alphabetical order
         parse repos in alphabetical order
             Execute Lanywarefile
-            
+
             if (DOCKER)
                 if contains "-"
-            
+
                 try for /*kernel*/Dockerfile
                 try for Dockerfile.kernel
                 try for Dockerfile
                 <FAIL OUT>
-                
+
                 if clear-cache; clear the cache
-            
+
             else if (RAW)
                 try (cp || mv) -=> /kernel/files
                 try (cp || mv) -=> files
@@ -87,8 +74,8 @@ DEV NOTES
                 FAIL
 
     [WIND DOWN]
-    
-    
+
+
 <UPDATE>
     Update all files
     remove files that were removed from github repo

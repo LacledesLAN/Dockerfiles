@@ -184,32 +184,12 @@ echo -e "\n";
 tput sgr0;
 
 
-
 if [ "$DOCKER_INSTALLED" = true ] ; then
-    echo "    What are we managing?";
-    echo "    ";
-    echo "    D) Docker image library";
-    echo "    V) Development Mode (coming eventually)";
-    echo "    L) Game Server on localhost (coming eventually)";
-    echo "    ";
-    echo "    X) Exit without doing anything";
-    echo "    ";
-
-    until [ "$MODE_DOCKER_LIBRARY" != "$MODE_LOCAL_SERVER" ]; do
-        read -n 1 x; while read -n 1 -t .1 y; do x="$x$y"; done
-
-        if [[ $x == "d" || $x == "D" ]] ; then
-            MODE_DOCKER_LIBRARY=true;
-            menu_docker_library;
-        elif [[ $x == "x" || $x == "X" ]] ; then
-            echo -e "\n\nAborting...\n"
-            exit;
-        fi
-    done
-
+    MODE_DOCKER_LIBRARY=true;
+    menu_docker_library;
 else
     echo -e "Could not find Docker on this system; can only manage game servers on localhost.\n";
-    MODE_LOCAL_SERVER=true;
+    exit;
 fi;
 
 
@@ -286,17 +266,17 @@ fi;
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 1 ] ; then
 
-        #gfx_section_start "Docker -=> Building Image ll/gamesvr:java";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr:java";
 
-        #remove_docker_image "ll/gamesvr:java";
+        remove_docker_image "ll/gamesvr:java";
 
         destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr_java/linux/files";
 
-        #mkdir "$destination_directory" --parents;
+        mkdir "$destination_directory" --parents;
 
-        #docker build -t ll/gamesvr:java "$LANYWARE_REPO_PATH/ll/gamesvr_java/linux/";
+        docker build -t ll/gamesvr:java "$LANYWARE_REPO_PATH/ll/gamesvr_java/linux/";
 
-        #gfx_section_end;
+        gfx_section_end;
     fi;
 fi;
 
@@ -318,8 +298,6 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         mkdir "$destination_directory" --parents;
 
-        #import_steamcmd "$destination_directory";
-
         docker build -t ll/gamesvr:srcds "$LANYWARE_REPO_PATH/ll/gamesvr_srcds/linux/";
 
         gfx_section_end;
@@ -336,19 +314,19 @@ fi;
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 2 ] ; then
 
-        #gfx_section_start "Docker -=> Building Image ll/gamesvr-blackmesa";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-blackmesa";
 
-        #remove_docker_image "ll/gamesvr-blackmesa";
+        remove_docker_image "ll/gamesvr-blackmesa";
 
         destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-blackmesa/files";
 
-        #mkdir "$destination_directory" --parents;
+        mkdir "$destination_directory" --parents;
 
-        #import_steam_app 346680 "$destination_directory";
+        import_steam_app 346680 "$destination_directory";
 
-        #docker build -t ll/gamesvr-blackmesa -f "$LANYWARE_REPO_PATH/ll/gamesvr-blackmesa/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-blackmesa/";
+        docker build -t ll/gamesvr-blackmesa -f "$LANYWARE_REPO_PATH/ll/gamesvr-blackmesa/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-blackmesa/";
 
-        #gfx_section_end;
+        gfx_section_end;
     fi;
 fi;
 
@@ -362,25 +340,25 @@ fi;
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
 
-        #gfx_section_start "Docker -=> Building Image ll/gamesvr-blackmesa-freeplay";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-blackmesa-freeplay";
 
-        #remove_docker_image "ll/gamesvr-blackmesa-freeplay";
+        remove_docker_image "ll/gamesvr-blackmesa-freeplay";
 
         destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-blackmesa-freeplay/linux/files";
 
-        #mkdir "$destination_directory" --parents;
+        mkdir "$destination_directory" --parents;
 
-        #empty_folder "$destination_directory";
+        empty_folder "$destination_directory";
 
-        #import_github_repo "LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/bms/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/bms/";
 
-        #import_github_repo "LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/bms/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/bms/";
 
-        #import_github_repo "LacledesLAN/gamesvr-srcds-blackmesa-freeplay" "$destination_directory/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-blackmesa-freeplay" "$destination_directory/";
 
-        #docker build -t ll/gamesvr-blackmesa-freeplay "$LANYWARE_REPO_PATH/ll/gamesvr-blackmesa-freeplay/linux/";
+        docker build -t ll/gamesvr-blackmesa-freeplay "$LANYWARE_REPO_PATH/ll/gamesvr-blackmesa-freeplay/linux/";
 
-        #gfx_section_end;
+        gfx_section_end;
     fi;
 fi;
 
@@ -393,19 +371,19 @@ fi;
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 2 ] ; then
 
-        #gfx_section_start "Docker -=> Building Image ll/gamesvr-cssource";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-cssource";
 
-        #remove_docker_image "ll/gamesvr-cssource";
+        remove_docker_image "ll/gamesvr-cssource";
 
         destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-cssource";
 
-        #mkdir "$destination_directory" --parents;
+        mkdir "$destination_directory" --parents;
 
-        #import_steam_app 232330 "$destination_directory/files";
+        import_steam_app 232330 "$destination_directory/files";
 
-        #docker build -t ll/gamesvr-cssource -f "$LANYWARE_REPO_PATH/ll/gamesvr-cssource/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-cssource/";
+        docker build -t ll/gamesvr-cssource -f "$LANYWARE_REPO_PATH/ll/gamesvr-cssource/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-cssource/";
 
-        #gfx_section_end;
+        gfx_section_end;
     fi;
 fi;
 
@@ -430,21 +408,21 @@ if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
 
         # Clear destination to ensure no unintended maps are left.  Eg, if the map is deleted from the repo it should be deleted
         # from the built server
-        #empty_folder "$destination_directory/csgo/maps";
+        empty_folder "$destination_directory/csgo/maps";
 
         # Download all half-life 2 deathmatch maps from the ll repo
-        #wget_wrapper "wget -m \
-        #    -P $destination_directory/csgo/maps/ \
-        #    ftp://guest:m5lyeREIDy0Zvr2o5wAq@content.lacledeslan.net/content.lan/fastDownloads/csgo/maps \
-        #    -nH --no-verbose --cut-dirs 4";
+        wget_wrapper "wget -m \
+            -P $destination_directory/csgo/maps/ \
+            ftp://guest:m5lyeREIDy0Zvr2o5wAq@content.lacledeslan.net/content.lan/fastDownloads/csgo/maps \
+            -nH --no-verbose --cut-dirs 4";
 
         # Unzip all bz2 files; extracting the maps and deleting the archives
-        #echo "bzip2 -f -d $destination_directory/csgo/maps/*.bsp.bz2";
+        echo "bzip2 -f -d $destination_directory/csgo/maps/*.bsp.bz2";
 
-        #bzip2 -d $destination_directory/csgo/maps/*.bsp.bz2;
+        bzip2 -d $destination_directory/csgo/maps/*.bsp.bz2;
 
         # Remove .listing file
-        #rm "$destination_directory/csgo/maps/.listing";
+        rm "$destination_directory/csgo/maps/.listing";
 
         ############ END OF FTP STUFF ############
 
@@ -466,21 +444,21 @@ fi;
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
 
-        #gfx_section_start "Docker -=> Building Image ll/gamesvr-csgo-download";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-csgo-download";
 
-        #remove_docker_image "ll/gamesvr-csgo-download";
+        remove_docker_image "ll/gamesvr-csgo-download";
 
         destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-csgo-download/files";
 
-        #mkdir "$destination_directory" --parents;
+        mkdir "$destination_directory" --parents;
 
-        #empty_folder "$destination_directory";
+        empty_folder "$destination_directory";
 
-        #import_github_repo "LacledesLAN/gamesvr-srcds-csgo-download" "$destination_directory/csgo/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-csgo-download" "$destination_directory/csgo/";
 
-        #docker build -t ll/gamesvr-csgo-download -f "$LANYWARE_REPO_PATH/ll/gamesvr-csgo-download/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-csgo-download/";
+        docker build -t ll/gamesvr-csgo-download -f "$LANYWARE_REPO_PATH/ll/gamesvr-csgo-download/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-csgo-download/";
 
-        #gfx_section_end;
+        gfx_section_end;
 
     fi;
 fi;
@@ -598,19 +576,19 @@ fi;
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 2 ] ; then
 
-        #gfx_section_start "Docker -=> Building Image ll/gamesvr-dods";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-dods";
 
-        #remove_docker_image "ll/gamesvr-dods";
+        remove_docker_image "ll/gamesvr-dods";
 
         destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-dods/files";
 
-        #mkdir "$destination_directory" --parents;
+        mkdir "$destination_directory" --parents;
 
-        #import_steam_app 232290 "$destination_directory";
+        import_steam_app 232290 "$destination_directory";
 
-        #docker build -t ll/gamesvr-dods -f "$LANYWARE_REPO_PATH/ll/gamesvr-dods/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-dods/";
+        docker build -t ll/gamesvr-dods -f "$LANYWARE_REPO_PATH/ll/gamesvr-dods/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-dods/";
 
-        #gfx_section_end;
+        gfx_section_end;
     fi;
 fi;
 
@@ -624,25 +602,25 @@ fi;
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
 
-        #gfx_section_start "Docker -=> Building Image ll/gamesvr-dods-freeplay";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-dods-freeplay";
 
-        #remove_docker_image "ll/gamesvr-dods-freeplay";
+        remove_docker_image "ll/gamesvr-dods-freeplay";
 
         destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-dods-freeplay/linux/files";
 
-        #mkdir "$destination_directory" --parents;
+        mkdir "$destination_directory" --parents;
 
-        #empty_folder "$destination_directory";
+        empty_folder "$destination_directory";
 
-        #import_github_repo "LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/dod/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/dod/";
 
-        #import_github_repo "LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/dod/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/dod/";
 
-        #import_github_repo "LacledesLAN/gamesvr-srcds-dods-freeplay" "$destination_directory/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-dods-freeplay" "$destination_directory/";
 
-        #docker build -t ll/gamesvr-dods-freeplay "$LANYWARE_REPO_PATH/ll/gamesvr-dods-freeplay/linux/";
+        docker build -t ll/gamesvr-dods-freeplay "$LANYWARE_REPO_PATH/ll/gamesvr-dods-freeplay/linux/";
 
-        #gfx_section_end;
+        gfx_section_end;
     fi;
 fi;
 
@@ -736,17 +714,17 @@ fi;
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 2 ] ; then
 
-        #gfx_section_start "Docker -=> Building Image ll/gamesvr-garrysmod";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-garrysmod";
 
-        #remove_docker_image "ll/gamesvr-garrysmod";
+        remove_docker_image "ll/gamesvr-garrysmod";
 
         destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-garrysmod/files";
 
-        #import_steam_app 4020 "$destination_directory";
+        import_steam_app 4020 "$destination_directory";
 
-        #docker build -t ll/gamesvr-garrysmod -f "$LANYWARE_REPO_PATH/ll/gamesvr-garrysmod/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-garrysmod/";
+        docker build -t ll/gamesvr-garrysmod -f "$LANYWARE_REPO_PATH/ll/gamesvr-garrysmod/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-garrysmod/";
 
-        #gfx_section_end;
+        gfx_section_end;
     fi;
 fi;
 
@@ -760,21 +738,21 @@ fi;
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
 
-        #gfx_section_start "Docker -=> Building Image ll/gamesvr-garrysmod-freeplay";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-garrysmod-freeplay";
 
-        #remove_docker_image "ll/gamesvr-garrysmod-freeplay";
+        remove_docker_image "ll/gamesvr-garrysmod-freeplay";
 
         destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-garrysmod-freeplay/files";
 
-        #mkdir "$destination_directory" --parents;
+        mkdir "$destination_directory" --parents;
 
-        #empty_folder "$destination_directory";
+        empty_folder "$destination_directory";
 
-        #import_github_repo "LacledesLAN/gamesvr-srcds-garrysmod-freeplay" "$destination_directory/garrysmod";
+        import_github_repo "LacledesLAN/gamesvr-srcds-garrysmod-freeplay" "$destination_directory/garrysmod";
 
-        #docker build -t ll/gamesvr-garrysmod-freeplay -f "$LANYWARE_REPO_PATH/ll/gamesvr-garrysmod-freeplay/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-garrysmod-freeplay/";
+        docker build -t ll/gamesvr-garrysmod-freeplay -f "$LANYWARE_REPO_PATH/ll/gamesvr-garrysmod-freeplay/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-garrysmod-freeplay/";
 
-        #gfx_section_end;
+        gfx_section_end;
 
     fi;
 fi;
@@ -789,27 +767,27 @@ fi;
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 2 ] ; then
 
-        #gfx_section_start "Docker -=> Building Image ll/gamesvr-minecraft";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-minecraft";
 
-        #remove_docker_image "ll/gamesvr-minecraft";
+        remove_docker_image "ll/gamesvr-minecraft";
 
         destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-minecraft/files";
 
-        #mkdir "$destination_directory" --parents;
+        mkdir "$destination_directory" --parents;
 
-        #empty_folder "$destination_directory";
+        empty_folder "$destination_directory";
 
         # Download Minecraft
-        #curl https://s3.amazonaws.com/Minecraft.Download/versions/1.10.2/minecraft_server.1.10.2.jar \
-        #    > "$destination_directory/minecraft_server.1.10.2.jar"
+        curl https://s3.amazonaws.com/Minecraft.Download/versions/1.10.2/minecraft_server.1.10.2.jar \
+            > "$destination_directory/minecraft_server.1.10.2.jar"
 
         # Download spigot
-        #curl https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar \
-        #    > "$destination_directory/BuildTools.jar"
+        curl https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar \
+            > "$destination_directory/BuildTools.jar"
 
-        #docker build -t ll/gamesvr-minecraft -f "$LANYWARE_REPO_PATH/ll/gamesvr-minecraft/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-minecraft/";
+        docker build -t ll/gamesvr-minecraft -f "$LANYWARE_REPO_PATH/ll/gamesvr-minecraft/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-minecraft/";
 
-        #gfx_section_end;
+        gfx_section_end;
     fi;
 fi;
 
@@ -823,9 +801,7 @@ fi;
 
 
 
-        #import_github_repo "LacledesLAN/gamesvr-svencoop-freeplay" "$destination_directory/";
-
-
+        import_github_repo "LacledesLAN/gamesvr-svencoop-freeplay" "$destination_directory/";
 
 
 #
@@ -837,21 +813,21 @@ fi;
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 2 ] ; then
 
-        #gfx_section_start "Docker -=> Building Image ll/gamesvr-svencoop";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-svencoop";
 
-        #remove_docker_image "ll/gamesvr-svencoop";
+        remove_docker_image "ll/gamesvr-svencoop";
 
         destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-svencoop/files";
 
-        #mkdir "$destination_directory" --parents;
+        mkdir "$destination_directory" --parents;
 
-        #empty_folder "$destination_directory";
+        empty_folder "$destination_directory";
 
-        #import_steam_app 276060 "$destination_directory/";
+        import_steam_app 276060 "$destination_directory/";
 
-        #docker build -t ll/gamesvr-svencoop -f "$LANYWARE_REPO_PATH/ll/gamesvr-svencoop/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-svencoop/";
+        docker build -t ll/gamesvr-svencoop -f "$LANYWARE_REPO_PATH/ll/gamesvr-svencoop/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-svencoop/";
 
-        #gfx_section_end;
+        gfx_section_end;
     fi;
 fi;
 
@@ -865,21 +841,21 @@ fi;
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
 
-        #gfx_section_start "Docker -=> Building Image ll/gamesvr-svencoop-freeplay";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-svencoop-freeplay";
 
-        #remove_docker_image "ll/gamesvr-svencoop-freeplay";
+        remove_docker_image "ll/gamesvr-svencoop-freeplay";
 
         destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-svencoop-freeplay/files";
 
-        #mkdir "$destination_directory" --parents;
+        mkdir "$destination_directory" --parents;
 
-        #empty_folder "$destination_directory";
+        empty_folder "$destination_directory";
 
-        #import_github_repo "LacledesLAN/gamesvr-svencoop-freeplay" "$destination_directory/";
+        import_github_repo "LacledesLAN/gamesvr-svencoop-freeplay" "$destination_directory/";
 
-        #docker build -t ll/gamesvr-svencoop-freeplay -f "$LANYWARE_REPO_PATH/ll/gamesvr-svencoop-freeplay/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-svencoop-freeplay/";
+        docker build -t ll/gamesvr-svencoop-freeplay -f "$LANYWARE_REPO_PATH/ll/gamesvr-svencoop-freeplay/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-svencoop-freeplay/";
 
-        #gfx_section_end;
+        gfx_section_end;
     fi;
 fi;
 
@@ -893,19 +869,19 @@ fi;
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 2 ] ; then
 
-        #gfx_section_start "Docker -=> Building Image ll/gamesvr-tf2";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-tf2";
 
-        #remove_docker_image "ll/gamesvr-tf2";
+        remove_docker_image "ll/gamesvr-tf2";
 
         destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-tf2/files";
 
-        #mkdir "$destination_directory" --parents;
+        mkdir "$destination_directory" --parents;
 
-        #import_steam_app 232250 "$destination_directory/";
+        import_steam_app 232250 "$destination_directory/";
 
-        #docker build -t ll/gamesvr-tf2 -f "$LANYWARE_REPO_PATH/ll/gamesvr-tf2/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-tf2/";
+        docker build -t ll/gamesvr-tf2 -f "$LANYWARE_REPO_PATH/ll/gamesvr-tf2/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-tf2/";
 
-        #gfx_section_end;
+        gfx_section_end;
     fi;
 fi;
 
@@ -920,25 +896,25 @@ fi;
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
 
-        #gfx_section_start "Docker -=> Building Image ll/gamesvr-tf2-blindfrag";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-tf2-blindfrag";
 
-        #remove_docker_image "ll/gamesvr-tf2-blindfrag";
+        remove_docker_image "ll/gamesvr-tf2-blindfrag";
 
         destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-tf2-blindfrag/linux/files";
 
-        #mkdir "$destination_directory" --parents;
+        mkdir "$destination_directory" --parents;
 
-        #empty_folder "$destination_directory";
+        empty_folder "$destination_directory";
 
-        #import_github_repo "LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/tf/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/tf/";
 
-        #import_github_repo "LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/tf/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/tf/";
 
-        #import_github_repo "LacledesLAN/gamesvr-srcds-tf2-blindfrag" "$destination_directory/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-tf2-blindfrag" "$destination_directory/";
 
-        #docker build -t ll/gamesvr-tf2-blindfrag "$LANYWARE_REPO_PATH/repos/ll/gamesvr-tf2-blindfrag/linux/";
+        docker build -t ll/gamesvr-tf2-blindfrag "$LANYWARE_REPO_PATH/repos/ll/gamesvr-tf2-blindfrag/linux/";
 
-        #gfx_section_end;
+        gfx_section_end;
 
     fi;
 fi;
@@ -953,21 +929,21 @@ fi;
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
 
-        #gfx_section_start "Docker -=> Building Image ll/gamesvr-tf2-download";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-tf2-download";
 
-        #remove_docker_image "ll/gamesvr-tf2-download";
+        remove_docker_image "ll/gamesvr-tf2-download";
 
         destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-tf2-download/files";
 
-        #mkdir "$destination_directory" --parents;
+        mkdir "$destination_directory" --parents;
 
-        #empty_folder "$destination_directory";
+        empty_folder "$destination_directory";
 
-        #import_github_repo "LacledesLAN/gamesvr-srcds-tf2-download" "$destination_directory/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-tf2-download" "$destination_directory/";
 
-        #docker build -t ll/gamesvr-tf2-download -f "$LANYWARE_REPO_PATH/ll/gamesvr-tf2-download/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-tf2-download/";
+        docker build -t ll/gamesvr-tf2-download -f "$LANYWARE_REPO_PATH/ll/gamesvr-tf2-download/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/gamesvr-tf2-download/";
 
-        #gfx_section_end;
+        gfx_section_end;
     fi;
 fi;
 
@@ -981,25 +957,25 @@ fi;
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
 
-        #gfx_section_start "Docker -=> Building Image ll/gamesvr-tf2-freeplay";
+        gfx_section_start "Docker -=> Building Image ll/gamesvr-tf2-freeplay";
 
-        #remove_docker_image "ll/gamesvr-tf2-freeplay";
+        remove_docker_image "ll/gamesvr-tf2-freeplay";
 
         destination_directory="$LANYWARE_REPO_PATH/ll/gamesvr-tf2-freeplay/linux/files";
 
-        #mkdir "$destination_directory" --parents;
+        mkdir "$destination_directory" --parents;
 
-        #empty_folder "$destination_directory";
+        empty_folder "$destination_directory";
 
-        #import_github_repo "LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/tf/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-metamod.linux" "$destination_directory/tf/";
 
-        #import_github_repo "LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/tf/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-sourcemod.linux" "$destination_directory/tf/";
 
-        #import_github_repo "LacledesLAN/gamesvr-srcds-tf2-freeplay" "$destination_directory/";
+        import_github_repo "LacledesLAN/gamesvr-srcds-tf2-freeplay" "$destination_directory/";
 
-        #docker build -t ll/gamesvr-tf2-freeplay "$LANYWARE_REPO_PATH/ll/gamesvr-tf2-freeplay/linux/";
+        docker build -t ll/gamesvr-tf2-freeplay "$LANYWARE_REPO_PATH/ll/gamesvr-tf2-freeplay/linux/";
 
-        #gfx_section_end;
+        gfx_section_end;
 
     fi;
 fi;
@@ -1034,19 +1010,19 @@ fi;
 if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
     if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
 
-        #gfx_section_start "Docker -=> Building Image ll/websvr-lacledes.lan";
+        gfx_section_start "Docker -=> Building Image ll/websvr-lacledes.lan";
 
-        #remove_docker_image "ll/websvr-lacledes.lan";
+        remove_docker_image "ll/websvr-lacledes.lan";
 
         destination_directory="$LANYWARE_REPO_PATH/ll/websvr-lacledes.lan/files";
 
-        #empty_folder "$destination_directory";
+        empty_folder "$destination_directory";
 
-        #import_github_repo "LacledesLAN/websvr-lacledes.lan" "$destination_directory/";
+        import_github_repo "LacledesLAN/websvr-lacledes.lan" "$destination_directory/";
 
-        #docker build -t ll/websvr-lacledes.lan -f "$LANYWARE_REPO_PATH/ll/websvr-lacledes.lan/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/websvr-lacledes.lan/";
+        docker build -t ll/websvr-lacledes.lan -f "$LANYWARE_REPO_PATH/ll/websvr-lacledes.lan/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/websvr-lacledes.lan/";
 
-        #gfx_section_end;
+        gfx_section_end;
 
     fi;
 fi;
