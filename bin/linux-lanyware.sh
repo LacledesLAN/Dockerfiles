@@ -1007,25 +1007,25 @@ fi;
 #  | | /| / // _ \ / __ \ / ___/| | / // ___/______ / // __ `// ___// // _ \ / __  // _ \ / ___/   / // __ `// __ \
 #  | |/ |/ //  __// /_/ /(__  ) | |/ // /   /_____// // /_/ // /__ / //  __// /_/ //  __/(__  )_  / // /_/ // / / /
 #  |__/|__/ \___//_.___//____/  |___//_/          /_/ \__,_/ \___//_/ \___/ \__,_/ \___//____/(_)/_/ \__,_//_/ /_/
-if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
-    if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
-
-        gfx_section_start "Docker -=> Building Image ll/websvr-lacledes.lan";
-
-        remove_docker_image "ll/websvr-lacledes.lan";
-
-        destination_directory="$LANYWARE_REPO_PATH/ll/websvr-lacledes.lan/files";
-
-        empty_folder "$destination_directory";
-
-        import_github_repo "LacledesLAN/websvr-lacledes.lan" "$destination_directory/";
-
-        docker build -t ll/websvr-lacledes.lan -f "$LANYWARE_REPO_PATH/ll/websvr-lacledes.lan/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/websvr-lacledes.lan/";
-
-        gfx_section_end;
-
-    fi;
-fi;
+#if [ "$MODE_DOCKER_LIBRARY" = true ] ; then
+#    if [ $DOCKER_REBUILD_LEVEL -le 3 ] ; then
+#
+#        gfx_section_start "Docker -=> Building Image ll/websvr-lacledes.lan";
+#
+#        remove_docker_image "ll/websvr-lacledes.lan";
+#
+#        destination_directory="$LANYWARE_REPO_PATH/ll/websvr-lacledes.lan/files";
+#
+#        empty_folder "$destination_directory";
+#
+#        import_github_repo "LacledesLAN/websvr-lacledes.lan" "$destination_directory/";
+#
+#        docker build -t ll/websvr-lacledes.lan -f "$LANYWARE_REPO_PATH/ll/websvr-lacledes.lan/Dockerfile.linux" "$LANYWARE_REPO_PATH/ll/websvr-lacledes.lan/";
+#
+#        gfx_section_end;
+#
+#    fi;
+#fi;
 
 
 #            __
